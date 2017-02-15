@@ -55,6 +55,16 @@ function drawBlocks() {
   }
 }
 
+function createScoreContainers() {
+  for (var i=0; i<xArray.length; i++) {
+    var newChild = document.createElement("div");
+
+    newChild.className = "scoreContainer";
+
+    document.getElementById("div").appendChild(newChild);
+  }
+}
+
 function animateIndividualInfection(j) {
   // if (blockColorArray[j] == "#00e673") {
   //   individualAlphaValues[j] += 0.01;
@@ -147,31 +157,73 @@ function infectionOrigins() {
     infect(infectedInitialIndex);
   }, 500);
 
-  return;
+  var timer = 4000;
 
-  var theInterval = setInterval(function() {
-    var falseIndexArray = [];
+  function subsequentOrigins() {
+    var numberOfFullyInfectedBlocks = individualAlphaValues.filter(function(para) {
+      return para == 1;
+    });
 
-    for (var i=0; i < isInfected.length; i++) {
-      if (isInfected[i] == false) {
-        falseIndexArray.push(i);
+    var theInterval = setTimeout(function() {
+      var falseIndexArray = [];
+
+      if (timer > 400) {
+        timer -= 200;
       }
-    }
-    if (falseIndexArray.length == 0) {
-      clearInterval(theInterval);
-      console.log("its been cleared lul");
-    }
-    console.log(falseIndexArray);
+      else if (numberOfFullyInfectedBlocks.length == 1) {
+        timer = 4000;
+      }
+      else if (isInfected.indexOf(false) == -1){
+        return;
+      }
 
-    var lerandom = Math.floor(Math.random()*falseIndexArray.length);
+      console.log("The current timer: "+timer);
+      for (var i=0; i < isInfected.length; i++) {
+        if (isInfected[i] == false) {
+          falseIndexArray.push(i);
+        }
+      }
+      if (falseIndexArray.length == 0) {
+        // clearInterval(theInterval);
+      }
 
-    infectedInitialIndex = falseIndexArray[lerandom];
-    console.log("This is the chosen index: "+infectedInitialIndex);
+      var lerandom = Math.floor(Math.random()*falseIndexArray.length);
 
-    isInfected[infectedInitialIndex] = true;
+      infectedInitialIndex = falseIndexArray[lerandom];
 
-    infect(infectedInitialIndex);
-  }, 8000);
+      isInfected[infectedInitialIndex] = true;
+
+      infect(infectedInitialIndex);
+
+      subsequentOrigins();
+    }, timer);
+  }
+  subsequentOrigins();
+  // var theInterval = setInterval(function() {
+  //   var falseIndexArray = [];
+  //
+  //   timer -= 1000;
+  //   console.log("TIMER LUL: "+timer);
+  //   for (var i=0; i < isInfected.length; i++) {
+  //     if (isInfected[i] == false) {
+  //       falseIndexArray.push(i);
+  //     }
+  //   }
+  //   if (falseIndexArray.length == 0) {
+  //     clearInterval(theInterval);
+  //     console.log("its been cleared lul");
+  //   }
+  //   console.log(falseIndexArray);
+  //
+  //   var lerandom = Math.floor(Math.random()*falseIndexArray.length);
+  //
+  //   infectedInitialIndex = falseIndexArray[lerandom];
+  //   console.log("This is the chosen index: "+infectedInitialIndex);
+  //
+  //   isInfected[infectedInitialIndex] = true;
+  //
+  //   infect(infectedInitialIndex);
+  // }, timer);
 }
 
 var cooldownReady = true;
@@ -184,9 +236,9 @@ function cooldown() {
 
 var totalScore = 0;
 var totalCuredBlocks = 0;
+var bonus = 0;
 
 function cure(event) {
-  if (cooldownReady) {
 
   var deduction = 0;
 
@@ -211,44 +263,30 @@ function cure(event) {
 
       //Checks the blocks AROUND the newly cured blocks. Calls the infection function if it finds any infectious blocks.
       //Starts at the leftmost column and finishes at the rightmost.
-      for (var k = -2; k < 3; k++) {
+      for (var k = -1; k < 2; k++) {
         //Coefficient variable that changes which way (downward/upward) the algorithm searches for infectious blocks.
         var c = 1;
 
-        if (k == -2 || k == 2) {
           //First checks to see if the block two spaces to the left of the newly cured block is on the same row and whether its infectious.
           if (yArray[i+k] - yArray[i] == 0 && individualAlphaValues[i+k] == 1) {
             //Adds the index value of the infectious block to an array.
             reInfectedArray.push(i+k);
-
+          }
             //First checks the block two spaces left, one space down followed by the block two spaces left, two spaces down. Followed by upward direction.
             for (var z = 0; z < 2; z++) {
               if (xArray[i + (c*numberOfColumns) + k] - xArray[i + k] == 0 && individualAlphaValues[i + (c*numberOfColumns) + k] == 1) {
                 reInfectedArray.push(i + (c*numberOfColumns) + k);
               }
 
-              if (xArray[i + (c*numberOfColumns) + (c*numberOfColumns) + k] - xArray[i + k] == 0 && individualAlphaValues[i + (c*numberOfColumns) + (c*numberOfColumns) + k] == 1) {
-                reInfectedArray.push(i + (c*numberOfColumns) + (c*numberOfColumns) + k);
-              }
               c = -c;
             } //End of for loop.
-          }
-        }
-        //Else statement had to be a little different, because this includes the columns that contain the newly cured blocks, which are obviously not infectious.
-        else {
-          for (var z = 0; z < 2; z++) {
-            //First checks the block one space left, two spaces up from cured block. Followed by downward direction.
-            if (xArray[i + (c*numberOfColumns) + (c*numberOfColumns) + k] - xArray[i + k] == 0 && individualAlphaValues[i + (c*numberOfColumns) + (c*numberOfColumns) + k] == 1) {
-              reInfectedArray.push(i + (c*numberOfColumns) + (c*numberOfColumns) + k);
-            }
-            //Changes the direction of the infectious block search.
-            c = -c;
-          } //End of for loop.
-        }
+          // }
+
       } //End of for loop.
 
       for (var k = 0; k < reInfectedArray.length; k++) {
         isInfected[reInfectedArray[k]] = true;
+
         infect(reInfectedArray[k]);
       }
     }, 1800);
@@ -294,7 +332,7 @@ function cure(event) {
       //   } //End of if statement.
       // } //End of for loop.
       // curedArray.push(i);
-      console.log(totalCuredBlocks);
+      // console.log(totalCuredBlocks);
       // return;
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
       // for (var u = 0; u < curedArray.length; u++) {
@@ -311,6 +349,8 @@ function cure(event) {
       ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
 
       individualAlphaValues[i] = 0;
+
+      isInfected[i] = false;
 
       //Calls the function that will check for infectious blocks surrounding the newly cured blocks.
       mouseTimeout(i);
@@ -334,22 +374,36 @@ function cure(event) {
       // cooldown();
 
       //Displays points by mouse cursor.
-      scoreFade();
+      scoreFade(i);
+      bonus += 1;
+    }
+    else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
+      bonus = 0;
     }
   }
 
-  function scoreFade() {
-    document.getElementById("div").style.opacity = 1;
-    document.getElementById("div").style.left = mouseX + 20 + "px";
-    document.getElementById("div").style.top = mouseY - 20 + "px";
+  function scoreFade(i) {
+    document.getElementsByClassName("scoreContainer")[i].style.opacity = 1;
+    // document.getElementsByClassName("scoreContainer")[i].style.opacity = testArray[i];
+
+    // document.getElementsByClassName("scoreContainer").style.left = mouseX + 20 + "px";
+    // document.getElementsByClassName("scoreContainer").style.top = mouseY - 20 + "px";
+    document.getElementsByClassName("scoreContainer")[i].style.left = xArray[i] + "px";
+    document.getElementsByClassName("scoreContainer")[i].style.top = yArray[i] + "px";
+
+    document.getElementsByClassName("scoreContainer")[i].style.width = blockLength + "px";
+    document.getElementsByClassName("scoreContainer")[i].style.height = blockLength + "px";
+
+    var score = 1 + bonus - deduction;
 
     window.setTimeout(function() {
-      document.getElementById("div").style.opacity = 0;
-    }, 1000);
+      document.getElementsByClassName("scoreContainer")[i].style.opacity = 0;
+      // document.getElementsByClassName("scoreContainer").style.opacity = testArray[i] - 1;
+    }, 800);
 
-    var score = 21 - deduction;
+    // var score = 1 + bonus - deduction;
 
-    document.getElementById("div").innerHTML = "+" + score;
+    document.getElementsByClassName("scoreContainer")[i].innerHTML = "+" + score;
 
     function updateScore() {
       totalScore += score;
@@ -361,10 +415,12 @@ function cure(event) {
 
 
 
-  }
+
 }
 
-canvas.addEventListener("click", cure, false);
+var LUL = document.getElementById("aParent");
+// canvas.addEventListener("mousedown", cure, false);
+LUL.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   document.getElementById("score").innerHTML = "Score: 0";
@@ -377,7 +433,7 @@ function setDimensions() {
   canvas.height = canvas.width / 2;
 
   drawBlocks();
-
+  createScoreContainers();
   infectionOrigins();
 
 }
