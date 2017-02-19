@@ -100,17 +100,18 @@ function animateBlackSquares(j) {
     blackIndividualAlphaValues[k] = 0;
   }
 
-  console.log(blackIndividualAlphaValues);
+  // console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares()")
+  // console.log(blackIndividualAlphaValues);
   // return;
   function animateBlackSquaresCycle(j) {
-
   if (blockColorArray[j] == normalGreen) {
-
+    console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares() for greenColorArray");
+    console.log(blackIndividualAlphaValues);
     // console.log("blockColorArray[j] is: "+blockColorArray[j]);
     // console.log("blockColor Array is: ");
     // console.log(blockColorArray);
-    // console.log("blackIndividualAlphaValues are: ");
-    // console.log(blackIndividualAlphaValues);
+    console.log("greenColorArray is: ");
+    console.log(greenColorArray);
     // return;
     for (var i=0; i < greenColorArray.length; i++) {
       ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
@@ -123,12 +124,14 @@ function animateBlackSquares(j) {
     }
   }
   else if (blockColorArray[j] == normalBlue) {
+    console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares() for blueColorArray");
+    console.log(blackIndividualAlphaValues);
 
     // console.log("blockColorArray[j] is: "+blockColorArray[j]);
     // console.log("blockColor Array is: ");
     // console.log(blockColorArray);
-    // console.log("blackIndividualAlphaValues are: ");
-    // console.log(blackIndividualAlphaValues);
+    console.log("blueColorArray is: ");
+    console.log(blueColorArray);
     // return;
     // console.log(isInfected);
     for (var i=0; i < blueColorArray.length; i++) {
@@ -156,7 +159,7 @@ function animateBlackSquares(j) {
 
     if (blockColorArray[j] == normalGreen) {
       greenColorArray.push(true);
-      console.log(greenColorArray);
+      // console.log(greenColorArray);
 
       for (var i=0; i < greenColorArray.length-1; i++) {
         blackIndividualAlphaValues[greenColorArray[i]] = 1;
@@ -168,7 +171,7 @@ function animateBlackSquares(j) {
     }
     else if (blockColorArray[j] == normalBlue) {
       blueColorArray.push(true);
-      console.log(blueColorArray);
+      // console.log(blueColorArray);
 
       for (var i=0; i < blueColorArray.length-1; i++) {
         blackIndividualAlphaValues[blueColorArray[i]] = 1;
@@ -178,12 +181,14 @@ function animateBlackSquares(j) {
         // infect(blueColorArray[i]);
       }
     }
-    // console.log("Individual alpha values at the end: ");
-    // console.log(blackIndividualAlphaValues);
-    // console.log(isInfected);
-    // console.log(blockColorArray);
-    // ctx.clearRect(xArray[j], yArray[j], blockLength, blockLength);
-    // ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
+
+    console.log("greenColorArray at the end of animateBlackSquaresCycle()");
+    console.log(greenColorArray);
+    console.log("blueColorArray at the end of animateBlackSquaresCycle()");
+    console.log(blueColorArray);
+    console.log("blackIndividualAlphaValues at the end of animateBlackSquaresCycle()");
+    console.log(blackIndividualAlphaValues);
+
   }
   }, 120);
 
@@ -192,30 +197,25 @@ function animateBlackSquares(j) {
 } //end of animateBlackSquares()
 
 function animateIndividualInfection(j) {
-  // if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1) {
-  //   individualAlphaValues[j] += 0.005;
-  // }
-  // else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1) {
-  //   console.log("the black state is running");
-  //   individualAlphaValues[j] += 0.025;
-  // }
+  var animateTimer = 120;
   var internalIndividualAlphaValues = individualAlphaValues.filter(function(parameter) {
     return parameter == 1;
   });
 
   if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
-      console.log("Is internalIndividual length less than individualAlpha length/2?")
-      console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
-      individualAlphaValues[j] += 0.035;
+      // console.log("Is internalIndividual length less than individualAlpha length/2?")
+      // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
+      individualAlphaValues[j] += 0.015;
     }
     else {
       individualAlphaValues[j] += 0.005;
     }
   }
   else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1) {
-    console.log("the black state is running");
-    individualAlphaValues[j] += 0.035;
+    // console.log("the black state is running");
+    animateTimer = 0;
+    individualAlphaValues[j] += 0.19;
   }
 
   ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
@@ -228,9 +228,11 @@ function animateIndividualInfection(j) {
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
   if (individualAlphaValues[j] < 0.18 && individualAlphaValues[j] !== 0) {
+    // console.log("current animateTimer: "+animateTimer);
     animateIndividualInfection(j);
   }
   else if (individualAlphaValues[j] >= 0.18)   {
+    // console.log("current animateTimer: "+animateTimer);
     individualAlphaValues[j] = 1;
 
     ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
@@ -241,7 +243,11 @@ function animateIndividualInfection(j) {
     if (blockColorArray[j] == normalGreen) {
       var greenIndexToBeReplaced = greenColorArray.indexOf(false);
 
-      greenColorArray.splice(greenIndexToBeReplaced, 1);
+      if (greenIndexToBeReplaced !== -1) {
+        greenColorArray.splice(greenIndexToBeReplaced, 1);
+      }
+      console.log("greenColorArray after splcie");
+      console.log(greenColorArray);
 
       if (greenColorArray.indexOf(false) == -1) {
         // for (var i=0; i < greenColorArray.length; i++) {
@@ -249,6 +255,7 @@ function animateIndividualInfection(j) {
         //
         // }
         // individualAlphaValues[j] = 0;
+        console.log("animateBlackSquares() called from greenColorArray");
         animateBlackSquares(j);
 
         // console.log("greencolorarray");
@@ -266,6 +273,7 @@ function animateIndividualInfection(j) {
         //   individualAlphaValues[blueColorArray[i]] = 0;
         // }
         // individualAlphaValues[j] = 0;
+        console.log("animateBlackSquares() called from blueColorArray");
         animateBlackSquares(j);
 
         return;
@@ -274,7 +282,7 @@ function animateIndividualInfection(j) {
 
     infect(j);
   }
-}, 120);
+}, animateTimer);
 }
 
 function infect(i) {
