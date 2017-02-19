@@ -266,7 +266,9 @@ function animateIndividualInfection(j) {
     else if (blockColorArray[j] == normalBlue) {
       var blueIndexToBeReplaced = blueColorArray.indexOf(false);
 
-      blueColorArray.splice(blueIndexToBeReplaced, 1);
+      if (blueIndexToBeReplaced !== -1) {
+        blueColorArray.splice(blueIndexToBeReplaced, 1);
+      }
 
       if (blueColorArray.indexOf(false) == -1) {
         // for (var i=0; i < blueColorArray.length; i++) {
@@ -397,9 +399,9 @@ function infectionOrigins() {
       var falseIndexArray = [];
 
       if (timer > 2000) {
-        timer -= 350;
+        timer -= 550;
       }
-      else if (timer < 2000 && timer > 300) {
+      else if (timer < 2000 && timer > 450) {
         timer -= 50;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
