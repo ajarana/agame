@@ -3,11 +3,11 @@ body {
 }
 
 #gameCanvas {
-  display: block;
+  /*display: block;
   margin: 0 auto;
-  /*margin-top: -371px;*/
-  /*background-color: #f4f4f4;*/
-  font-size: 18px;
+  margin-top: -371px;
+  background-color: #f4f4f4;
+  font-size: 18px;*/
 }
 
 .scoreContainer {
