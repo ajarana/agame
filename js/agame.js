@@ -401,7 +401,7 @@ function infectionOrigins() {
       if (timer > 2000) {
         timer -= 550;
       }
-      else if (timer < 2000 && timer > 450) {
+      else if (timer < 2000 && timer > 550) {
         timer -= 50;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
@@ -661,13 +661,16 @@ LUL.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   document.getElementById("score").innerHTML = "Score: 0";
-
+  var div = document.getElementById("div");
   blockLength = 40;
 
-  canvas.width = window.screen.availWidth * 0.4;
+  var width = window.screen.availWidth * 0.4;
+  canvas.width = width;
+  div.style.width = width + "px";
   // blockPositions();
   // canvas.width = blockWidth * rows;
-  canvas.height = canvas.width / 2;
+  canvas.height = width / 2;
+  div.style.height = width / 2 + "px";
 
   drawBlocks();
   createScoreContainers();
