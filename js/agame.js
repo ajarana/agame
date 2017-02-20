@@ -2,8 +2,8 @@ var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 
 //Variable number of rows and columns. Change to whatever.
-var numberOfColumns = 4;
-var numberOfRows = 4;
+var numberOfColumns = 6;
+var numberOfRows = 6;
 
 var xArray = [];
 var yArray = [];
