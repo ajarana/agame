@@ -44,8 +44,8 @@ function drawBlocks() {
 
       var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
       var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      console.log("x is: "+x);
-      console.log("y is: "+y);
+      // console.log("x is: "+x);
+      // console.log("y is: "+y);
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
@@ -203,6 +203,7 @@ function animateIndividualInfection(j) {
     return parameter == 1;
   });
 
+  console.log("this is the j parameter in animateIndividualInfection");
   if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
