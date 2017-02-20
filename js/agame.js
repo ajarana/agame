@@ -44,7 +44,8 @@ function drawBlocks() {
 
       var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
       var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-
+      console.log("x is: "+x);
+      console.log("y is: "+y);
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
@@ -664,8 +665,8 @@ function setDimensions() {
   var div = document.getElementById("div");
   blockLength = 40;
 
-  var width = window.screen.availWidth * 0.4;
-  var height = width / 2;
+  var width = Math.round(window.screen.availWidth * 0.4);
+  var height = Math.round(width / 2);
 
   canvas.width = width;
   div.style.width = width + "px";
