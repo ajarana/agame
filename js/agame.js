@@ -665,12 +665,16 @@ function setDimensions() {
   blockLength = 40;
 
   var width = window.screen.availWidth * 0.4;
+  var height = width / 2;
+
   canvas.width = width;
   div.style.width = width + "px";
   // blockPositions();
   // canvas.width = blockWidth * rows;
-  canvas.height = width / 2;
-  div.style.height = width / 2 + "px";
+  canvas.height = height;
+
+  div.style.height = height + "px";
+  LUL.style.width = width + "px";
 
   drawBlocks();
   createScoreContainers();
