@@ -203,7 +203,7 @@ function animateIndividualInfection(j) {
     return parameter == 1;
   });
 
-  console.log("this is the j parameter in animateIndividualInfection");
+  console.log("this is the j parameter in animateIndividualInfection"+j);
   if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
