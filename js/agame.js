@@ -209,7 +209,7 @@ function animateIndividualInfection(j) {
     return parameter == 1;
   });
 
-  console.log("this is the j parameter in animateIndividualInfection"+j);
+  // console.log("this is the j parameter in animateIndividualInfection: "+j);
   if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
@@ -232,6 +232,7 @@ function animateIndividualInfection(j) {
   // ctx.fillStyle = "pink";
 
   ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
+  console.log("fillRect only with xArray[j]: "xArray[j]+" and yArray[j]: "+yArray[j]);
 
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
@@ -247,6 +248,7 @@ function animateIndividualInfection(j) {
 
     ctx.clearRect(xArray[j], yArray[j], blockLength, blockLength);
     ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
+    console.log("fillRect AND clearRect with xArray[j]: "xArray[j]+" and yArray[j]: "+yArray[j]);
 
     if (blockColorArray[j] == normalGreen) {
       var greenIndexToBeReplaced = greenColorArray.indexOf(false);
