@@ -687,8 +687,8 @@ function setDimensions() {
 
     drawBlocks();
     // console.log("SUP?");
-    // createScoreContainers();
-    // infectionOrigins();
+    createScoreContainers();
+    infectionOrigins();
   }
   else if (window.screen.width >= 320) {
     var width = Math.round(window.screen.availWidth * 0.9);
