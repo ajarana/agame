@@ -25,10 +25,14 @@ function drawBlocks() {
   //Just stores the center x and y coordinates on the canvas.
   var xCenterOfCanvas = Math.round(canvas.width/2);
   var yCenterOfCanvas = Math.round(canvas.height/2);
-
+  // var yCenterOfCanvas = 146;
+  console.log("xCenterOfCanvas: "+xCenterOfCanvas);
+  console.log("yCenterOfCanvas: "+yCenterOfCanvas);
   //The coefficients that help center each individual block. This value is multiplied by the length of a small block and either added or subtracted from the x center of the canvas. Small blocks are drawn starting from the top left corners.
   var xCoefficient = -(numberOfColumns/2);
   var yCoefficient = -(numberOfRows/2);
+  console.log("xCoefficient is: "+xCoefficient);
+  console.log("yCoefficient is: "+yCoefficient);
 
   var listOfColors = [normalGreen, normalBlue];
   // var listOfColors = [normalGreen];
@@ -44,8 +48,10 @@ function drawBlocks() {
 
       var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
       var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      // console.log("x is: "+x);
-      // console.log("y is: "+y);
+      // var x = Math.floor(xCenterOfCanvas + j + (xCoefficient*blockLength));
+      // var y = Math.floor(yCenterOfCanvas + i + (yCoefficient*blockLength));
+      console.log("x is: "+x);
+      console.log("y is: "+y);
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
@@ -81,7 +87,7 @@ function drawBlocks() {
   // console.log(greenColorArray);
   // console.log(blueColorArray);
 
-  return;
+  // return;
 }
 
 function createScoreContainers() {
@@ -664,43 +670,108 @@ LUL.addEventListener("mousedown", cure, false);
 function setDimensions() {
   document.getElementById("score").innerHTML = "Score: 0";
   var div = document.getElementById("div");
-  blockLength = 40;
 
-  var width = Math.round(window.screen.availWidth * 0.4);
-  var height = Math.round(width / 2);
+  if (window.screen.width >= 1200) {
+    var width = Math.round(window.screen.availWidth * 0.25);
+    var height = Math.round(width / 1.6);
 
-  canvas.width = width;
-  div.style.width = width + "px";
-  // blockPositions();
-  // canvas.width = blockWidth * rows;
-  canvas.height = height;
+    blockLength = Math.round(0.8 * (height/numberOfRows));
 
-  div.style.height = height + "px";
-  LUL.style.width = width + "px";
+    canvas.width = width;
+    canvas.height = height;
 
-  drawBlocks();
-  createScoreContainers();
-  infectionOrigins();
+    div.style.width = width + "px";
+
+    div.style.height = height + "px";
+    LUL.style.width = width + "px";
+
+    drawBlocks();
+    // console.log("SUP?");
+    // createScoreContainers();
+    // infectionOrigins();
+  }
+  else if (window.screen.width >= 320) {
+    var width = Math.round(window.screen.availWidth * 0.9);
+    // var height = Math.round(width / 1.2);
+    var height = width;
+
+    blockLength = Math.round(0.85 * (width/numberOfColumns));
+
+    canvas.width = width;
+    canvas.height = height;
+
+    div.style.width = width + "px";
+
+    div.style.height = height + "px";
+    LUL.style.width = width + "px";
+
+    drawBlocks();
+    // console.log("SUP?");
+    // createScoreContainers();
+    // infectionOrigins();
+  }
+
+  // if (window.matchMedia("(min-width: 1200px)").matches) {
+    // var mq = window.matchMedia("(min-width: 1200px)");
+    // mq.addListener(widthChange);
+    // widthChange(mq);
+  // }
+  // if (window.screen.width >= 1200) {
+  //   var mq = window.matchMedia("(min-width: 1200px)");
+  //
+  //   mq.addListener(widthChange);
+  //   widthChange(mq);
+  // }
+
+  // media query change
+  // function widthChange(x) {
+  //   if (x.matches) {
+  //     console.log("MATCHED");
+  //     width = Math.round(window.screen.availWidth * 0.3);
+  //     height = Math.round(width / 2);
+  //
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //
+  //     canvas.width = width;
+  //     div.style.width = width + "px";
+  //     // blockPositions();
+  //     // canvas.width = blockWidth * rows;
+  //     canvas.height = height;
+  //
+  //     div.style.height = height + "px";
+  //     LUL.style.width = width + "px";
+  //
+  //     drawBlocks();
+  //     // console.log("SUP?");
+  //     // createScoreContainers();
+  //     // infectionOrigins();
+  //   } else {
+  //     width = window.screen.availWidth * 0.4;
+  //     height = Math.round(width / 2);
+  //
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //
+  //     canvas.width = width;
+  //     div.style.width = width + "px";
+  //     // blockPositions();
+  //     // canvas.width = blockWidth * rows;
+  //     canvas.height = height;
+  //
+  //     div.style.height = height + "px";
+  //     LUL.style.width = width + "px";
+  //
+  //     drawBlocks();
+  //     // console.log("HELLO?");
+  //     // createScoreContainers();
+  //     // infectionOrigins();
+  //   }
+  // }
+
+  // drawBlocks();
 
 }
 
+// window.addEventListener("resize", setDimensions, false);
 setDimensions();
-var test = canvas.getBoundingClientRect();
-// window.addEventListener("mousemove", test, false);
 
-// if (window.matchMedia("(min-width: 900px)").matches && window.matchMedia("(max-width: 1100px)").matches) {
-//   var mq = window.matchMedia("(min-width: 900px)");
-//   mq.addListener(widthChange);
-//   widthChange(mq);
-// }
-//
-// // media query change
-// function widthChange(x) {
-//   if (x.matches) {
-//     canvas.width = window.screen.availWidth * 0.9;
-//     drawBlocks();
-//   } else {
-//     canvas.width = window.screen.availWidth * 0.4;
-//     drawBlocks();
-//   }
-// }
+var test = canvas.getBoundingClientRect();
