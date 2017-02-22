@@ -671,7 +671,7 @@ LUL.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   document.getElementById("score").innerHTML = "Score: 0";
-  var div = document.getElementById("div");
+  // var div = document.getElementById("div");
 
   if (window.screen.width >= 1200) {
     var width = Math.round(window.screen.availWidth * 0.25);
@@ -682,9 +682,9 @@ function setDimensions() {
     canvas.width = width;
     canvas.height = height;
 
-    div.style.width = width + "px";
+    // div.style.width = width + "px";
 
-    div.style.height = height + "px";
+    // div.style.height = height + "px";
     LUL.style.width = width + "px";
 
     drawBlocks();
