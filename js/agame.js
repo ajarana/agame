@@ -46,8 +46,14 @@ function drawBlocks() {
 
       blockColorArray.push(blockColorArrayIndex);
 
-      var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-      var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      if (numberOfRows < 6) {
+        var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+        var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+      } else {
+        var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
+        var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      }
+
       // var x = Math.floor(xCenterOfCanvas + j + (xCoefficient*blockLength));
       // var y = Math.floor(yCenterOfCanvas + i + (yCoefficient*blockLength));
       // console.log("x is: "+x);
@@ -699,8 +705,8 @@ function setDimensions() {
     infectionOrigins();
   }
   else if (window.screen.width >= 320) {
-    numberOfColumns = 5;
-    numberOfRows = 5;
+    numberOfColumns = 4;
+    numberOfRows = 4;
 
     var width = Math.round(window.screen.availWidth * 0.9);
     // var height = Math.round(width / 1.2);
