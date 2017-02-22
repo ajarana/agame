@@ -2,8 +2,8 @@ var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 
 //Variable number of rows and columns. Change to whatever.
-var numberOfColumns = 6;
-var numberOfRows = 6;
+var numberOfColumns;
+var numberOfRows;
 
 var xArray = [];
 var yArray = [];
@@ -26,13 +26,13 @@ function drawBlocks() {
   var xCenterOfCanvas = Math.round(canvas.width/2);
   var yCenterOfCanvas = Math.round(canvas.height/2);
   // var yCenterOfCanvas = 146;
-  console.log("xCenterOfCanvas: "+xCenterOfCanvas);
-  console.log("yCenterOfCanvas: "+yCenterOfCanvas);
+  // console.log("xCenterOfCanvas: "+xCenterOfCanvas);
+  // console.log("yCenterOfCanvas: "+yCenterOfCanvas);
   //The coefficients that help center each individual block. This value is multiplied by the length of a small block and either added or subtracted from the x center of the canvas. Small blocks are drawn starting from the top left corners.
   var xCoefficient = -(numberOfColumns/2);
   var yCoefficient = -(numberOfRows/2);
-  console.log("xCoefficient is: "+xCoefficient);
-  console.log("yCoefficient is: "+yCoefficient);
+  // console.log("xCoefficient is: "+xCoefficient);
+  // console.log("yCoefficient is: "+yCoefficient);
 
   var listOfColors = [normalGreen, normalBlue];
   // var listOfColors = [normalGreen];
@@ -50,8 +50,8 @@ function drawBlocks() {
       var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
       // var x = Math.floor(xCenterOfCanvas + j + (xCoefficient*blockLength));
       // var y = Math.floor(yCenterOfCanvas + i + (yCoefficient*blockLength));
-      console.log("x is: "+x);
-      console.log("y is: "+y);
+      // console.log("x is: "+x);
+      // console.log("y is: "+y);
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
@@ -112,13 +112,13 @@ function animateBlackSquares(j) {
   // return;
   function animateBlackSquaresCycle(j) {
   if (blockColorArray[j] == normalGreen) {
-    console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares() for greenColorArray");
-    console.log(blackIndividualAlphaValues);
+    // console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares() for greenColorArray");
+    // console.log(blackIndividualAlphaValues);
     // console.log("blockColorArray[j] is: "+blockColorArray[j]);
     // console.log("blockColor Array is: ");
     // console.log(blockColorArray);
-    console.log("greenColorArray is: ");
-    console.log(greenColorArray);
+    // console.log("greenColorArray is: ");
+    // console.log(greenColorArray);
     // return;
     for (var i=0; i < greenColorArray.length; i++) {
       ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
@@ -131,14 +131,14 @@ function animateBlackSquares(j) {
     }
   }
   else if (blockColorArray[j] == normalBlue) {
-    console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares() for blueColorArray");
-    console.log(blackIndividualAlphaValues);
+    // console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares() for blueColorArray");
+    // console.log(blackIndividualAlphaValues);
 
     // console.log("blockColorArray[j] is: "+blockColorArray[j]);
     // console.log("blockColor Array is: ");
     // console.log(blockColorArray);
-    console.log("blueColorArray is: ");
-    console.log(blueColorArray);
+    // console.log("blueColorArray is: ");
+    // console.log(blueColorArray);
     // return;
     // console.log(isInfected);
     for (var i=0; i < blueColorArray.length; i++) {
@@ -189,12 +189,12 @@ function animateBlackSquares(j) {
       }
     }
 
-    console.log("greenColorArray at the end of animateBlackSquaresCycle()");
-    console.log(greenColorArray);
-    console.log("blueColorArray at the end of animateBlackSquaresCycle()");
-    console.log(blueColorArray);
-    console.log("blackIndividualAlphaValues at the end of animateBlackSquaresCycle()");
-    console.log(blackIndividualAlphaValues);
+    // console.log("greenColorArray at the end of animateBlackSquaresCycle()");
+    // console.log(greenColorArray);
+    // console.log("blueColorArray at the end of animateBlackSquaresCycle()");
+    // console.log(blueColorArray);
+    // console.log("blackIndividualAlphaValues at the end of animateBlackSquaresCycle()");
+    // console.log(blackIndividualAlphaValues);
 
   }
   }, 120);
@@ -232,7 +232,7 @@ function animateIndividualInfection(j) {
   // ctx.fillStyle = "pink";
 
   ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
-  console.log("With j = "+j+" fillRect only called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
+  // console.log("With j = "+j+" fillRect only called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
 
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
@@ -240,15 +240,16 @@ function animateIndividualInfection(j) {
     // console.log("current animateTimer: "+animateTimer);
     animateIndividualInfection(j);
   }
-  else if (individualAlphaValues[j] >= 0.18)   {
+  else if (individualAlphaValues[j] >= 0.18 && individualAlphaValues[j] < 1)   {
     // console.log("current animateTimer: "+animateTimer);
+    console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j:"+j+" is about to get turned to 1");
     individualAlphaValues[j] = 1;
 
     ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
 
     ctx.clearRect(xArray[j], yArray[j], blockLength, blockLength);
     ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
-    console.log("With j = "+j+" fillRect AND clearRect called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
+    // console.log("With j = "+j+" fillRect AND clearRect called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
 
     if (blockColorArray[j] == normalGreen) {
       var greenIndexToBeReplaced = greenColorArray.indexOf(false);
@@ -256,7 +257,7 @@ function animateIndividualInfection(j) {
       if (greenIndexToBeReplaced !== -1) {
         greenColorArray.splice(greenIndexToBeReplaced, 1);
       }
-      console.log("greenColorArray after splcie");
+      console.log("greenColorArray after splice for j: "+j);
       console.log(greenColorArray);
 
       if (greenColorArray.indexOf(false) == -1) {
@@ -265,7 +266,7 @@ function animateIndividualInfection(j) {
         //
         // }
         // individualAlphaValues[j] = 0;
-        console.log("animateBlackSquares() called from greenColorArray");
+        console.log("ANIMATEBLACKSQUARES() CALLED FROM greenColorArray WITH j: "+j);
         animateBlackSquares(j);
 
         // console.log("greencolorarray");
@@ -279,13 +280,15 @@ function animateIndividualInfection(j) {
       if (blueIndexToBeReplaced !== -1) {
         blueColorArray.splice(blueIndexToBeReplaced, 1);
       }
+      console.log("blueColorArray after splice for j: "+j);
+      console.log(blueColorArray);
 
       if (blueColorArray.indexOf(false) == -1) {
         // for (var i=0; i < blueColorArray.length; i++) {
         //   individualAlphaValues[blueColorArray[i]] = 0;
         // }
         // individualAlphaValues[j] = 0;
-        console.log("animateBlackSquares() called from blueColorArray");
+        console.log("ANIMATEBLACKSQUARES() CALLED FROM blueColorArray WITH j: "+j);
         animateBlackSquares(j);
 
         return;
@@ -529,7 +532,7 @@ function cure(event) {
       } //End of for loop.
 
       for (var k = 0; k < reInfectedArray.length; k++) {
-        isInfected[reInfectedArray[k]] = true;
+        // isInfected[reInfectedArray[k]] = true;
 
         infect(reInfectedArray[k]);
       }
@@ -618,14 +621,14 @@ function cure(event) {
       // cooldown();
 
       //Displays points by mouse cursor.
-      scoreFade(i);
-      if (bonus < 19) {
-        bonus += 1;
-      }
+      // scoreFade(i);
+      // if (bonus < 19) {
+      //   bonus += 1;
+      // }
     }
-    else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
-      bonus = 0;
-    }
+    // else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
+    //   bonus = 0;
+    // }
   }
 
   function scoreFade(i) {
@@ -674,6 +677,9 @@ function setDimensions() {
   // var div = document.getElementById("div");
 
   if (window.screen.width >= 1200) {
+    numberOfColumns = 6;
+    numberOfRows = 6;
+
     var width = Math.round(window.screen.availWidth * 0.25);
     var height = Math.round(width / 1.6);
 
@@ -682,17 +688,20 @@ function setDimensions() {
     canvas.width = width;
     canvas.height = height;
 
-    // div.style.width = width + "px";
+    div.style.width = width + "px";
 
-    // div.style.height = height + "px";
+    div.style.height = height + "px";
     LUL.style.width = width + "px";
 
     drawBlocks();
     // console.log("SUP?");
-    // createScoreContainers();
+    createScoreContainers();
     infectionOrigins();
   }
   else if (window.screen.width >= 320) {
+    numberOfColumns = 5;
+    numberOfRows = 5;
+    
     var width = Math.round(window.screen.availWidth * 0.9);
     // var height = Math.round(width / 1.2);
     var height = width;
