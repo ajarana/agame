@@ -701,7 +701,7 @@ function setDimensions() {
   else if (window.screen.width >= 320) {
     numberOfColumns = 5;
     numberOfRows = 5;
-    
+
     var width = Math.round(window.screen.availWidth * 0.9);
     // var height = Math.round(width / 1.2);
     var height = width;
@@ -718,8 +718,8 @@ function setDimensions() {
 
     drawBlocks();
     // console.log("SUP?");
-    // createScoreContainers();
-    // infectionOrigins();
+    createScoreContainers();
+    infectionOrigins();
   }
 
   // if (window.matchMedia("(min-width: 1200px)").matches) {
