@@ -445,6 +445,7 @@ function infectionOrigins() {
         timer = 4000;
       }
       else if (isInfected.indexOf(false) == -1){
+        document.getElementById("score").innerHTML = "I HAVE RETURNED";
         return;
       }
 
@@ -646,7 +647,7 @@ function cure(event) {
 
       //Displays points by mouse cursor.
       scoreFade(i);
-      if (bonus < 19) {
+      if (bonus < 29) {
         bonus += 1;
       }
     }
