@@ -1,14 +1,14 @@
 @import "normalize.css";
 
 html {
-  touch-action: none;
+  touch-action: pan-x pinch-zoom;
 }
 
 body {
   font-family: sans-serif;
   margin: 0;
 
-  touch-action: none;
+  /*touch-action: none;*/
 }
 
 #gameCanvas {
