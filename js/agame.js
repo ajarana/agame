@@ -210,25 +210,31 @@ function animateBlackSquares(j) {
 } //end of animateBlackSquares()
 
 function animateIndividualInfection(j) {
+  // if (individualAlphaValues[j] == 1) {
+  //   console.log("ALERT ALERT ALERT INDIVIDUALALPHAVALUES[J] IS FUCKING 1 MATE");
+  // }
+  // console.log("animateIndividualInfection() has just been initialized for j: "+j+" with individualAlphaValues[j]: "+individualAlphaValues[j]+" and isInfected[j]: "+isInfected[j]);
   var animateTimer = 120;
   var internalIndividualAlphaValues = individualAlphaValues.filter(function(parameter) {
     return parameter == 1;
   });
 
   // console.log("this is the j parameter in animateIndividualInfection: "+j);
-  if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1) {
+  if (greenColorArray.indexOf(true) == -1 && blueColorArray.indexOf(true) == -1 && isInfected[j]) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
       // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
+      // console.log("Fast rate running for j: "+j);
       individualAlphaValues[j] += 0.015;
     }
     else {
+      // console.log("Slow rate running for j: "+j);
       individualAlphaValues[j] += 0.005;
     }
   }
-  else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1) {
+  else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1 && isInfected[j]) {
     // console.log("the black state is running");
-    animateTimer = 0;
+    animateTimer = 4;
     individualAlphaValues[j] += 0.19;
   }
 
@@ -240,6 +246,7 @@ function animateIndividualInfection(j) {
   ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
   // console.log("With j = "+j+" fillRect only called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
 
+  // console.log("animateIndividualInfection() is right before setTimeout for j: "+j+" with individualAlphaValues[j]: "+individualAlphaValues[j]+" and isInfected[j]: "+isInfected[j]);
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
   if (individualAlphaValues[j] < 0.18 && individualAlphaValues[j] !== 0) {
@@ -247,9 +254,11 @@ function animateIndividualInfection(j) {
     animateIndividualInfection(j);
   }
   else if (individualAlphaValues[j] >= 0.18 && individualAlphaValues[j] < 1)   {
+  // else if (individualAlphaValues[j] >= 0.18)   {
     // console.log("current animateTimer: "+animateTimer);
-    console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j:"+j+" is about to get turned to 1");
+    // console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j: "+j+" is about to get turned to 1");
     individualAlphaValues[j] = 1;
+    // console.log("individualAlphaValues[j] for j: "+j+" is now: "+individualAlphaValues[j]);
 
     ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
 
@@ -272,7 +281,7 @@ function animateIndividualInfection(j) {
         //
         // }
         // individualAlphaValues[j] = 0;
-        console.log("ANIMATEBLACKSQUARES() CALLED FROM greenColorArray WITH j: "+j);
+        // console.log("ANIMATEBLACKSQUARES() CALLED FROM greenColorArray WITH j: "+j);
         animateBlackSquares(j);
 
         // console.log("greencolorarray");
@@ -294,7 +303,7 @@ function animateIndividualInfection(j) {
         //   individualAlphaValues[blueColorArray[i]] = 0;
         // }
         // individualAlphaValues[j] = 0;
-        console.log("ANIMATEBLACKSQUARES() CALLED FROM blueColorArray WITH j: "+j);
+        // console.log("ANIMATEBLACKSQUARES() CALLED FROM blueColorArray WITH j: "+j);
         animateBlackSquares(j);
 
         return;
@@ -627,14 +636,14 @@ function cure(event) {
       // cooldown();
 
       //Displays points by mouse cursor.
-      // scoreFade(i);
-      // if (bonus < 19) {
-      //   bonus += 1;
-      // }
+      scoreFade(i);
+      if (bonus < 19) {
+        bonus += 1;
+      }
     }
-    // else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
-    //   bonus = 0;
-    // }
+    else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
+      bonus = 0;
+    }
   }
 
   function scoreFade(i) {
