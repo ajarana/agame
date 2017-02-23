@@ -229,7 +229,7 @@ function animateIndividualInfection(j) {
     }
     else {
       // console.log("Slow rate running for j: "+j);
-      individualAlphaValues[j] += 0.005;
+      individualAlphaValues[j] += 0.003;
     }
   }
   else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1 && isInfected[j]) {
@@ -249,11 +249,11 @@ function animateIndividualInfection(j) {
   // console.log("animateIndividualInfection() is right before setTimeout for j: "+j+" with individualAlphaValues[j]: "+individualAlphaValues[j]+" and isInfected[j]: "+isInfected[j]);
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
-  if (individualAlphaValues[j] < 0.18 && individualAlphaValues[j] !== 0) {
+  if (individualAlphaValues[j] < 0.135 && individualAlphaValues[j] !== 0) {
     // console.log("current animateTimer: "+animateTimer);
     animateIndividualInfection(j);
   }
-  else if (individualAlphaValues[j] >= 0.18 && individualAlphaValues[j] < 1)   {
+  else if (individualAlphaValues[j] >= 0.135 && individualAlphaValues[j] < 1)   {
   // else if (individualAlphaValues[j] >= 0.18)   {
     // console.log("current animateTimer: "+animateTimer);
     // console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j: "+j+" is about to get turned to 1");
@@ -272,8 +272,8 @@ function animateIndividualInfection(j) {
       if (greenIndexToBeReplaced !== -1) {
         greenColorArray.splice(greenIndexToBeReplaced, 1);
       }
-      console.log("greenColorArray after splice for j: "+j);
-      console.log(greenColorArray);
+      // console.log("greenColorArray after splice for j: "+j);
+      // console.log(greenColorArray);
 
       if (greenColorArray.indexOf(false) == -1) {
         // for (var i=0; i < greenColorArray.length; i++) {
@@ -429,8 +429,14 @@ function infectionOrigins() {
       if (timer > 2000) {
         timer -= 550;
       }
-      else if (timer < 2000 && timer > 550) {
+      else if (timer > 1600) {
+        timer -= 250;
+      }
+      else if (timer > 400) {
         timer -= 50;
+      }
+      else if (timer > 225) {
+        timer -= 5;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
         timer = 4000;
@@ -439,7 +445,7 @@ function infectionOrigins() {
         return;
       }
 
-      // console.log("The current timer: "+timer);
+      console.log("The current timer: "+timer);
       for (var i=0; i < isInfected.length; i++) {
         if (isInfected[i] == false) {
           falseIndexArray.push(i);
