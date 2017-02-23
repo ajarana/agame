@@ -8,7 +8,7 @@ body {
   font-family: sans-serif;
   margin: 0;
 
-  /*touch-action: none;*/
+  touch-action: none;
 }
 
 #gameCanvas {
@@ -75,5 +75,5 @@ body {
 
 .sansZoom {
   /*touch-action: manipulation;*/
-  /*touch-action: none;*/
+  touch-action: none;
 }
