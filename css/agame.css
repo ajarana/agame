@@ -1,7 +1,7 @@
 @import "normalize.css";
 
 html {
-  touch-action: pan-x pinch-zoom;
+  /*touch-action: pan-x pinch-zoom;*/
 }
 
 body {
@@ -75,5 +75,6 @@ body {
 
 .sansZoom {
   /*touch-action: manipulation;*/
-  touch-action: none;
+  /*touch-action: none;*/
+  touch-action: pan-x pinch-zoom;
 }
