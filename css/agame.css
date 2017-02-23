@@ -1,8 +1,7 @@
 @import "normalize.css";
 
-html {
-  /*touch-action: pan-x pinch-zoom;*/
-  overflow: hidden;
+html, body {
+  /*position: fixed;*/
 }
 
 body {

@@ -693,6 +693,9 @@ function cure(event) {
 }
 
 var LUL = document.getElementById("aParent");
+LUL.ontouchmove = function(event) {
+  event.preventDefault();
+}
 // canvas.addEventListener("mousedown", cure, false);
 LUL.addEventListener("mousedown", cure, false);
 
