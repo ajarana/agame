@@ -435,7 +435,7 @@ function infectionOrigins() {
       else if (timer > 400) {
         timer -= 50;
       }
-      else if (timer > 225 && numberOfRows = 6) {
+      else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
       else if (timer > 200 && numberOfRows < 6) {
