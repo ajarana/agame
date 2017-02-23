@@ -1,10 +1,14 @@
 @import "normalize.css";
 
+html {
+  touch-action: none;
+}
+
 body {
   font-family: sans-serif;
   margin: 0;
 
-  touch-action: none;
+  /*touch-action: none;*/
 }
 
 #gameCanvas {
