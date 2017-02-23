@@ -2,6 +2,7 @@
 
 html {
   /*touch-action: pan-x pinch-zoom;*/
+  overflow: hidden;
 }
 
 body {
@@ -74,7 +75,7 @@ body {
 }
 
 .sansZoom {
-  /*touch-action: manipulation;*/
+  touch-action: manipulation;
   /*touch-action: none;*/
-  touch-action: pan-x pinch-zoom;
+  /*touch-action: pan-x pinch-zoom;*/
 }
