@@ -426,7 +426,11 @@ function infectionOrigins() {
     var theInterval = setTimeout(function() {
       var falseIndexArray = [];
 
-      if (timer > 2000) {
+      if (numberOfFullyInfectedBlocks.length == individualAlphaValues.length){
+        document.getElementById("score").innerHTML = "I HAVE RETURNED";
+        return;
+      }
+      else if (timer > 2000) {
         timer -= 550;
       }
       else if (timer > 1600) {
@@ -443,10 +447,6 @@ function infectionOrigins() {
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
         timer = 4000;
-      }
-      else if (isInfected.indexOf(false) == -1){
-        document.getElementById("score").innerHTML = "I HAVE RETURNED";
-        return;
       }
 
       console.log("The current timer: "+timer);
