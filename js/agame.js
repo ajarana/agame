@@ -19,7 +19,7 @@ var blueColorArray = [];
 var greenColorArray = [];
 
 var normalGreen = "hsl(150,100%,45%)";
-var normalBlue = "hsl(205,100%,50%)";
+var normalBlue = "hsl(195,100%,45%)";
 
 function drawBlocks() {
   //Just stores the center x and y coordinates on the canvas.
@@ -587,8 +587,8 @@ function cure(event) {
 
       //Displays points by mouse cursor.
       scoreFade(i);
-      if (bonus < 29) {
-        bonus += 1;
+      if (bonus < 47) {
+        bonus += 2;
       }
     }
     else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
@@ -598,6 +598,8 @@ function cure(event) {
 
   function scoreFade(i) {
     var scoreContainer = document.getElementsByClassName("scoreContainer");
+
+    var div = document.getElementById("div");
 
     scoreContainer[i].style.opacity = 1;
 
@@ -610,7 +612,26 @@ function cure(event) {
     scoreContainer[i].style.width = blockLength + "px";
     scoreContainer[i].style.height = blockLength + "px";
 
-    var score = 1 + bonus - deduction;
+    if (bonus > 37) {
+      div.classList.remove("orangeText");
+      div.classList.add("redText");
+    }
+    else if (bonus > 23) {
+      div.classList.remove("orangeYellowText");
+      div.classList.add("orangeText");
+    }
+    else if (bonus > 13) {
+      div.classList.remove("whiteText");
+      div.classList.add("orangeYellowText");
+    }
+    else if (bonus < 13) {
+      div.classList.remove("orangeYellowText");
+      div.classList.remove("orangeText");
+      div.classList.remove("redText");
+      div.classList.add("whiteText");
+    }
+
+    var score = 2 + bonus - deduction;
 
     window.setTimeout(function() {
       scoreContainer[i].style.opacity = 0;
