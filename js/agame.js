@@ -225,7 +225,7 @@ function animateIndividualInfection(j) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
       // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
       // console.log("Fast rate running for j: "+j);
-      individualAlphaValues[j] += 0.015;
+      individualAlphaValues[j] += 0.008;
     }
     else {
       // console.log("Slow rate running for j: "+j);
