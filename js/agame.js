@@ -427,7 +427,7 @@ function infectionOrigins() {
       var falseIndexArray = [];
 
       if (numberOfFullyInfectedBlocks.length == individualAlphaValues.length){
-        document.getElementById("score").innerHTML = "I HAVE RETURNED";
+        // document.getElementById("score").innerHTML = "I HAVE RETURNED";
         return;
       }
       else if (timer > 2000) {
@@ -442,7 +442,7 @@ function infectionOrigins() {
       else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
-      else if (timer > 200 && numberOfRows < 6) {
+      else if (timer > 210 && numberOfRows < 6) {
         timer -= 5;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
@@ -622,10 +622,10 @@ function cure(event) {
 
     function updateScore() {
       totalScore += score;
-      if (document.getElementById("score").innerHTML !== "I HAVE RETURNED") {
-        document.getElementById("score").innerHTML = "Score: " + totalScore;
-      }
-      // document.getElementById("score").innerHTML = "Score: " + totalScore;
+      // if (document.getElementById("score").innerHTML !== "I HAVE RETURNED") {
+      //   document.getElementById("score").innerHTML = "Score: " + totalScore;
+      // }
+      document.getElementById("score").innerHTML = "Score: " + totalScore;
     }
 
     updateScore();
