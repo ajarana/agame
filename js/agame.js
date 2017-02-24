@@ -654,7 +654,7 @@ function setDimensions() {
     var width = Math.round(window.screen.availWidth * 0.25);
     var height = Math.round(width / 1.6);
 
-    blockLength = Math.round(0.8 * (height/numberOfRows));
+    blockLength = Math.round(0.9 * (height/numberOfRows));
 
     canvas.width = width;
     canvas.height = height;
