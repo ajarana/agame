@@ -567,55 +567,9 @@ function cure(event) {
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
     if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] && individualAlphaValues[i] < 1) {
-      //Where the indices of the newly cured blocks are stored.
-      // var curedArray = [];
 
-      // //Start at the left column, ends at the right.
-      // for (var k = -1; k < 2; k++) {
-      //   //Direction coefficient.
-      //   var c = 1;
-      //
-      //   //First stores the index of the block to the left of the clicked block.
-      //   if (yArray[i+k] - yArray[i] == 0 && isInfected[i+k] && individualAlphaValues[i+k] < 1) {
-      //     curedArray.push(i+k);
-      //
-      //     deduction += 1;
-      //
-      //     totalCuredBlocks += 1;
-      //     // if (individualAlphaValues[i+k] == 1) {
-      //     //   deduction += 1;
-      //     // }
-      //
-      //     for (var z = 0; z < 2; z++) {
-      //       //First stores the index of the block down from the clicked block, and later the one up.
-      //       if (xArray[i + (c*numberOfColumns) + k] - xArray[i + k] == 0 && isInfected[i + (c*numberOfColumns) + k] && individualAlphaValues[i + (c*numberOfColumns) + k] < 1) {
-      //         curedArray.push(i + (c*numberOfColumns) + k);
-      //
-      //         deduction += 1;
-      //
-      //         totalCuredBlocks += 1;
-      //         // if (individualAlphaValues[i + (c*numberOfColumns) + k] == 1) {
-      //         //   deduction += 1;
-      //         // }
-      //       }
-      //
-      //       c = -c;
-      //     } //End of for loop.
-      //   } //End of if statement.
-      // } //End of for loop.
-      // curedArray.push(i);
-      // console.log(totalCuredBlocks);
-      // return;
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
-      // for (var u = 0; u < curedArray.length; u++) {
-      //   isInfected[curedArray[u]] = false;
-      //
-      //   ctx.clearRect(xArray[curedArray[u]], yArray[curedArray[u]], blockLength, blockLength);
-      //   ctx.fillStyle = blockColorArray[curedArray[u]];
-      //   ctx.fillRect(xArray[curedArray[u]], yArray[curedArray[u]], blockLength, blockLength);
-      //
-      //   individualAlphaValues[curedArray[u]] = 0;
-      // }
+
       ctx.fillStyle = blockColorArray[i];
       ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
       ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
@@ -627,20 +581,6 @@ function cure(event) {
       //Calls the function that will check for infectious blocks surrounding the newly cured blocks.
       mouseTimeout(i);
 
-      // if (totalCuredBlocks > 1) {
-      //   var testArray = [];
-      //   for (var p = 0; p < isInfected.length; p++) {
-      //     if (isInfected[p] == false) {
-      //       testArray.push(false);
-      //     }
-      //   }
-      //   console.log(testArray);
-      //   return;
-      //   infectedInitialIndex2 = Math.floor(Math.random()*xArray.length);
-      //   isInfected[infectedInitialIndex2] = true;
-      //
-      //   infect(infectedInitialIndex2);
-      // }
       //Cooldown that prevents cure spam.
       // cooldownReady = false;
       // cooldown();
@@ -682,7 +622,10 @@ function cure(event) {
 
     function updateScore() {
       totalScore += score;
-      document.getElementById("score").innerHTML = "Score: " + totalScore;
+      if (document.getElementById("score").innerHTML !== "I HAVE RETURNED") {
+        document.getElementById("score").innerHTML = "Score: " + totalScore;
+      }
+      // document.getElementById("score").innerHTML = "Score: " + totalScore;
     }
 
     updateScore();
