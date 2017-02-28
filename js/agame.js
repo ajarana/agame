@@ -1,6 +1,8 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 
+var blockFeedbackContainer = document.getElementsByClassName("blockFeedbackContainer");
+
 //Variable number of rows and columns. Change to whatever.
 var numberOfColumns;
 var numberOfRows;
@@ -96,13 +98,19 @@ function drawBlocks() {
   // return;
 }
 
-function createScoreContainers() {
+function createBlockFeedbackContainers() {
   for (var i=0; i<xArray.length; i++) {
     var newChild = document.createElement("div");
 
-    newChild.className = "scoreContainer";
+    newChild.className = "blockFeedbackContainer";
 
-    document.getElementById("div").appendChild(newChild);
+    document.getElementById("blockFeedbackContainerWrapper").appendChild(newChild);
+
+    blockFeedbackContainer[i].style.left = xArray[i] + "px";
+    blockFeedbackContainer[i].style.top = yArray[i] + "px";
+
+    blockFeedbackContainer[i].style.width = blockLength + "px";
+    blockFeedbackContainer[i].style.height = blockLength + "px";
   }
 }
 
@@ -229,7 +237,7 @@ function animateIndividualInfection(j) {
     }
     else {
       // console.log("Slow rate running for j: "+j);
-      individualAlphaValues[j] += 0.003;
+      individualAlphaValues[j] += 0.002;
     }
   }
   else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1 && isInfected[j]) {
@@ -465,7 +473,11 @@ function infectionOrigins() {
 
       isInfected[infectedInitialIndex] = true;
 
-      infect(infectedInitialIndex);
+      // blockFeedbackContainer[lerandom].classList.add("insetInfectedBorder");
+
+      // window.setTimeout(function() {
+        infect(infectedInitialIndex);
+      // }, 1000);
 
       subsequentOrigins();
     }, timer);
@@ -508,7 +520,9 @@ function cooldown() {
 
 var totalScore = 0;
 var totalCuredBlocks = 0;
-var bonus = 0;
+var bonus = 1;
+
+var scoreTimeout;
 
 function cure(event) {
 
@@ -516,6 +530,8 @@ function cure(event) {
 
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
+
+  var wasPreviouslyInfected = false;
 
   //Now that the clicked block and its adjacent blocks have been disinfected and have had their globalAlphaValue set to 0, we need to check surrounding blocks to see if they're infectious (globalAlpha value == 1) and touching any of the cured blocks.
   function mouseTimeout(i) {
@@ -551,10 +567,8 @@ function cure(event) {
               }
 
               c = -c;
-            } //End of for loop.
-          // }
-
-      } //End of for loop.
+            } //End of inner for loop.
+      } //End of outer for loop.
 
       for (var k = 0; k < reInfectedArray.length; k++) {
         // isInfected[reInfectedArray[k]] = true;
@@ -562,7 +576,7 @@ function cure(event) {
         infect(reInfectedArray[k]);
       }
     }, 1800);
-  }
+  } //End of mouseTimeout
 
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
@@ -585,72 +599,113 @@ function cure(event) {
       // cooldownReady = false;
       // cooldown();
 
+      wasPreviouslyInfected = true;
       //Displays points by mouse cursor.
       scoreFade(i);
-      if (bonus < 47) {
-        bonus += 2;
-      }
+      // if (bonus < 47) {
+      //   bonus += 2;
+      // }
+      bonus++;
     }
     else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
       bonus = 0;
+
+      scoreFade(i);
     }
-  }
+  } //End of for loop.
 
   function scoreFade(i) {
-    var scoreContainer = document.getElementsByClassName("scoreContainer");
+    // var div = document.getElementById("blockFeedbackContainerWrapper");
 
-    var div = document.getElementById("div");
+    blockFeedbackContainer[i].style.opacity = 1;
 
-    scoreContainer[i].style.opacity = 1;
+    var score = bonus - deduction;
 
-    scoreContainer[i].style.left = xArray[i] + "px";
-    scoreContainer[i].style.top = yArray[i] + "px";
-
-    // scoreContainer[i].style.left = mouseX + 10 + "px";
-    // scoreContainer[i].style.top = mouseY - 40 + "px";
-
-    scoreContainer[i].style.width = blockLength + "px";
-    scoreContainer[i].style.height = blockLength + "px";
-
-    if (bonus > 37) {
-      div.classList.remove("orangeText");
-      div.classList.add("redText");
-    }
-    else if (bonus > 23) {
-      div.classList.remove("orangeYellowText");
-      div.classList.add("orangeText");
-    }
-    else if (bonus > 13) {
-      div.classList.remove("whiteText");
-      div.classList.add("orangeYellowText");
-    }
-    else if (bonus < 13) {
-      div.classList.remove("orangeYellowText");
-      div.classList.remove("orangeText");
-      div.classList.remove("redText");
-      div.classList.add("whiteText");
-    }
-
-    var score = 2 + bonus - deduction;
-
-    window.setTimeout(function() {
-      scoreContainer[i].style.opacity = 0;
-    }, 800);
+    setTimeout(function() {
+      blockFeedbackContainer[i].style.opacity = 0;
+    }, 350);
 
     // var score = 1 + bonus - deduction;
 
-    scoreContainer[i].innerHTML = "+" + score;
+    // blockFeedbackContainer[i].innerHTML = "+" + score;
+    // blockFeedbackContainer[i].innerHTML = ".";
+
+    function updateReactionTimeScore() {
+      var reactionTimeFeedback = document.getElementById("reactionTimeFeedback");
+
+      var notAlreadyFullOpacity = false;
+
+      if (reactionTimeFeedback.style.opacity == 0) {
+        reactionTimeFeedback.style.opacity = 1;
+
+        notAlreadyFullOpacity = true;
+      }
+      // if (bonus > 37) {
+      //   div.classList.remove("orangeText");
+      //   div.classList.add("redText");
+      // }
+      // else if (bonus > 23) {
+      //   div.classList.remove("orangeYellowText");
+      //   div.classList.add("orangeText");
+      // }
+      // else if (bonus > 13) {
+      //   div.classList.remove("whiteText");
+      //   div.classList.add("orangeYellowText");
+      // }
+      // else if (bonus < 13) {
+      //   div.classList.remove("orangeYellowText");
+      //   div.classList.remove("orangeText");
+      //   div.classList.remove("redText");
+      //   div.classList.add("whiteText");
+      // }
+      if (bonus > 37) {
+        reactionTimeFeedback.innerHTML = "x" + bonus;
+        // reactionTimeFeedback.classList.remove("orangeText");
+        // reactionTimeFeedback.classList.add("redText");
+      }
+      else if (bonus > 23) {
+        reactionTimeFeedback.innerHTML = "x" + bonus;
+        // reactionTimeFeedback.classList.remove("orangeYellowText");
+        // reactionTimeFeedback.classList.add("orangeText");
+      }
+      else if (bonus > 13) {
+        reactionTimeFeedback.innerHTML = "x" + bonus;
+        // reactionTimeFeedback.classList.remove("whiteText");
+        // reactionTimeFeedback.classList.add("orangeYellowText");
+      }
+      else if (bonus <= 13) {
+        reactionTimeFeedback.innerHTML = "x" + bonus;
+        // reactionTimeFeedback.classList.remove("orangeYellowText");
+        // reactionTimeFeedback.classList.remove("orangeText");
+        // reactionTimeFeedback.classList.remove("redText");
+        // reactionTimeFeedback.classList.add("whiteText");
+      }
+
+      if (notAlreadyFullOpacity) {
+        scoreTimeout = window.setTimeout(function() {
+          reactionTimeFeedback.style.opacity = 0;
+        }, 600);
+      } else {
+        window.clearTimeout(scoreTimeout);
+        scoreTimeout = window.setTimeout(function() {
+          reactionTimeFeedback.style.opacity = 0;
+        }, 600);
+      }
+    }
 
     function updateScore() {
       totalScore += score;
       // if (document.getElementById("score").innerHTML !== "I HAVE RETURNED") {
       //   document.getElementById("score").innerHTML = "Score: " + totalScore;
       // }
-      document.getElementById("score").innerHTML = "Score: " + totalScore;
+      document.getElementById("score").innerHTML = totalScore;
     }
 
-    updateScore();
-  }
+    if (wasPreviouslyInfected) {
+      updateReactionTimeScore();
+      updateScore();
+    }
+  } //End of scoreFade()
 
 
 
@@ -665,10 +720,9 @@ LUL.ontouchmove = function(event) {
 LUL.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
-  document.getElementById("score").innerHTML = "Score: 0";
-  // var div = document.getElementById("div");
+  var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
 
-  if (window.screen.width >= 1200) {
+  if (window.screen.width >= 992) {
     numberOfColumns = 6;
     numberOfRows = 6;
 
@@ -680,14 +734,15 @@ function setDimensions() {
     canvas.width = width;
     canvas.height = height;
 
-    div.style.width = width + "px";
+    blockFeedbackContainerWrapper.style.width = width + "px";
 
-    div.style.height = height + "px";
+    blockFeedbackContainerWrapper.style.height = height + "px";
+
     LUL.style.width = width + "px";
 
     drawBlocks();
     // console.log("SUP?");
-    createScoreContainers();
+    createBlockFeedbackContainers();
     infectionOrigins();
   }
   else if (window.screen.width >= 320) {
@@ -710,7 +765,7 @@ function setDimensions() {
 
     drawBlocks();
     // console.log("SUP?");
-    createScoreContainers();
+    createBlockFeedbackContainers();
     infectionOrigins();
   }
 
@@ -746,7 +801,7 @@ function setDimensions() {
   //
   //     drawBlocks();
   //     // console.log("SUP?");
-  //     // createScoreContainers();
+  //     // createBlockFeedbackContainers();
   //     // infectionOrigins();
   //   } else {
   //     width = window.screen.availWidth * 0.4;
@@ -765,7 +820,7 @@ function setDimensions() {
   //
   //     drawBlocks();
   //     // console.log("HELLO?");
-  //     // createScoreContainers();
+  //     // createBlockFeedbackContainers();
   //     // infectionOrigins();
   //   }
   // }

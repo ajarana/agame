@@ -12,8 +12,9 @@
 
   <body>
 
-    <div id="wrapper" style="display: flex; justify-content: center; align-items: flex-end; height: 65px; margin-bottom: 40px;">
-      <div id="score" class="noSelect" style="width: 50%; text-align: center;"></div>
+    <div id="feedbackPanelWrapper">
+      <div id="scoreWrapper" class="noSelect">Score: <span id="score">0</span></div>
+      <div id="reactionTimeFeedback"></div>
       <!-- <div id="blockStatus" class="noSelect" style="width: 50%; display: flex; justify-content: center;">Status</div> -->
     </div>
 
@@ -21,10 +22,10 @@
       <div id="div" class="noSelect"></div>
     </div> -->
 
-    <div id="aParent" class="noHighlight sansZoom" style="position:relative; margin: 0 auto;">
+    <div id="aParent" class="noHighlight sansZoom">
       <canvas id="gameCanvas">A fun game.</canvas>
 
-      <div id="div" class="noSelect whiteText" style="position: absolute; height: 371px; margin: 0 auto;">
+      <div id="blockFeedbackContainerWrapper" class="noSelect whiteText">
         <!-- <div id="div" class="noSelect"></div> -->
       </div>
     </div> <!-- End of div#aParent -->
