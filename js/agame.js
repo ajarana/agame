@@ -761,9 +761,7 @@ function setDimensions() {
     blockFeedbackContainerWrapper.style.width = width + "px";
 
     blockFeedbackContainerWrapper.style.height = height + "px";
-    // div.style.width = width + "px";
-    //
-    // div.style.height = height + "px";
+
     LUL.style.width = width + "px";
 
     drawBlocks();
