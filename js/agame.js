@@ -758,9 +758,12 @@ function setDimensions() {
     canvas.width = width;
     canvas.height = height;
 
-    div.style.width = width + "px";
+    blockFeedbackContainerWrapper.style.width = width + "px";
 
-    div.style.height = height + "px";
+    blockFeedbackContainerWrapper.style.height = height + "px";
+    // div.style.width = width + "px";
+    //
+    // div.style.height = height + "px";
     LUL.style.width = width + "px";
 
     drawBlocks();
