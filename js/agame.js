@@ -3,6 +3,9 @@ var ctx = canvas.getContext("2d");
 
 var blockFeedbackContainer = document.getElementsByClassName("blockFeedbackContainer");
 
+var reactionTimeFeedback = document.getElementById("reactionTimeFeedback");
+
+
 //Variable number of rows and columns. Change to whatever.
 var numberOfColumns;
 var numberOfRows;
@@ -482,7 +485,7 @@ function infectionOrigins() {
       else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
-      else if (timer > 260 && numberOfRows < 6) {
+      else if (timer > 320 && numberOfRows < 6) {
         timer -= 5;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
@@ -551,17 +554,18 @@ function cooldown() {
 }
 
 var totalScore = 0;
-var totalCuredBlocks = 0;
-var bonus = 1;
+
+var totalScoreGreen = 0;
+var totalScoreBlue = 0;
 
 var scoreTimeout;
 
 function cure(event) {
-
-  var deduction = 0;
-
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
+
+  var greenPointsScored = 10;
+  var bluePointsScored = 10;
 
   var wasPreviouslyInfected = false;
 
@@ -632,15 +636,27 @@ function cure(event) {
       // cooldown();
 
       wasPreviouslyInfected = true;
-      //Displays points by mouse cursor.
+
+      if (blockColorArray[i] == normalGreen && totalScoreGreen < 80) {
+        totalScoreGreen += greenPointsScored;
+
+        totalScore += totalScoreGreen;
+
+        totalScoreBlue = 0;
+      }
+      else if (blockColorArray[i] == normalBlue && totalScoreBlue < 80) {
+        totalScoreBlue += bluePointsScored;
+
+        totalScore += totalScoreBlue;
+
+        totalScoreGreen = 0;
+      }
+
       scoreFade(i);
-      // if (bonus < 47) {
-      //   bonus += 2;
-      // }
-      bonus++;
     }
     else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
-      bonus = 0;
+      totalScoreGreen = 0;
+      totalScoreBlue = 0;
 
       scoreFade(i);
     }
@@ -651,20 +667,14 @@ function cure(event) {
 
     blockFeedbackContainer[i].style.opacity = 1;
 
-    var score = bonus - deduction;
-
-    setTimeout(function() {
+    window.setTimeout(function() {
       blockFeedbackContainer[i].style.opacity = 0;
     }, 350);
-
-    // var score = 1 + bonus - deduction;
 
     // blockFeedbackContainer[i].innerHTML = "+" + score;
     // blockFeedbackContainer[i].innerHTML = ".";
 
-    function updateReactionTimeScore() {
-      var reactionTimeFeedback = document.getElementById("reactionTimeFeedback");
-
+    function updateColorScore() {
       var notAlreadyFullOpacity = false;
 
       if (reactionTimeFeedback.style.opacity == 0) {
@@ -672,45 +682,17 @@ function cure(event) {
 
         notAlreadyFullOpacity = true;
       }
-      // if (bonus > 37) {
-      //   div.classList.remove("orangeText");
-      //   div.classList.add("redText");
-      // }
-      // else if (bonus > 23) {
-      //   div.classList.remove("orangeYellowText");
-      //   div.classList.add("orangeText");
-      // }
-      // else if (bonus > 13) {
-      //   div.classList.remove("whiteText");
-      //   div.classList.add("orangeYellowText");
-      // }
-      // else if (bonus < 13) {
-      //   div.classList.remove("orangeYellowText");
-      //   div.classList.remove("orangeText");
-      //   div.classList.remove("redText");
-      //   div.classList.add("whiteText");
-      // }
-      if (bonus > 37) {
-        reactionTimeFeedback.innerHTML = "x" + bonus;
-        // reactionTimeFeedback.classList.remove("orangeText");
-        // reactionTimeFeedback.classList.add("redText");
-      }
-      else if (bonus > 23) {
-        reactionTimeFeedback.innerHTML = "x" + bonus;
-        // reactionTimeFeedback.classList.remove("orangeYellowText");
-        // reactionTimeFeedback.classList.add("orangeText");
-      }
-      else if (bonus > 13) {
-        reactionTimeFeedback.innerHTML = "x" + bonus;
-        // reactionTimeFeedback.classList.remove("whiteText");
-        // reactionTimeFeedback.classList.add("orangeYellowText");
-      }
-      else if (bonus <= 13) {
-        reactionTimeFeedback.innerHTML = "x" + bonus;
-        // reactionTimeFeedback.classList.remove("orangeYellowText");
-        // reactionTimeFeedback.classList.remove("orangeText");
-        // reactionTimeFeedback.classList.remove("redText");
-        // reactionTimeFeedback.classList.add("whiteText");
+
+      if (blockColorArray[i] == normalGreen) {
+        reactionTimeFeedback.innerHTML = totalScoreGreen;
+
+        reactionTimeFeedback.classList.remove("blueText");
+        reactionTimeFeedback.classList.add("greenText");
+      } else {
+        reactionTimeFeedback.innerHTML = totalScoreBlue;
+
+        reactionTimeFeedback.classList.remove("greenText");
+        reactionTimeFeedback.classList.add("blueText");
       }
 
       if (notAlreadyFullOpacity) {
@@ -725,8 +707,7 @@ function cure(event) {
       }
     }
 
-    function updateScore() {
-      totalScore += score;
+    function updateTotalScore() {
       // if (document.getElementById("score").innerHTML !== "I HAVE RETURNED") {
       //   document.getElementById("score").innerHTML = "Score: " + totalScore;
       // }
@@ -734,8 +715,8 @@ function cure(event) {
     }
 
     if (wasPreviouslyInfected) {
-      updateReactionTimeScore();
-      updateScore();
+      updateColorScore();
+      updateTotalScore();
     }
   } //End of scoreFade()
 
@@ -774,15 +755,42 @@ function setDimensions() {
 
     drawBlocks();
     createBlockFeedbackContainers();
-    window.setTimeout(function() {
-      infectionOrigins();
-    }, 6000);
+
+    var bigTime = 6;
+    // reactionTimeFeedback.style.opacity = 1;
+    function bigScreenCountdown() {
+      // reactionTimeFeedback.style.opacity = 0;
+      window.setTimeout(function() {
+        reactionTimeFeedback.style.opacity = 0;
+      }, 600);
+
+      window.setTimeout(function() {
+        // reactionTimeFeedback.style.opacity = 0;
+
+        bigTime -= 1;
+
+        reactionTimeFeedback.style.opacity = 0;
+
+        reactionTimeFeedback.innerHTML = bigTime;
+        reactionTimeFeedback.style.opacity = 1;
+
+        if (bigTime == 0) {
+          reactionTimeFeedback.innerHTML = "";
+
+          infectionOrigins();
+        } else {
+          bigScreenCountdown();
+        }
+      }, 1000);
+    }
+
+    bigScreenCountdown();
   }
   else if (window.screen.width >= 320) {
     numberOfColumns = 4;
     numberOfRows = 4;
 
-    var width = Math.round(window.screen.availWidth * 0.9);
+    var width = Math.round(window.screen.availWidth * 0.80);
     // var height = Math.round(width / 1.2);
     var height = width;
 
@@ -799,9 +807,36 @@ function setDimensions() {
 
     drawBlocks();
     createBlockFeedbackContainers();
-    window.setTimeout(function() {
-      infectionOrigins();
-    }, 6000);
+
+    var smallTime = 6;
+    // reactionTimeFeedback.style.opacity = 1;
+    function smallScreenCountdown() {
+      // reactionTimeFeedback.style.opacity = 0;
+      window.setTimeout(function() {
+        reactionTimeFeedback.style.opacity = 0;
+      }, 600);
+
+      window.setTimeout(function() {
+        // reactionTimeFeedback.style.opacity = 0;
+
+        smallTime -= 1;
+
+        reactionTimeFeedback.style.opacity = 0;
+
+        reactionTimeFeedback.innerHTML = smallTime;
+        reactionTimeFeedback.style.opacity = 1;
+
+        if (smallTime == 0) {
+          reactionTimeFeedback.innerHTML = "";
+
+          infectionOrigins();
+        } else {
+          smallScreenCountdown();
+        }
+      }, 1000);
+    }
+
+    smallScreenCountdown();
   }
 
   // if (window.matchMedia("(min-width: 1200px)").matches) {
