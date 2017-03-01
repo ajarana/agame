@@ -39,10 +39,42 @@ function drawBlocks() {
   var listOfColors = [normalGreen, normalBlue];
   // var listOfColors = [normalGreen];
 
+  for (var p=0; p < 0.5*(numberOfRows*numberOfColumns); p++) {
+      greenColorArray.push(normalGreen);
+      greenColorArray.push(false);
+  }
+  for (var l=0; l < 0.5*(numberOfRows*numberOfColumns); l++) {
+      blueColorArray.push(normalBlue);
+      blueColorArray.push(false);
+  }
+
+  var localGreenColorArray = greenColorArray.filter(function(parameter) {
+    return parameter !== false;
+  });
+
+  var localBlueColorArray = blueColorArray.filter(function(parameter) {
+    return parameter !== false;
+  });
+
+  var localArrayBothColors = [];
+  for (var b=0, v=1; b < 0.5*(numberOfRows * numberOfColumns); b++, v+=2) {
+    localArrayBothColors.push(localGreenColorArray[b]);
+    localArrayBothColors.push(localBlueColorArray[b]);
+  }
+
   //Two for loops that build the big block row by row. xCoefficient is reset after each row's completion while yCoefficient is increased.
   for (var i=0; i < numberOfRows; i++) {
     for (var j=0; j < numberOfColumns; j++) {
-      var blockColorArrayIndex = listOfColors[Math.floor(Math.random()*(listOfColors.length))];
+      // console.log(localArrayBothColors);
+      // var blockColorArrayIndex = listOfColors[Math.floor(Math.random()*(listOfColors.length))];
+      var actualRandomIndex = Math.floor(Math.random()*(localArrayBothColors.length));
+
+      var blockColorArrayIndex = localArrayBothColors[actualRandomIndex];
+      // console.log(actualRandomIndex);
+
+      localArrayBothColors.splice(actualRandomIndex, 1);
+      // console.log(localArrayBothColors);
+      // return;
 
       ctx.fillStyle = blockColorArrayIndex;
 
@@ -73,17 +105,17 @@ function drawBlocks() {
       xCoefficient++;
 
       //To help determine when 100% of green or blue blocks have become infectious.
-      function oneColorArrays() {
-        if (blockColorArrayIndex == normalGreen) {
-          greenColorArray.push(blockColorArray.length-1);
-          greenColorArray.push(false);
-        }
-        if (blockColorArrayIndex == normalBlue) {
-          blueColorArray.push(blockColorArray.length-1);
-          blueColorArray.push(false);
-        }
-      }
-      oneColorArrays();
+      // function oneColorArrays() {
+      //   if (blockColorArrayIndex == normalGreen) {
+      //     greenColorArray.push(blockColorArray.length-1);
+      //     greenColorArray.push(false);
+      //   }
+      //   if (blockColorArrayIndex == normalBlue) {
+      //     blueColorArray.push(blockColorArray.length-1);
+      //     blueColorArray.push(false);
+      //   }
+      // }
+      // oneColorArrays();
     }
     xCoefficient = -(numberOfColumns/2);
     yCoefficient++;
@@ -742,7 +774,9 @@ function setDimensions() {
 
     drawBlocks();
     createBlockFeedbackContainers();
-    infectionOrigins();
+    window.setTimeout(function() {
+      infectionOrigins();
+    }, 6000);
   }
   else if (window.screen.width >= 320) {
     numberOfColumns = 4;
@@ -765,7 +799,9 @@ function setDimensions() {
 
     drawBlocks();
     createBlockFeedbackContainers();
-    infectionOrigins();
+    window.setTimeout(function() {
+      infectionOrigins();
+    }, 6000);
   }
 
   // if (window.matchMedia("(min-width: 1200px)").matches) {
