@@ -450,7 +450,7 @@ function infectionOrigins() {
       else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
-      else if (timer > 210 && numberOfRows < 6) {
+      else if (timer > 260 && numberOfRows < 6) {
         timer -= 5;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
@@ -741,7 +741,6 @@ function setDimensions() {
     LUL.style.width = width + "px";
 
     drawBlocks();
-    // console.log("SUP?");
     createBlockFeedbackContainers();
     infectionOrigins();
   }
@@ -765,7 +764,6 @@ function setDimensions() {
     LUL.style.width = width + "px";
 
     drawBlocks();
-    // console.log("SUP?");
     createBlockFeedbackContainers();
     infectionOrigins();
   }
