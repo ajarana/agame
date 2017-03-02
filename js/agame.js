@@ -731,7 +731,7 @@ aParent.ontouchmove = function(event) {
 }
 
 aParent.addEventListener("touchstart", cure, false);
-aParent.addEventListener("mousedown", cure, false);
+// aParent.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
