@@ -564,7 +564,7 @@ function cure(event) {
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
 
-  reactionTimeFeedback.innerHTML = "mouseX: "+mouseX + " and mouseY: "+mouseY;
+  reactionTimeFeedback.innerHTML = "clientX: " + clientX + " and clientY: "+clientY;
 
   var greenPointsScored = 10;
   var bluePointsScored = 10;
@@ -735,8 +735,8 @@ var aParent = document.getElementById("aParent");
 function fuck() {
   reactionTimeFeedback.innerHTML = "TRIGGERED XD";
 }
-// aParent.addEventListener("touchstart", cure, false);
-aParent.addEventListener("mousedown", cure, false);
+aParent.addEventListener("touchstart", cure, false);
+// aParent.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
