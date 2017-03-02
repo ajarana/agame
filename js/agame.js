@@ -568,7 +568,7 @@ function cure(event) {
 
   // var touch = event.touches[0];
 
-  reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
+  // reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
 
   var greenPointsScored = 10;
   var bluePointsScored = 10;
@@ -920,6 +920,7 @@ window.addEventListener("touchmove", function(event) {
   // if (event.touches[0] == undefined) {
     console.log(event.type);
     console.log(event.changedTouches.length);
+    reactionTimeFeedback.innerHTML = event.changedTouches.length;
   // };
 }, false);
 window.addEventListener("touchend", function(event) {
