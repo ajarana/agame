@@ -485,7 +485,7 @@ function infectionOrigins() {
       else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
-      else if (timer > 320 && numberOfRows < 6) {
+      else if (timer > 450 && numberOfRows < 6) {
         timer -= 5;
       }
       else if (numberOfFullyInfectedBlocks.length == 1) {
@@ -522,7 +522,7 @@ function infectionOrigins() {
   //   var falseIndexArray = [];
   //
   //   timer -= 1000;
-  //   console.log("TIMER LUL: "+timer);
+  //   console.log("TIMER aParent: "+timer);
   //   for (var i=0; i < isInfected.length; i++) {
   //     if (isInfected[i] == false) {
   //       falseIndexArray.push(i);
@@ -530,7 +530,7 @@ function infectionOrigins() {
   //   }
   //   if (falseIndexArray.length == 0) {
   //     clearInterval(theInterval);
-  //     console.log("its been cleared lul");
+  //     console.log("its been cleared aParent");
   //   }
   //   console.log(falseIndexArray);
   //
@@ -725,12 +725,13 @@ function cure(event) {
 
 }
 
-var LUL = document.getElementById("aParent");
-LUL.ontouchmove = function(event) {
+var aParent = document.getElementById("aParent");
+aParent.ontouchmove = function(event) {
   event.preventDefault();
 }
-// canvas.addEventListener("mousedown", cure, false);
-LUL.addEventListener("mousedown", cure, false);
+
+aParent.addEventListener("mousedown", cure, false);
+aParent.addEventListener("touchstart", cure, false);
 
 function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
@@ -751,7 +752,7 @@ function setDimensions() {
 
     blockFeedbackContainerWrapper.style.height = height + "px";
 
-    LUL.style.width = width + "px";
+    aParent.style.width = width + "px";
 
     drawBlocks();
     createBlockFeedbackContainers();
@@ -803,7 +804,7 @@ function setDimensions() {
 
     blockFeedbackContainerWrapper.style.height = height + "px";
 
-    LUL.style.width = width + "px";
+    aParent.style.width = width + "px";
 
     drawBlocks();
     createBlockFeedbackContainers();
@@ -867,7 +868,7 @@ function setDimensions() {
   //     canvas.height = height;
   //
   //     div.style.height = height + "px";
-  //     LUL.style.width = width + "px";
+  //     aParent.style.width = width + "px";
   //
   //     drawBlocks();
   //     // console.log("SUP?");
@@ -886,7 +887,7 @@ function setDimensions() {
   //     canvas.height = height;
   //
   //     div.style.height = height + "px";
-  //     LUL.style.width = width + "px";
+  //     aParent.style.width = width + "px";
   //
   //     drawBlocks();
   //     // console.log("HELLO?");
