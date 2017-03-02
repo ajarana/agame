@@ -561,19 +561,18 @@ var totalScoreBlue = 0;
 var scoreTimeout;
 
 function cure(event) {
-  // var touch = event.touches[0];
-
-  var mouseX = Math.round(event.clientX-test.left);
-  var mouseY = Math.round(event.clientY-test.top);
-
-  // var touch = event.touches[0];
+  var selectX, selectY;
 
   if (event.type == "mousedown") {
-    console.log("SUP MOUSE DAWG");
+    selectX = Math.round(event.clientX-test.left);
+    selectY = Math.round(event.clientY-test.top);
   }
   else if (event.type == "touchstart") {
+    //Prevents mousedown event from firing in some browsers.
     event.preventDefault();
-    console.log("LUL ITS A TOUCH");
+
+    selectX = Math.round(event.changedTouches[0].clientX - test.left);
+    selectY = Math.round(event.changedTouches[0].clientY - test.top);
   }
   // reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
 
@@ -629,7 +628,7 @@ function cure(event) {
 
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
-    if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] && individualAlphaValues[i] < 1) {
+    if (selectX >= xArray[i] && selectX <= xArray[i]+blockLength && selectY >= yArray[i] && selectY <= yArray[i]+blockLength && isInfected[i] && individualAlphaValues[i] < 1) {
 
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
 
@@ -667,7 +666,7 @@ function cure(event) {
 
       scoreFade(i);
     }
-    else if (mouseX >= xArray[i] && mouseX <= xArray[i]+blockLength && mouseY >= yArray[i] && mouseY <= yArray[i]+blockLength && isInfected[i] == false) {
+    else if (selectX >= xArray[i] && selectX <= xArray[i]+blockLength && selectY >= yArray[i] && selectY <= yArray[i]+blockLength && isInfected[i] == false) {
       totalScoreGreen = 0;
       totalScoreBlue = 0;
 
@@ -747,8 +746,8 @@ function fuck() {
   reactionTimeFeedback.innerHTML = "TRIGGERED XD";
 }
 
-// aParent.addEventListener("touchstart", cure, false);
-// aParent.addEventListener("mousedown", cure, false);
+aParent.addEventListener("touchstart", cure, false);
+aParent.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
@@ -847,7 +846,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          // infectionOrigins();
+          infectionOrigins();
         } else {
           smallScreenCountdown();
         }
@@ -916,30 +915,6 @@ function setDimensions() {
   // drawBlocks();
 
 }
-
-window.addEventListener("touchstart", function(event) {
-  // if (event.touches[0] == undefined) {
-    console.log(event.type);
-    console.log(event.touches.length);
-    if (event.touches.length > 1) {
-      console.log("LONGER THAN 1")
-    }
-    reactionTimeFeedback.innerHTML = event.touches.length;
-  // };
-}, false);
-window.addEventListener("touchmove", function(event) {
-  // if (event.touches[0] == undefined) {
-    // console.log(event.type);
-    // console.log(event.touches.length);
-    // reactionTimeFeedback.innerHTML = event.changedTouches.length;
-  // };
-}, false);
-window.addEventListener("touchend", function(event) {
-  // if (event.touches[0] == undefined) {
-    // console.log(event.type);
-    // console.log(event.changedTouches[0]);
-  // };
-}, false);
 
 setDimensions();
 
