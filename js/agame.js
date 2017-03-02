@@ -911,15 +911,15 @@ function setDimensions() {
 
 window.addEventListener("touchstart", function(event) {
   // if (event.touches[0] == undefined) {
-    console.log(event.type);
-    console.log(event.changedTouches.length);
-    reactionTimeFeedback.innerHTML = event.changedTouches.length;
+    // console.log(event.type);
+    // console.log(event.changedTouches.length);
+    // reactionTimeFeedback.innerHTML = event.changedTouches.length;
   // };
 }, false);
 window.addEventListener("touchmove", function(event) {
   // if (event.touches[0] == undefined) {
-    // console.log(event.type);
-    // console.log(event.changedTouches[1]);
+    console.log(event.type);
+    console.log(event.changedTouches.length);
   // };
 }, false);
 window.addEventListener("touchend", function(event) {
