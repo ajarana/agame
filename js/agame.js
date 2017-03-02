@@ -561,13 +561,20 @@ var totalScoreBlue = 0;
 var scoreTimeout;
 
 function cure(event) {
-  var touch = event.touches[0];
+  // var touch = event.touches[0];
 
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
 
   // var touch = event.touches[0];
 
+  if (event.type == "mousedown") {
+    console.log("SUP MOUSE DAWG");
+  }
+  else if (event.type == "touchstart") {
+    event.preventDefault();
+    console.log("LUL ITS A TOUCH");
+  }
   // reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
 
   var greenPointsScored = 10;
@@ -739,7 +746,8 @@ var aParent = document.getElementById("aParent");
 function fuck() {
   reactionTimeFeedback.innerHTML = "TRIGGERED XD";
 }
-aParent.addEventListener("touchstart", cure, false);
+
+// aParent.addEventListener("touchstart", cure, false);
 // aParent.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
@@ -911,16 +919,19 @@ function setDimensions() {
 
 window.addEventListener("touchstart", function(event) {
   // if (event.touches[0] == undefined) {
-    // console.log(event.type);
-    // console.log(event.changedTouches.length);
-    // reactionTimeFeedback.innerHTML = event.changedTouches.length;
+    console.log(event.type);
+    console.log(event.touches.length);
+    if (event.touches.length > 1) {
+      console.log("LONGER THAN 1")
+    }
+    reactionTimeFeedback.innerHTML = event.touches.length;
   // };
 }, false);
 window.addEventListener("touchmove", function(event) {
   // if (event.touches[0] == undefined) {
-    console.log(event.type);
-    console.log(event.changedTouches.length);
-    reactionTimeFeedback.innerHTML = event.changedTouches.length;
+    // console.log(event.type);
+    // console.log(event.touches.length);
+    // reactionTimeFeedback.innerHTML = event.changedTouches.length;
   // };
 }, false);
 window.addEventListener("touchend", function(event) {
@@ -929,6 +940,7 @@ window.addEventListener("touchend", function(event) {
     // console.log(event.changedTouches[0]);
   // };
 }, false);
+
 setDimensions();
 
 var test = canvas.getBoundingClientRect();
