@@ -564,7 +564,7 @@ function cure(event) {
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
 
-  reactionTimeFeedback.innerHTML = "clientX: " + clientX + " and clientY: "+clientY;
+  reactionTimeFeedback.innerHTML = "clientX: " + event.clientX + " and clientY: "+event.clientY;
 
   var greenPointsScored = 10;
   var bluePointsScored = 10;
