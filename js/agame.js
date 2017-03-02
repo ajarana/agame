@@ -735,8 +735,8 @@ var aParent = document.getElementById("aParent");
 function fuck() {
   reactionTimeFeedback.innerHTML = "TRIGGERED XD";
 }
-aParent.addEventListener("touchstart", cure, false);
-// aParent.addEventListener("mousedown", cure, false);
+// aParent.addEventListener("touchstart", cure, false);
+aParent.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
