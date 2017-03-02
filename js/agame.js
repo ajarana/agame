@@ -564,6 +564,8 @@ function cure(event) {
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
 
+  reactionTimeFeedback.innerHTML = "touchstart registered.";
+  
   var greenPointsScored = 10;
   var bluePointsScored = 10;
 
