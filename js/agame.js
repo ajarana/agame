@@ -726,9 +726,9 @@ function cure(event) {
 }
 
 var aParent = document.getElementById("aParent");
-aParent.ontouchmove = function(event) {
-  event.preventDefault();
-}
+// aParent.ontouchmove = function(event) {
+//   event.preventDefault();
+// }
 
 aParent.addEventListener("touchstart", cure, false);
 // aParent.addEventListener("mousedown", cure, false);
