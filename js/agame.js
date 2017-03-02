@@ -42,28 +42,13 @@ function drawBlocks() {
   var listOfColors = [normalGreen, normalBlue];
   // var listOfColors = [normalGreen];
 
-  for (var p=0; p < 0.5*(numberOfRows*numberOfColumns); p++) {
-      greenColorArray.push(normalGreen);
-      greenColorArray.push(false);
-  }
-  for (var l=0; l < 0.5*(numberOfRows*numberOfColumns); l++) {
-      blueColorArray.push(normalBlue);
-      blueColorArray.push(false);
-  }
-
-  var localGreenColorArray = greenColorArray.filter(function(parameter) {
-    return parameter !== false;
-  });
-
-  var localBlueColorArray = blueColorArray.filter(function(parameter) {
-    return parameter !== false;
-  });
-
   var localArrayBothColors = [];
   for (var b=0, v=1; b < 0.5*(numberOfRows * numberOfColumns); b++, v+=2) {
-    localArrayBothColors.push(localGreenColorArray[b]);
-    localArrayBothColors.push(localBlueColorArray[b]);
+    localArrayBothColors.push(normalGreen);
+    localArrayBothColors.push(normalBlue);
   }
+  // console.log("localarraybothcolors");
+  // console.log(localArrayBothColors);
 
   //Two for loops that build the big block row by row. xCoefficient is reset after each row's completion while yCoefficient is increased.
   for (var i=0; i < numberOfRows; i++) {
@@ -108,17 +93,17 @@ function drawBlocks() {
       xCoefficient++;
 
       //To help determine when 100% of green or blue blocks have become infectious.
-      // function oneColorArrays() {
-      //   if (blockColorArrayIndex == normalGreen) {
-      //     greenColorArray.push(blockColorArray.length-1);
-      //     greenColorArray.push(false);
-      //   }
-      //   if (blockColorArrayIndex == normalBlue) {
-      //     blueColorArray.push(blockColorArray.length-1);
-      //     blueColorArray.push(false);
-      //   }
-      // }
-      // oneColorArrays();
+      function oneColorArrays() {
+        if (blockColorArrayIndex == normalGreen) {
+          greenColorArray.push(blockColorArray.length-1);
+          greenColorArray.push(false);
+        }
+        if (blockColorArrayIndex == normalBlue) {
+          blueColorArray.push(blockColorArray.length-1);
+          blueColorArray.push(false);
+        }
+      }
+      oneColorArrays();
     }
     xCoefficient = -(numberOfColumns/2);
     yCoefficient++;
@@ -326,7 +311,7 @@ function animateIndividualInfection(j) {
         // individualAlphaValues[j] = 0;
         // console.log("ANIMATEBLACKSQUARES() CALLED FROM greenColorArray WITH j: "+j);
         animateBlackSquares(j);
-
+        console.log("sup dawg?");
         // console.log("greencolorarray");
         // console.log(greenColorArray);
         return;
@@ -338,8 +323,8 @@ function animateIndividualInfection(j) {
       if (blueIndexToBeReplaced !== -1) {
         blueColorArray.splice(blueIndexToBeReplaced, 1);
       }
-      console.log("blueColorArray after splice for j: "+j);
-      console.log(blueColorArray);
+      // console.log("blueColorArray after splice for j: "+j);
+      // console.log(blueColorArray);
 
       if (blueColorArray.indexOf(false) == -1) {
         // for (var i=0; i < blueColorArray.length; i++) {
@@ -348,7 +333,7 @@ function animateIndividualInfection(j) {
         // individualAlphaValues[j] = 0;
         // console.log("ANIMATEBLACKSQUARES() CALLED FROM blueColorArray WITH j: "+j);
         animateBlackSquares(j);
-
+        console.log("super dawg");
         return;
       }
     }
@@ -461,6 +446,8 @@ function infectionOrigins() {
 
   var timer = 4000;
 
+  var numberOfTimerResets = 0;
+
   function subsequentOrigins() {
     var numberOfFullyInfectedBlocks = individualAlphaValues.filter(function(para) {
       return para == 1;
@@ -479,17 +466,19 @@ function infectionOrigins() {
       else if (timer > 1600) {
         timer -= 250;
       }
-      else if (timer > 400) {
+      else if (timer > 500) {
         timer -= 50;
       }
       else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
-      else if (timer > 450 && numberOfRows < 6) {
+      else if (timer > 440 && numberOfRows < 6) {
         timer -= 5;
       }
-      else if (numberOfFullyInfectedBlocks.length == 1) {
+      else if (numberOfFullyInfectedBlocks.length == 1 && numberOfTimerResets == 0) {
         timer = 4000;
+        console.log("TIMER RESETTT");
+        numberOfTimerResets++;
       }
 
       console.log("The current timer: "+timer);
