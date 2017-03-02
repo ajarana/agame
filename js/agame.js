@@ -561,10 +561,14 @@ var totalScoreBlue = 0;
 var scoreTimeout;
 
 function cure(event) {
+  var touch = event.touches[0];
+
   var mouseX = Math.round(event.clientX-test.left);
   var mouseY = Math.round(event.clientY-test.top);
 
-  reactionTimeFeedback.innerHTML = "clientX: " + event.clientX + " and clientY: "+event.clientY;
+  // var touch = event.touches[0];
+
+  reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
 
   var greenPointsScored = 10;
   var bluePointsScored = 10;
@@ -835,7 +839,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          infectionOrigins();
+          // infectionOrigins();
         } else {
           smallScreenCountdown();
         }
@@ -905,7 +909,25 @@ function setDimensions() {
 
 }
 
-// window.addEventListener("resize", setDimensions, false);
+window.addEventListener("touchstart", function(event) {
+  // if (event.touches[0] == undefined) {
+    console.log(event.type);
+    console.log(event.changedTouches.length);
+    reactionTimeFeedback.innerHTML = event.changedTouches.length;
+  // };
+}, false);
+window.addEventListener("touchmove", function(event) {
+  // if (event.touches[0] == undefined) {
+    // console.log(event.type);
+    // console.log(event.changedTouches[1]);
+  // };
+}, false);
+window.addEventListener("touchend", function(event) {
+  // if (event.touches[0] == undefined) {
+    // console.log(event.type);
+    // console.log(event.changedTouches[0]);
+  // };
+}, false);
 setDimensions();
 
 var test = canvas.getBoundingClientRect();
