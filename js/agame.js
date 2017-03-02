@@ -730,7 +730,10 @@ var aParent = document.getElementById("aParent");
 //   event.preventDefault();
 // }
 
-aParent.addEventListener("touchstart", cure, false);
+function fuck() {
+  reactionTimeFeedback.innerHTML = "TRIGGERED XD";
+}
+aParent.addEventListener("touchstart", fuck, false);
 // aParent.addEventListener("mousedown", cure, false);
 
 function setDimensions() {
