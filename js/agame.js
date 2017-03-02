@@ -472,7 +472,7 @@ function infectionOrigins() {
       else if (timer > 225 && numberOfRows == 6) {
         timer -= 5;
       }
-      else if (timer > 400 && numberOfRows < 6) {
+      else if (timer > 375 && numberOfRows < 6) {
         timer -= 5;
       }
       else if (numberOfFullyInfectedBlocks.length == 1 && numberOfTimerResets == 0) {
