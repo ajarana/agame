@@ -793,8 +793,8 @@ function setDimensions() {
     bigScreenCountdown();
   }
   else if (window.screen.width >= 320) {
-    numberOfColumns = 4;
-    numberOfRows = 4;
+    numberOfColumns = 5;
+    numberOfRows = 5;
 
     var width = Math.round(window.screen.availWidth * 0.80);
     // var height = Math.round(width / 1.2);
