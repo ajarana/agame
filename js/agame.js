@@ -799,22 +799,22 @@ function setDimensions() {
 
     var pixelRatio = window.devicePixelRatio || 1;
 
-    canvas.style.width = canvas.width +'px';
-    canvas.style.height = canvas.height +'px';
-    canvas.width *= pixelRatio;
-    canvas.height *= pixelRatio;
+    // canvas.style.width = canvas.width +'px';
+    // canvas.style.height = canvas.height +'px';
+    // canvas.width *= pixelRatio;
+    // canvas.height *= pixelRatio;
+    //
+    // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+    // blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
 
-    ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
-    blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
-
-    // var width = Math.round(window.screen.availWidth * 0.80);
+    var width = Math.round(window.screen.availWidth * 0.80);
     // // var height = Math.round(width / 1.2);
-    // var height = width;
+    var height = width;
 
-    // blockLength = Math.round(0.85 * (width/numberOfColumns));
+    blockLength = Math.round(0.85 * (width/numberOfColumns));
 
-    // canvas.width = width;
-    // canvas.height = height;
+    canvas.width = width;
+    canvas.height = height;
 
     blockFeedbackContainerWrapper.style.width = width + "px";
 
@@ -846,7 +846,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          infectionOrigins();
+          // infectionOrigins();
         } else {
           smallScreenCountdown();
         }
