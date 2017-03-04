@@ -28,6 +28,7 @@ var normalBlue = "hsl(195,100%,45%)";
 
 function drawBlocks() {
   //Just stores the center x and y coordinates on the canvas.
+
   var xCenterOfCanvas = Math.round(canvas.width/2);
   var yCenterOfCanvas = Math.round(canvas.height/2);
   // var yCenterOfCanvas = 146;
@@ -84,8 +85,8 @@ function drawBlocks() {
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
-      xArray.push(x);
-      yArray.push(y);
+      xArray.push(x/2);
+      yArray.push(y/2);
 
       isInfected.push(false);
 
@@ -127,11 +128,12 @@ function createBlockFeedbackContainers() {
 
     document.getElementById("blockFeedbackContainerWrapper").appendChild(newChild);
 
+
     blockFeedbackContainer[i].style.left = xArray[i] + "px";
     blockFeedbackContainer[i].style.top = yArray[i] + "px";
 
-    blockFeedbackContainer[i].style.width = blockLength + "px";
-    blockFeedbackContainer[i].style.height = blockLength + "px";
+    blockFeedbackContainer[i].style.width = blockLength/2 + "px";
+    blockFeedbackContainer[i].style.height = blockLength/2 + "px";
   }
 }
 
@@ -798,7 +800,14 @@ function setDimensions() {
     numberOfRows = 5;
 
     var pixelRatio = window.devicePixelRatio || 1;
-
+    console.log("This is pixelRatio: "+pixelRatio);
+    var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                            ctx.mozBackingStorePixelRatio ||
+                            ctx.msBackingStorePixelRatio ||
+                            ctx.oBackingStorePixelRatio ||
+                            ctx.backingStorePixelRatio ||
+                            1;
+    console.log("This is backingStoreRatio: "+backingStoreRatio);
     // canvas.style.width = canvas.width +'px';
     // canvas.style.height = canvas.height +'px';
     // canvas.width *= pixelRatio;
@@ -812,8 +821,8 @@ function setDimensions() {
 
     // blockLength = Math.round(0.85 * (width/numberOfColumns));
     //
-    // canvas.style.width = width + "px";
-    // canvas.style.height = height + "px";
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
 
