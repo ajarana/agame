@@ -812,14 +812,14 @@ function setDimensions() {
 
     blockLength = Math.round(0.85 * (width/numberOfColumns));
 
-    // canvas.width = width;
-    // canvas.height = height;
-    canvas.style.width = canvas.width + "px";
-    canvas.style.height = canvas.height + "px";
-    canvas.width = width * pixelRatio;
-    canvas.height = height * pixelRatio;
-    ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
-    blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
+    canvas.width = width;
+    canvas.height = height;
+    // canvas.style.width = canvas.width + "px";
+    // canvas.style.height = canvas.height + "px";
+    // canvas.width = width * pixelRatio;
+    // canvas.height = height * pixelRatio;
+    // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+    // blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
 
     blockFeedbackContainerWrapper.style.width = width + "px";
 
