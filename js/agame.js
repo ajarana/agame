@@ -559,7 +559,7 @@ function cure(event) {
   }
   else if (event.type == "touchstart") {
     //Prevents mousedown event from firing in some browsers.
-    event.preventDefault();
+    // event.preventDefault();
 
     selectX = Math.round(event.changedTouches[0].clientX - test.left);
     selectY = Math.round(event.changedTouches[0].clientY - test.top);
@@ -805,7 +805,6 @@ function setDimensions() {
     // canvas.height *= pixelRatio;
     //
     // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
-    // blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
 
     var width = Math.round(window.screen.availWidth * 0.80);
     // // var height = Math.round(width / 1.2);
@@ -813,8 +812,14 @@ function setDimensions() {
 
     blockLength = Math.round(0.85 * (width/numberOfColumns));
 
-    canvas.width = width;
-    canvas.height = height;
+    // canvas.width = width;
+    // canvas.height = height;
+    canvas.style.width = canvas.width + "px";
+    canvas.style.height = canvas.height + "px";
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+    ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+    blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
 
     blockFeedbackContainerWrapper.style.width = width + "px";
 
