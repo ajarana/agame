@@ -812,8 +812,8 @@ function setDimensions() {
 
     // blockLength = Math.round(0.85 * (width/numberOfColumns));
     //
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
+    // canvas.style.width = width + "px";
+    // canvas.style.height = height + "px";
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
 
