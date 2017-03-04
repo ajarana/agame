@@ -559,7 +559,7 @@ function cure(event) {
   }
   else if (event.type == "touchstart") {
     //Prevents mousedown event from firing in some browsers.
-    // event.preventDefault();
+    event.preventDefault();
 
     selectX = Math.round(event.changedTouches[0].clientX - test.left);
     selectY = Math.round(event.changedTouches[0].clientY - test.top);
