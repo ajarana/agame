@@ -68,15 +68,15 @@ function drawBlocks() {
 
       blockColorArray.push(blockColorArrayIndex);
 
-      // if (numberOfRows < 6) {
-      //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
-      //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
-      // } else {
-      //   var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-      //   var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      // }
-      var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-      var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      if (numberOfRows < 6) {
+        var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+        var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+      } else {
+        var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
+        var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      }
+      // var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
+      // var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
       // var x = Math.floor(xCenterOfCanvas + j + (xCoefficient*blockLength));
       // var y = Math.floor(yCenterOfCanvas + i + (yCoefficient*blockLength));
       // console.log("x is: "+x);
