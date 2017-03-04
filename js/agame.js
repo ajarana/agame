@@ -68,14 +68,15 @@ function drawBlocks() {
 
       blockColorArray.push(blockColorArrayIndex);
 
-      if (numberOfRows < 6) {
-        var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
-        var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
-      } else {
-        var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-        var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      }
-
+      // if (numberOfRows < 6) {
+      //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+      //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+      // } else {
+      //   var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
+      //   var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      // }
+      var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
+      var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
       // var x = Math.floor(xCenterOfCanvas + j + (xCoefficient*blockLength));
       // var y = Math.floor(yCenterOfCanvas + i + (yCoefficient*blockLength));
       // console.log("x is: "+x);
@@ -742,8 +743,8 @@ function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
 
   if (window.screen.width >= 992) {
-    numberOfColumns = 6;
-    numberOfRows = 6;
+    numberOfColumns = 5;
+    numberOfRows = 5;
 
     var width = Math.round(window.screen.availWidth * 0.25);
     var height = Math.round(width / 1.6);
@@ -796,14 +797,24 @@ function setDimensions() {
     numberOfColumns = 5;
     numberOfRows = 5;
 
-    var width = Math.round(window.screen.availWidth * 0.80);
-    // var height = Math.round(width / 1.2);
-    var height = width;
+    var pixelRatio = window.devicePixelRatio || 1;
 
-    blockLength = Math.round(0.85 * (width/numberOfColumns));
+    canvas.style.width = canvas.width +'px';
+    canvas.style.height = canvas.height +'px';
+    canvas.width *= pixelRatio;
+    canvas.height *= pixelRatio;
 
-    canvas.width = width;
-    canvas.height = height;
+    ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+    blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
+
+    // var width = Math.round(window.screen.availWidth * 0.80);
+    // // var height = Math.round(width / 1.2);
+    // var height = width;
+
+    // blockLength = Math.round(0.85 * (width/numberOfColumns));
+
+    // canvas.width = width;
+    // canvas.height = height;
 
     blockFeedbackContainerWrapper.style.width = width + "px";
 
