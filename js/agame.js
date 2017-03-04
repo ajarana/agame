@@ -806,20 +806,21 @@ function setDimensions() {
     //
     // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
 
-    var width = Math.round(window.screen.availWidth * 0.40);
+    var width = Math.round(window.screen.availWidth * 0.80);
     // // var height = Math.round(width / 1.2);
     var height = width;
 
     // blockLength = Math.round(0.85 * (width/numberOfColumns));
     //
-    canvas.width = width;
-    canvas.height = height;
-    // canvas.style.width = canvas.width + "px";
-    // canvas.style.height = canvas.height + "px";
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+
     // canvas.width = width;
     // canvas.height = height;
-    canvas.width *= pixelRatio;
-    canvas.height *= pixelRatio;
+    // canvas.width *= pixelRatio;
+    // canvas.height *= pixelRatio;
     blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
     // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
 
@@ -827,7 +828,7 @@ function setDimensions() {
 
     blockFeedbackContainerWrapper.style.height = height + "px";
 
-    aParent.style.width = 2*width + "px";
+    aParent.style.width = width + "px";
 
     drawBlocks();
     createBlockFeedbackContainers();
