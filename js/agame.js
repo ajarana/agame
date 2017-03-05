@@ -855,8 +855,8 @@ function setDimensions() {
     //
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
-    canvas.width = width * pixelRatio*2;
-    canvas.height = height * pixelRatio*2;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
     // canvas.width = width;
     // canvas.height = height;
     ctx = canvas.getContext("2d");
