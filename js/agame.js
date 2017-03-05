@@ -755,22 +755,18 @@ aParent.addEventListener("touchstart", cure, false);
 aParent.addEventListener("mousedown", cure, false);
 
 function setCanvasScalingFactor() {
-  if ('devicePixelRatio' in window) {
-        if (window.devicePixelRatio > 1) {
-            return window.devicePixelRatio;
-        }
-        else {
-          return 1;
-        }
-    }
-
   var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
                           ctx.mozBackingStorePixelRatio ||
                           ctx.msBackingStorePixelRatio ||
                           ctx.oBackingStorePixelRatio ||
                           ctx.backingStorePixelRatio ||
                           1;
-  console.log("This is backingStoreRatio: "+backingStoreRatio);
+
+  var pixelRatio = window.devicePixelRatio || 1;
+
+  var ratio = pixelRatio / backingStoreRatio;
+
+  return ratio;
 }
 
 function setDimensions() {
@@ -855,8 +851,8 @@ function setDimensions() {
     //
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
-    canvas.width = width * pixelRatio*2;
-    canvas.height = height * pixelRatio*2;
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
     // canvas.width = width;
     // canvas.height = height;
     ctx = canvas.getContext("2d");
