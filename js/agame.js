@@ -71,12 +71,12 @@ function drawBlocks() {
 
       blockColorArray.push(blockColorArrayIndex);
 
-      if (numberOfRows < 6) {
-        var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
-        var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
-      } else {
+      if (window.screen.width >= 992) {
         var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
         var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      } else {
+        var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+        var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
       }
       // var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
       // var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
@@ -87,8 +87,8 @@ function drawBlocks() {
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
-      xArray.push(x/pixelRatio);
-      yArray.push(y/pixelRatio);
+      xArray.push(x);
+      yArray.push(y);
 
       isInfected.push(false);
 
@@ -112,6 +112,8 @@ function drawBlocks() {
     xCoefficient = -(numberOfColumns/2);
     yCoefficient++;
   }
+
+  // blockLength = blockLength / setCanvasScalingFactor();
   // console.log("blockColorArray length: "+blockColorArray.length);
   // console.log("blueColorArray length + greenColorArray length: "+(blueColorArray.length+greenColorArray.length));
   // console.log("blueColorArray length: "+blueColorArray.length);
@@ -133,8 +135,8 @@ function createBlockFeedbackContainers() {
     document.getElementById("blockFeedbackContainerWrapper").appendChild(newChild);
 
 
-    blockFeedbackContainer[i].style.left = xArray[i] + "px";
-    blockFeedbackContainer[i].style.top = yArray[i] + "px";
+    blockFeedbackContainer[i].style.left = xArray[i]/setCanvasScalingFactor() + "px";
+    blockFeedbackContainer[i].style.top = yArray[i]/setCanvasScalingFactor() + "px";
 
     blockFeedbackContainer[i].style.width = scoreBlockLength + "px";
     blockFeedbackContainer[i].style.height = scoreBlockLength + "px";
@@ -578,6 +580,16 @@ function cure(event) {
   var wasPreviouslyInfected = false;
   var curedBlockLength = blockLength / setCanvasScalingFactor();
 
+  var scaledxArray = xArray.slice();
+  var scaledyArray = yArray.slice();
+
+  for (var h=0; h < scaledxArray.length; h++) {
+    scaledxArray[h] = scaledxArray[h] / setCanvasScalingFactor();
+  }
+  for (var g=0; g < scaledyArray.length; g++) {
+    scaledyArray[g] = scaledyArray[g] / setCanvasScalingFactor();
+  }
+
   //Now that the clicked block and its adjacent blocks have been disinfected and have had their globalAlphaValue set to 0, we need to check surrounding blocks to see if they're infectious (globalAlpha value == 1) and touching any of the cured blocks.
   function mouseTimeout(i) {
     var reInfectedArray = [];
@@ -623,16 +635,15 @@ function cure(event) {
     }, 1800);
   } //End of mouseTimeout
 
-  var pixelRatio = setCanvasScalingFactor();
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
-    if (selectX >= xArray[i] && selectX <= xArray[i]+curedBlockLength && selectY >= yArray[i] && selectY <= yArray[i]+curedBlockLength && isInfected[i] && individualAlphaValues[i] < 1) {
+    if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] && individualAlphaValues[i] < 1) {
 
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
 
       ctx.fillStyle = blockColorArray[i];
-      ctx.clearRect(xArray[i], yArray[i], curedBlockLength, curedBlockLength);
-      ctx.fillRect(xArray[i], yArray[i], curedBlockLength, curedBlockLength);
+      ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
+      ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
 
       individualAlphaValues[i] = 0;
 
@@ -664,7 +675,7 @@ function cure(event) {
 
       scoreFade(i);
     }
-    else if (selectX >= xArray[i] && selectX <= xArray[i]+curedBlockLength && selectY >= yArray[i] && selectY <= yArray[i]+curedBlockLength && isInfected[i] == false) {
+    else if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] == false) {
       totalScoreGreen = 0;
       totalScoreBlue = 0;
 
@@ -842,8 +853,8 @@ function setDimensions() {
     var pixelRatio = setCanvasScalingFactor();
     // blockLength = Math.round(0.85 * (width/numberOfColumns));
     //
-    // canvas.style.width = width + "px";
-    // canvas.style.height = height + "px";
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
     // canvas.width = width;
@@ -885,7 +896,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          // infectionOrigins();
+          infectionOrigins();
         } else {
           smallScreenCountdown();
         }
