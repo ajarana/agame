@@ -834,17 +834,19 @@ function setDimensions() {
     // canvas.style.height = canvas.height +'px';
 
     // var width = Math.round(window.screen.availWidth * 0.80);
-    var width = Math.round(window.screen.availWidth * 0.40);
+    var width = Math.round(window.screen.availWidth * 0.80);
     // // var height = Math.round(width / 1.2);
     var height = width;
 
     var pixelRatio = setCanvasScalingFactor();
     // blockLength = Math.round(0.85 * (width/numberOfColumns));
     //
-    // canvas.style.width = width + "px";
-    // canvas.style.height = height + "px";
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
+    // canvas.width = width;
+    // canvas.height = height;
     ctx = canvas.getContext("2d");
     // canvas.width = width;
     // canvas.height = height;
