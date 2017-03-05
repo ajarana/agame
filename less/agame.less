@@ -125,6 +125,9 @@ body {
 #aParent {
   position:relative;
   margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
 }
 /*Inner content is made to appear with JS. No z-index is used. It's parent (which is the width and height of the canvas itself) is BELOW the canvas, but since the canvas itself isn't positioned and this child of another parent is (with position relative), its contents and children will appear ABOVE canavs.*/
 #blockFeedbackContainerWrapper {

@@ -43,6 +43,8 @@ function drawBlocks() {
   var listOfColors = [normalGreen, normalBlue];
   // var listOfColors = [normalGreen];
 
+  var pixelRatio = setCanvasScalingFactor();
+
   var localArrayBothColors = [];
   for (var b=0, v=1; b < 0.5*(numberOfRows * numberOfColumns); b++, v+=2) {
     localArrayBothColors.push(normalGreen);
@@ -85,8 +87,8 @@ function drawBlocks() {
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
-      xArray.push(x/2);
-      yArray.push(y/2);
+      xArray.push(x/pixelRatio);
+      yArray.push(y/pixelRatio);
 
       isInfected.push(false);
 
@@ -121,6 +123,8 @@ function drawBlocks() {
 }
 
 function createBlockFeedbackContainers() {
+  var scoreBlockLength = blockLength / setCanvasScalingFactor();
+
   for (var i=0; i<xArray.length; i++) {
     var newChild = document.createElement("div");
 
@@ -132,8 +136,8 @@ function createBlockFeedbackContainers() {
     blockFeedbackContainer[i].style.left = xArray[i] + "px";
     blockFeedbackContainer[i].style.top = yArray[i] + "px";
 
-    blockFeedbackContainer[i].style.width = blockLength/2 + "px";
-    blockFeedbackContainer[i].style.height = blockLength/2 + "px";
+    blockFeedbackContainer[i].style.width = scoreBlockLength + "px";
+    blockFeedbackContainer[i].style.height = scoreBlockLength + "px";
   }
 }
 
@@ -618,6 +622,7 @@ function cure(event) {
     }, 1800);
   } //End of mouseTimeout
 
+  var pixelRatio = setCanvasScalingFactor();
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
     if (selectX >= xArray[i] && selectX <= xArray[i]+blockLength && selectY >= yArray[i] && selectY <= yArray[i]+blockLength && isInfected[i] && individualAlphaValues[i] < 1) {
@@ -734,12 +739,27 @@ var aParent = document.getElementById("aParent");
 //   event.preventDefault();
 // }
 
-function fuck() {
-  reactionTimeFeedback.innerHTML = "TRIGGERED XD";
-}
-
 aParent.addEventListener("touchstart", cure, false);
 aParent.addEventListener("mousedown", cure, false);
+
+function setCanvasScalingFactor() {
+  if ('devicePixelRatio' in window) {
+        if (window.devicePixelRatio > 1) {
+            return window.devicePixelRatio;
+        }
+        else {
+          return 1;
+        }
+    }
+
+  var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                          ctx.mozBackingStorePixelRatio ||
+                          ctx.msBackingStorePixelRatio ||
+                          ctx.oBackingStorePixelRatio ||
+                          ctx.backingStorePixelRatio ||
+                          1;
+  console.log("This is backingStoreRatio: "+backingStoreRatio);
+}
 
 function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
@@ -751,10 +771,21 @@ function setDimensions() {
     var width = Math.round(window.screen.availWidth * 0.25);
     var height = Math.round(width / 1.6);
 
-    blockLength = Math.round(0.9 * (height/numberOfRows));
+    // blockLength = Math.round(0.9 * (height/numberOfRows));
 
-    canvas.width = width;
-    canvas.height = height;
+    // canvas.width = width;
+    // canvas.height = height;
+    var pixelRatio = setCanvasScalingFactor();
+    console.log(pixelRatio);
+    // blockLength = Math.round(0.85 * (width/numberOfColumns));
+    //
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.width = width * pixelRatio;
+    canvas.height = height * pixelRatio;
+    ctx = canvas.getContext("2d");
+
+    blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
 
     blockFeedbackContainerWrapper.style.width = width + "px";
 
@@ -799,37 +830,25 @@ function setDimensions() {
     numberOfColumns = 5;
     numberOfRows = 5;
 
-    var pixelRatio = window.devicePixelRatio || 1;
-    console.log("This is pixelRatio: "+pixelRatio);
-    var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
-                            ctx.mozBackingStorePixelRatio ||
-                            ctx.msBackingStorePixelRatio ||
-                            ctx.oBackingStorePixelRatio ||
-                            ctx.backingStorePixelRatio ||
-                            1;
-    console.log("This is backingStoreRatio: "+backingStoreRatio);
     // canvas.style.width = canvas.width +'px';
     // canvas.style.height = canvas.height +'px';
-    // canvas.width *= pixelRatio;
-    // canvas.height *= pixelRatio;
-    //
-    // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
 
-    var width = Math.round(window.screen.availWidth * 0.80);
+    // var width = Math.round(window.screen.availWidth * 0.80);
+    var width = Math.round(window.screen.availWidth * 0.40);
     // // var height = Math.round(width / 1.2);
     var height = width;
 
+    var pixelRatio = setCanvasScalingFactor();
     // blockLength = Math.round(0.85 * (width/numberOfColumns));
     //
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
+    // canvas.style.width = width + "px";
+    // canvas.style.height = height + "px";
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
-
+    ctx = canvas.getContext("2d");
     // canvas.width = width;
     // canvas.height = height;
-    // canvas.width *= pixelRatio;
-    // canvas.height *= pixelRatio;
+
     blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
     // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
 
