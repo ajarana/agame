@@ -842,7 +842,7 @@ function setDimensions() {
     // canvas.style.height = canvas.height +'px';
 
     // var width = Math.round(window.screen.availWidth * 0.80);
-    var width = Math.round(window.screen.availWidth * 0.88);
+    var width = Math.round(window.screen.availWidth * 0.80);
     // // var height = Math.round(width / 1.2);
     var height = width;
 
