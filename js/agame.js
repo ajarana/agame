@@ -892,7 +892,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          // infectionOrigins();
+          infectionOrigins();
         } else {
           smallScreenCountdown();
         }
