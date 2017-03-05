@@ -576,6 +576,7 @@ function cure(event) {
   var bluePointsScored = 10;
 
   var wasPreviouslyInfected = false;
+  var curedBlockLength = blockLength / setCanvasScalingFactor();
 
   //Now that the clicked block and its adjacent blocks have been disinfected and have had their globalAlphaValue set to 0, we need to check surrounding blocks to see if they're infectious (globalAlpha value == 1) and touching any of the cured blocks.
   function mouseTimeout(i) {
@@ -625,13 +626,13 @@ function cure(event) {
   var pixelRatio = setCanvasScalingFactor();
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
-    if (selectX >= xArray[i] && selectX <= xArray[i]+blockLength && selectY >= yArray[i] && selectY <= yArray[i]+blockLength && isInfected[i] && individualAlphaValues[i] < 1) {
+    if (selectX >= xArray[i] && selectX <= xArray[i]+curedBlockLength && selectY >= yArray[i] && selectY <= yArray[i]+curedBlockLength && isInfected[i] && individualAlphaValues[i] < 1) {
 
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
 
       ctx.fillStyle = blockColorArray[i];
-      ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
-      ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
+      ctx.clearRect(xArray[i], yArray[i], curedBlockLength, curedBlockLength);
+      ctx.fillRect(xArray[i], yArray[i], curedBlockLength, curedBlockLength);
 
       individualAlphaValues[i] = 0;
 
@@ -663,7 +664,7 @@ function cure(event) {
 
       scoreFade(i);
     }
-    else if (selectX >= xArray[i] && selectX <= xArray[i]+blockLength && selectY >= yArray[i] && selectY <= yArray[i]+blockLength && isInfected[i] == false) {
+    else if (selectX >= xArray[i] && selectX <= xArray[i]+curedBlockLength && selectY >= yArray[i] && selectY <= yArray[i]+curedBlockLength && isInfected[i] == false) {
       totalScoreGreen = 0;
       totalScoreBlue = 0;
 
