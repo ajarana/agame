@@ -926,8 +926,8 @@ function setDimensions() {
     bigScreenCountdown();
   }
   else if (window.screen.width >= 320) {
-    numberOfColumns = 5;
-    numberOfRows = 5;
+    numberOfColumns = 4;
+    numberOfRows = 4;
 
     // canvas.style.width = canvas.width +'px';
     // canvas.style.height = canvas.height +'px';
@@ -983,7 +983,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          // infectionOrigins();
+          infectionOrigins();
         } else {
           smallScreenCountdown();
         }
