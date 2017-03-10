@@ -23,8 +23,8 @@ var infectedInitialIndex;
 var blueColorArray = [];
 var greenColorArray = [];
 
-var normalGreen = "hsl(150,100%,45%)";
-var normalBlue = "hsl(195,100%,45%)";
+var normalGreen = "hsl(150,100%,43%)";
+var normalBlue = "hsl(195,100%,47%)";
 
 function drawBlocks() {
   //Just stores the center x and y coordinates on the canvas.
@@ -78,12 +78,11 @@ function drawBlocks() {
         var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
         var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
       }
-      // var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-      // var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      // var x = Math.floor(xCenterOfCanvas + j + (xCoefficient*blockLength));
-      // var y = Math.floor(yCenterOfCanvas + i + (yCoefficient*blockLength));
-      // console.log("x is: "+x);
-      // console.log("y is: "+y);
+      // if (window.screen.width >= 992) {
+      //   var x = j * blockLength + j;
+      //   var y = i * blockLength + i;
+      // }
+
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
@@ -113,15 +112,10 @@ function drawBlocks() {
     yCoefficient++;
   }
 
-  // blockLength = blockLength / setCanvasScalingFactor();
-  // console.log("blockColorArray length: "+blockColorArray.length);
-  // console.log("blueColorArray length + greenColorArray length: "+(blueColorArray.length+greenColorArray.length));
-  // console.log("blueColorArray length: "+blueColorArray.length);
-  // console.log("greenColorArray length: "+greenColorArray.length);
+  // console.log("initial greenColorArray from drawBlocks():");
   // console.log(greenColorArray);
+  // console.log("initial blueColorArray from drawBlocks():");
   // console.log(blueColorArray);
-
-  // return;
 }
 
 function createBlockFeedbackContainers() {
@@ -186,7 +180,7 @@ function animateBlackSquares(j) {
     // console.log(isInfected);
     for (var i=0; i < blueColorArray.length; i++) {
       ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
-      blackIndividualAlphaValues[blueColorArray[i]] += 0.005;
+      blackIndividualAlphaValues[blueColorArray[i]] += 0.004;
       // console.log("fuck");
       // console.log("blackIndividualAlphaValues are: ");
       // console.log(blackIndividualAlphaValues);
@@ -261,16 +255,21 @@ function animateIndividualInfection(j) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
       // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
-      // console.log("Fast rate running for j: "+j);
-      individualAlphaValues[j] += 0.006;
+      console.log("Slightly fast rate running for j: "+j);
+      individualAlphaValues[j] += 0.004;
     }
-    else {
-      // console.log("Slow rate running for j: "+j);
+    else if (internalIndividualAlphaValues.length > individualAlphaValues.length/3) {
+      console.log("Super fast rate running for j: "+j);
       individualAlphaValues[j] += 0.002;
     }
+    else {
+      console.log("Slow rate running for j: "+j);
+      individualAlphaValues[j] += 0.001;
+    }
+    // individualAlphaValues[j] += 0.001;
   }
   else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1 && isInfected[j]) {
-    // console.log("the black state is running");
+    console.log("the black block super fast rate is running");
     animateTimer = 4;
     individualAlphaValues[j] += 0.19;
   }
@@ -286,11 +285,11 @@ function animateIndividualInfection(j) {
   // console.log("animateIndividualInfection() is right before setTimeout for j: "+j+" with individualAlphaValues[j]: "+individualAlphaValues[j]+" and isInfected[j]: "+isInfected[j]);
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
-  if (individualAlphaValues[j] < 0.135 && individualAlphaValues[j] !== 0) {
+  if (individualAlphaValues[j] < 0.088 && individualAlphaValues[j] !== 0) {
     // console.log("current animateTimer: "+animateTimer);
     animateIndividualInfection(j);
   }
-  else if (individualAlphaValues[j] >= 0.135 && individualAlphaValues[j] < 1)   {
+  else if (individualAlphaValues[j] >= 0.088 && individualAlphaValues[j] < 1)   {
   // else if (individualAlphaValues[j] >= 0.18)   {
     // console.log("current animateTimer: "+animateTimer);
     // console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j: "+j+" is about to get turned to 1");
@@ -309,7 +308,7 @@ function animateIndividualInfection(j) {
       if (greenIndexToBeReplaced !== -1) {
         greenColorArray.splice(greenIndexToBeReplaced, 1);
       }
-      // console.log("greenColorArray after splice for j: "+j);
+      // console.log("greenColorArray after splice in animateIndividualInfection(j) for j: "+j);
       // console.log(greenColorArray);
 
       if (greenColorArray.indexOf(false) == -1) {
@@ -320,7 +319,7 @@ function animateIndividualInfection(j) {
         // individualAlphaValues[j] = 0;
         // console.log("ANIMATEBLACKSQUARES() CALLED FROM greenColorArray WITH j: "+j);
         animateBlackSquares(j);
-        console.log("sup dawg?");
+        // console.log("sup dawg?");
         // console.log("greencolorarray");
         // console.log(greenColorArray);
         return;
@@ -332,7 +331,7 @@ function animateIndividualInfection(j) {
       if (blueIndexToBeReplaced !== -1) {
         blueColorArray.splice(blueIndexToBeReplaced, 1);
       }
-      // console.log("blueColorArray after splice for j: "+j);
+      // console.log("blueColorArray after splice in animateIndividualInfection(j) for j: "+j);
       // console.log(blueColorArray);
 
       if (blueColorArray.indexOf(false) == -1) {
@@ -342,7 +341,7 @@ function animateIndividualInfection(j) {
         // individualAlphaValues[j] = 0;
         // console.log("ANIMATEBLACKSQUARES() CALLED FROM blueColorArray WITH j: "+j);
         animateBlackSquares(j);
-        console.log("super dawg");
+        // console.log("super dawg");
         return;
       }
     }
@@ -453,7 +452,7 @@ function infectionOrigins() {
     infect(infectedInitialIndex);
   }, 500);
 
-  var timer = 4000;
+  var timer = 3500;
 
   var numberOfTimerResets = 0;
 
@@ -478,19 +477,16 @@ function infectionOrigins() {
       else if (timer > 500) {
         timer -= 50;
       }
-      else if (timer > 225 && numberOfRows == 6) {
-        timer -= 5;
+      else if (timer > 460) {
+        timer -= 1;
       }
-      else if (timer > 345 && numberOfRows < 6) {
-        timer -= 5;
-      }
-      else if (numberOfFullyInfectedBlocks.length == 1 && numberOfTimerResets == 0) {
-        timer = 4000;
-        console.log("TIMER RESETTT");
+      else if (numberOfFullyInfectedBlocks.length == 3 && numberOfTimerResets == 0) {
+        timer = 1500;
+        console.log("TIMER RESET");
         numberOfTimerResets++;
       }
 
-      console.log("The current timer: "+timer);
+      // console.log("The current timer: "+timer);
       for (var i=0; i < isInfected.length; i++) {
         if (isInfected[i] == false) {
           falseIndexArray.push(i);
@@ -553,10 +549,13 @@ function cooldown() {
 
 var totalScore = 0;
 
-var totalScoreGreen = 0;
-var totalScoreBlue = 0;
+var totalScoreGreen = 1;
+var totalScoreBlue = 1;
 
 var scoreTimeout;
+
+var lastBlockColorComparison = [];
+var lastBlockIndexComparison = [];
 
 function cure(event) {
   var selectX, selectY;
@@ -574,8 +573,8 @@ function cure(event) {
   }
   // reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
 
-  var greenPointsScored = 10;
-  var bluePointsScored = 10;
+  var greenPointsScored = 2;
+  var bluePointsScored = 2;
 
   var wasPreviouslyInfected = false;
   var curedBlockLength = blockLength / setCanvasScalingFactor();
@@ -637,10 +636,96 @@ function cure(event) {
 
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
-    if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] && individualAlphaValues[i] < 1) {
+    if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i]) {
+      lastBlockColorComparison.push(blockColorArray[i]);
+      console.log("This is lastBlockColorComparison before its modified by the i = " + i + " instance of cure(i)");
+      console.log(lastBlockColorComparison);
+      lastBlockIndexComparison.push(i);
+
+      if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] == lastBlockIndexComparison[0]) {
+        console.log("Selected block as same index as previous block, cure() stops here. lastBlockIndexComparison NOT cleared, but pop() used.");
+        //Gets rid of the last value for the two comparison arrays, otherwise lastBlockColorComparison continues to get infinitely larger.
+        lastBlockIndexComparison.pop();
+        lastBlockColorComparison.pop();
+
+        return;
+      }
+      else if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] !== lastBlockIndexComparison[0]) {
+        console.log("Selected block is NOT same index as previous block, cure() continues. lastBlockIndexComparison cleared.")
+        lastBlockIndexComparison = [];
+      }
+
+      // console.log("This is lastBlockColorComparison after selecting an infected block.");
+      // console.log(lastBlockColorComparison);
+      //Compare the last two blocks selected to see if they're the same color.
+      if (lastBlockColorComparison.length == 1 && individualAlphaValues[i] == 1) {
+        console.log("lastBlockColorComparison only had 1 value, was cleared. The selected block was already FULLY infected.");
+        // console.log(lastBlockColorComparison);
+        lastBlockColorComparison = [];
+        return;
+      }
+      else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] == lastBlockColorComparison[0]) {
+        lastBlockColorComparison = [];
+        console.log("Previous block's color matched and lastBlockColorComparison cleared.");
+        // console.log(lastBlockColorComparison);
+
+        if (blockColorArray[i] == normalGreen && individualAlphaValues[i] == 1) {
+          greenColorArray.push(false);
+          console.log("false pushed onto greenColorArray from cure()");
+          console.log(greenColorArray);
+        }
+        else if (blockColorArray[i] == normalBlue && individualAlphaValues[i] == 1) {
+          blueColorArray.push(false);
+          console.log("false pushed onto blueColorArray from cure()");
+          console.log(blueColorArray);
+        }
+      }
+      else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] !== lastBlockColorComparison[0] && individualAlphaValues[i] == 1) {
+        // console.log("Blocks didn't match, selected block was fully infected, and the last value has been removed from lastBlockColorComparison");
+        lastBlockColorComparison.pop();
+        return;
+      }
+      else if (lastBlockColorComparison.length == 2 && individualAlphaValues[i] !== 1) {
+        // console.log("else condition activated in cure");
+        // console.log("The selected block doesn't match the previous color and has now been fully infected");
+        individualAlphaValues[i] = 1;
+        ctx.fillStyle = "rgba(255,0,0," + individualAlphaValues[i] + ")";
+        //make sure to change individual alpha values and isinfected to true
+        ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
+        ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
+
+        lastBlockColorComparison = [];
+
+        infect(i);
+
+        if (blockColorArray[i] == normalGreen) {
+          var greenIndexToBeReplaced = greenColorArray.indexOf(false);
+          if (greenIndexToBeReplaced !== -1) {
+            greenColorArray.splice(greenIndexToBeReplaced, 1);
+            console.log("one false value has been removed from greenColorArray");
+            console.log(greenColorArray);
+          }
+        }
+        else if (blockColorArray[i] == normalBlue) {
+          var blueIndexToBeReplaced = blueColorArray.indexOf(false);
+          if (blueIndexToBeReplaced !== -1) {
+            blueColorArray.splice(blueIndexToBeReplaced, 1);
+            console.log("one false value has been removed from blueColorArray");
+            console.log(blueColorArray);
+          }
+        }
+
+        if (greenColorArray.indexOf(false) == -1) {
+          animateBlackSquares(i);
+        }
+        else if (blueColorArray.indexOf(false) == -1) {
+          animateBlackSquares(i);
+        }
+        return;
+      }
 
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
-
+      console.log("The selected block has just been cured through the regular cure.")
       ctx.fillStyle = blockColorArray[i];
       ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
       ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
@@ -658,28 +743,32 @@ function cure(event) {
 
       wasPreviouslyInfected = true;
 
-      if (blockColorArray[i] == normalGreen && totalScoreGreen < 80) {
-        totalScoreGreen += greenPointsScored;
+      if (blockColorArray[i] == normalGreen && totalScoreGreen < 128) {
+        totalScoreGreen *= greenPointsScored;
 
         totalScore += totalScoreGreen;
 
-        totalScoreBlue = 0;
+        totalScoreBlue = 1;
       }
-      else if (blockColorArray[i] == normalBlue && totalScoreBlue < 80) {
-        totalScoreBlue += bluePointsScored;
+      else if (blockColorArray[i] == normalBlue && totalScoreBlue < 500) {
+        totalScoreBlue *= bluePointsScored;
 
         totalScore += totalScoreBlue;
 
-        totalScoreGreen = 0;
+        totalScoreGreen = 1;
       }
 
       scoreFade(i);
     }
     else if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] == false) {
-      totalScoreGreen = 0;
-      totalScoreBlue = 0;
+      // lastBlockColorComparison = [];
+      // lastBlockColorComparison.push(blockColorArray[i]);
+      console.log("This is lastBlockColorComparison after selecting a non-infected block")
+      console.log(lastBlockColorComparison);
+      totalScoreGreen = 1;
+      totalScoreBlue = 1;
 
-      scoreFade(i);
+      // scoreFade(i);
     }
   } //End of for loop.
 
@@ -773,10 +862,11 @@ function setDimensions() {
   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
 
   if (window.screen.width >= 992) {
-    numberOfColumns = 5;
-    numberOfRows = 5;
+    numberOfColumns = 4;
+    numberOfRows = 4;
 
     var width = Math.round(window.screen.availWidth * 0.25);
+    // var width = Math.round(window.screen.availWidth * 0.22);
     var height = Math.round(width / 1.6);
 
     // blockLength = Math.round(0.9 * (height/numberOfRows));
@@ -794,6 +884,7 @@ function setDimensions() {
     ctx = canvas.getContext("2d");
 
     blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
+    // blockLength = Math.round(0.98 * (canvas.height/numberOfRows));
 
     blockFeedbackContainerWrapper.style.width = width + "px";
 
@@ -804,7 +895,7 @@ function setDimensions() {
     drawBlocks();
     createBlockFeedbackContainers();
 
-    var bigTime = 6;
+    var bigTime = 3;
     // reactionTimeFeedback.style.opacity = 1;
     function bigScreenCountdown() {
       // reactionTimeFeedback.style.opacity = 0;
@@ -892,7 +983,7 @@ function setDimensions() {
         if (smallTime == 0) {
           reactionTimeFeedback.innerHTML = "";
 
-          infectionOrigins();
+          // infectionOrigins();
         } else {
           smallScreenCountdown();
         }
