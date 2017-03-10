@@ -23,7 +23,7 @@ var infectedInitialIndex;
 var blueColorArray = [];
 var greenColorArray = [];
 
-var normalGreen = "hsl(150,100%,43%)";
+var normalGreen = "hsl(150,100%,45%)";
 var normalBlue = "hsl(195,100%,47%)";
 
 function drawBlocks() {
@@ -962,7 +962,7 @@ function setDimensions() {
     drawBlocks();
     createBlockFeedbackContainers();
 
-    var smallTime = 6;
+    var smallTime = 3;
     // reactionTimeFeedback.style.opacity = 1;
     function smallScreenCountdown() {
       // reactionTimeFeedback.style.opacity = 0;
