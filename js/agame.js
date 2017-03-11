@@ -26,8 +26,20 @@ var greenColorArray = [];
 var normalGreen = "hsl(150,100%,45%)";
 var normalBlue = "hsl(195,100%,47%)";
 
+var numberOfDrawBlocks = 0;
+
 function drawBlocks() {
   //Just stores the center x and y coordinates on the canvas.
+  blockColorArray = [];
+
+  greenColorArray = [];
+  blueColorArray = [];
+
+  xArray = [];
+  yArray = [];
+
+  // isInfected = [];
+  // individualAlphaValues = [];
 
   var xCenterOfCanvas = Math.round(canvas.width/2);
   var yCenterOfCanvas = Math.round(canvas.height/2);
@@ -46,12 +58,15 @@ function drawBlocks() {
   var pixelRatio = setCanvasScalingFactor();
 
   var localArrayBothColors = [];
+
+  var preventEasyShapes = [];
+
   for (var b=0, v=1; b < 0.5*(numberOfRows * numberOfColumns); b++, v+=2) {
     localArrayBothColors.push(normalGreen);
     localArrayBothColors.push(normalBlue);
   }
-  // console.log("localarraybothcolors");
-  // console.log(localArrayBothColors);
+  console.log("localarraybothcolors");
+  console.log(localArrayBothColors);
 
   //Two for loops that build the big block row by row. xCoefficient is reset after each row's completion while yCoefficient is increased.
   for (var i=0; i < numberOfRows; i++) {
@@ -59,6 +74,27 @@ function drawBlocks() {
       // console.log(localArrayBothColors);
       // var blockColorArrayIndex = listOfColors[Math.floor(Math.random()*(listOfColors.length))];
       var actualRandomIndex = Math.floor(Math.random()*(localArrayBothColors.length));
+
+      preventEasyShapes.push(localArrayBothColors[actualRandomIndex]);
+      
+      console.log(preventEasyShapes);
+      console.log("preventEasyShapes length: "+preventEasyShapes.length);
+      console.log((preventEasyShapes.length-1) % numberOfColumns == 0);
+
+      console.log(preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1)-numberOfColumns]);
+
+      if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
+        console.log("third condition activated");
+        actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
+      }
+      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
+        console.log("fourth condition activated");
+        actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
+      }
 
       var blockColorArrayIndex = localArrayBothColors[actualRandomIndex];
       // console.log(actualRandomIndex);
@@ -89,9 +125,10 @@ function drawBlocks() {
       xArray.push(x);
       yArray.push(y);
 
-      isInfected.push(false);
-
-      individualAlphaValues.push(0);
+      if (numberOfDrawBlocks == 0) {
+        isInfected.push(false);
+        individualAlphaValues.push(0);
+      }
 
       xCoefficient++;
 
@@ -116,6 +153,7 @@ function drawBlocks() {
   // console.log(greenColorArray);
   // console.log("initial blueColorArray from drawBlocks():");
   // console.log(blueColorArray);
+  numberOfDrawBlocks++;
 }
 
 function createBlockFeedbackContainers() {
@@ -245,7 +283,7 @@ function animateIndividualInfection(j) {
   //   console.log("ALERT ALERT ALERT INDIVIDUALALPHAVALUES[J] IS FUCKING 1 MATE");
   // }
   // console.log("animateIndividualInfection() has just been initialized for j: "+j+" with individualAlphaValues[j]: "+individualAlphaValues[j]+" and isInfected[j]: "+isInfected[j]);
-  var animateTimer = 120;
+  var animateTimer = 180;
   var internalIndividualAlphaValues = individualAlphaValues.filter(function(parameter) {
     return parameter == 1;
   });
@@ -255,15 +293,15 @@ function animateIndividualInfection(j) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
       // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
-      console.log("Slightly fast rate running for j: "+j);
+      // console.log("Slightly fast rate running for j: "+j);
       individualAlphaValues[j] += 0.004;
     }
     else if (internalIndividualAlphaValues.length > individualAlphaValues.length/3) {
-      console.log("Super fast rate running for j: "+j);
+      // console.log("Super fast rate running for j: "+j);
       individualAlphaValues[j] += 0.002;
     }
     else {
-      console.log("Slow rate running for j: "+j);
+      // console.log("Slow rate running for j: "+j);
       individualAlphaValues[j] += 0.001;
     }
     // individualAlphaValues[j] += 0.001;
@@ -477,8 +515,8 @@ function infectionOrigins() {
       else if (timer > 500) {
         timer -= 50;
       }
-      else if (timer > 460) {
-        timer -= 1;
+      else if (timer > 350) {
+        timer -= 2;
       }
       else if (numberOfFullyInfectedBlocks.length == 3 && numberOfTimerResets == 0) {
         timer = 1500;
@@ -486,7 +524,7 @@ function infectionOrigins() {
         numberOfTimerResets++;
       }
 
-      // console.log("The current timer: "+timer);
+      console.log("The current timer: "+timer);
       for (var i=0; i < isInfected.length; i++) {
         if (isInfected[i] == false) {
           falseIndexArray.push(i);
@@ -582,6 +620,8 @@ function cure(event) {
   var scaledxArray = xArray.slice();
   var scaledyArray = yArray.slice();
 
+  var secondBlockCured = false;
+
   for (var h=0; h < scaledxArray.length; h++) {
     scaledxArray[h] = scaledxArray[h] / setCanvasScalingFactor();
   }
@@ -637,6 +677,14 @@ function cure(event) {
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
     if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i]) {
+      //First filter to see if any black blocks exist.
+      if (blockColorArray[i] == normalGreen && greenColorArray.indexOf(true) !== -1) {
+        return;
+      }
+      else if (blockColorArray[i] == normalBlue && blueColorArray.indexOf(true) !== -1) {
+        return;
+      }
+
       lastBlockColorComparison.push(blockColorArray[i]);
       console.log("This is lastBlockColorComparison before its modified by the i = " + i + " instance of cure(i)");
       console.log(lastBlockColorComparison);
@@ -679,6 +727,8 @@ function cure(event) {
           console.log("false pushed onto blueColorArray from cure()");
           console.log(blueColorArray);
         }
+
+        secondBlockCured = true;
       }
       else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] !== lastBlockColorComparison[0] && individualAlphaValues[i] == 1) {
         // console.log("Blocks didn't match, selected block was fully infected, and the last value has been removed from lastBlockColorComparison");
@@ -743,14 +793,14 @@ function cure(event) {
 
       wasPreviouslyInfected = true;
 
-      if (blockColorArray[i] == normalGreen && totalScoreGreen < 128) {
+      if (blockColorArray[i] == normalGreen && totalScoreGreen < 128 && secondBlockCured) {
         totalScoreGreen *= greenPointsScored;
 
         totalScore += totalScoreGreen;
 
         totalScoreBlue = 1;
       }
-      else if (blockColorArray[i] == normalBlue && totalScoreBlue < 500) {
+      else if (blockColorArray[i] == normalBlue && totalScoreBlue < 500 && secondBlockCured) {
         totalScoreBlue *= bluePointsScored;
 
         totalScore += totalScoreBlue;
@@ -808,12 +858,12 @@ function cure(event) {
       if (notAlreadyFullOpacity) {
         scoreTimeout = window.setTimeout(function() {
           reactionTimeFeedback.style.opacity = 0;
-        }, 600);
+        }, 500);
       } else {
         window.clearTimeout(scoreTimeout);
         scoreTimeout = window.setTimeout(function() {
           reactionTimeFeedback.style.opacity = 0;
-        }, 600);
+        }, 500);
       }
     }
 
@@ -824,9 +874,10 @@ function cure(event) {
       document.getElementById("score").innerHTML = totalScore;
     }
 
-    if (wasPreviouslyInfected) {
+    if (wasPreviouslyInfected && secondBlockCured) {
       updateColorScore();
       updateTotalScore();
+
     }
   } //End of scoreFade()
 
@@ -959,8 +1010,10 @@ function setDimensions() {
 
     aParent.style.width = width + "px";
 
-    drawBlocks();
-    createBlockFeedbackContainers();
+    // window.setInterval(function() {
+      drawBlocks();
+      createBlockFeedbackContainers();
+    // }, 6000);
 
     var smallTime = 3;
     // reactionTimeFeedback.style.opacity = 1;
