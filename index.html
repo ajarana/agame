@@ -14,25 +14,36 @@
 
   <body>
 
+    <!-- <div id="mainWrapper" class="flexCenteredToBlock"> -->
+    <!-- <div> -->
+
     <div id="feedbackPanelWrapper">
-      <div id="scoreWrapper" class="noSelect">Score: <span id="score">0</span></div>
-      <div id="reactionTimeFeedback">3</div>
-      <!-- <div id="blockStatus" class="noSelect" style="width: 50%; display: flex; justify-content: center;">Status</div> -->
+      <div id="scoreWrapper" class="noSelect">Score:&nbsp;<span id="score">0</span></div>
+      <div id="blockStatusWrapper" class="noSelect">
+        <span>Choose:</span>
+        <div id="blockStatus" class="block emptyBlock">?</div>
+      </div>
     </div>
 
     <!-- <div style="width: 742px; height: 371px; margin: 0 auto; background-color: none;">
       <div id="div" class="noSelect"></div>
     </div> -->
 
+    <div id="canvasWrapper">
     <div id="aParent" class="noHighlight sansZoom">
       <canvas id="gameCanvas">A fun game.</canvas>
 
-      <div id="blockFeedbackContainerWrapper" class="noSelect whiteText">
+      <div id="blockFeedbackContainerWrapper" class="noSelect whiteText blackBackground">
+        <p id="blockFeedbackText">Start</p>
         <!-- <div id="div" class="noSelect"></div> -->
       </div>
     </div> <!-- End of div#aParent -->
+    </div>
 
     <script type="text/javascript" src="js/agame.js"></script>
     <!-- <div style="width: 100px; height: 100px; background-color: hsl(220, 100%, 50%);"></div> -->
+
+    <!-- </div> -->
+    <!-- </div> -->
   </body>
 </html>

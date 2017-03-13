@@ -1,7 +1,7 @@
 @import "normalize.css";
 
-html, body {
-  /*position: fixed;*/
+html {
+  height: 100%;
 }
 
 body {
@@ -9,8 +9,18 @@ body {
   font-size: 16px;
   margin: 0;
 
+  min-height: 100%;
   color: #333;
   /*touch-action: none;*/
+}
+
+#canvasWrapper {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
 }
 
 #gameCanvas {
@@ -24,81 +34,42 @@ body {
 
 #feedbackPanelWrapper {
   position: relative;
-  width: 46%;
+  width: 70%;
   margin: 0 auto;
 
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  height: 70px;
-  margin-bottom: 25px;
+  // justify-content: center;
+  justify-content: flex-end;
+  // align-items: flex-end;
+  align-items: center;
+  // height: 70px;
+  // margin-bottom: 25px;
+  // margin-top: 55px;
+  padding-top: 15%;
 
   #scoreWrapper {
-    width: 18%;
-    text-align: center;
+    // width: 35%;
+    // text-align: left;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    // width: 18%;
+    // text-align: center;
     color: #808080;
 
     position: absolute;
-    // right: 0;
+    // // right: 0;
     left: 0;
-    bottom: 0;
+    // bottom: 0;
 
     padding: 5px 0;
 
-    // border: 2px solid hsla(340, 100%, 50%, 0.7);
-    // border-left: 2px solid red;
-    // border-right: 2px solid red;
-    // border-top: 2px solid red;
-    // border-bottom: 2px solid red;
-
     #score {
       color: #333;
-
-      // position: relative;
-      // padding: 2px 8px;
-      // margin: 0 6px;
-      // border-top: 2px solid red;
-      // border-bottom: 2px solid red;
     }
-    // #score:after {
-    //   content: "";
-    //   display: inline-block;
-    //   background-color: red;
-    //   width: 2px;
-    //   height: 16px;
-    //   position: absolute;
-    //   top: 2px;
-    //   right: 0;
-    // }
-    // #score:before {
-    //   content: "";
-    //   display: inline-block;
-    //   background-color: red;
-    //   width: 2px;
-    //   height: 16px;
-    //   position: absolute;
-    //   top: 2px;
-    //   left: 0;
-    // }
   }
-  // #scoreWrapper:after {
-  //   content: "";
-  //   display: inline-block;
-  //   background-color: red;
-  //   width: 2px;
-  //   height: 18px;
-  //   position: absolute;
-  //   right: 0;
-  // }
-  // #scoreWrapper:before {
-  //   content: "";
-  //   display: inline-block;
-  //   background-color: red;
-  //   width: 2px;
-  //   height: 18px;
-  //   position: absolute;
-  //   left: 0;
-  // }
+
 
   #reactionTimeFeedback {
     /*width: 25%;*/
@@ -110,14 +81,21 @@ body {
     transition: opacity 0.2s linear 0s;
     opacity: 1;
   }
-}
-@media (min-width: 320px) {
-  #feedbackPanelWrapper {
-    width: 85%;
-  }
-  #feedbackPanelWrapper #scoreWrapper {
-    width: 35%;
-    text-align: left;
+
+  #blockStatusWrapper {
+    display: flex;
+    align-items: center;
+
+    color: #808080;
+
+    // position: absolute;
+    // bottom: 0;
+    // right: 0;
+    padding: 5px 0;
+
+    #blockStatus {
+
+    }
   }
 }
 @media (min-width: 768px) {
@@ -128,7 +106,11 @@ body {
 
 #aParent {
   position:relative;
+  // position: absolute;
+  // top: 0;
+
   margin: 0 auto;
+  // height: 100vh;
 
   // display: flex;
   // justify-content: center;
@@ -136,7 +118,6 @@ body {
 /*Inner content is made to appear with JS. No z-index is used. It's parent (which is the width and height of the canvas itself) is BELOW the canvas, but since the canvas itself isn't positioned and this child of another parent is (with position relative), its contents and children will appear ABOVE canavs.*/
 #blockFeedbackContainerWrapper {
 /*   background-color:#0000ff;  */
-  font-family: sans-serif;
   /*transition: opacity 0.3s linear 0s;*/
   /*opacity: 0;*/
   display: flex;
@@ -151,28 +132,44 @@ body {
   left: 0px;
   text-align: center;
 
+  font-size: 112%;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+
   /*height:100%;width:100%;*/
+  transition: background-color 0.3s linear 0s, color 0.3s linear 0s;
 
   .blockFeedbackContainer {
     transition: opacity 0.25s linear 0s;
     opacity: 0;
 
     box-sizing: border-box;
-    /*display: flex;
+    color: white;
+    font-weight: bold;
+    font-size: 112%;
+
+    display: flex;
     align-items: center;
-    justify-content: center;*/
+    justify-content: center;
 
     /*background-color: rgba(255, 255, 255, 0.38);*/
-    background-image: radial-gradient(circle closest-corner, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.30) 90%);
+    // background-image: radial-gradient(circle closest-corner, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.30) 90%);
 
     position: absolute;
   }
+}
+
+.flexCenteredToBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .insetInfectedBorder {
   border: 2px solid red;
   opacity: 1;
 }
+
 
 .greenText {
   color: hsl(140, 100%, 30%);
@@ -185,8 +182,12 @@ body {
 }
 
 .whiteText {
-  color: #555;
+  color: white;
   // text-shadow: 0px 1px 2px rgba(0,0,0,0.7);
+}
+
+.transparentText {
+  color: rgba(0,0,0,0);
 }
 
 .orangeYellowText {
@@ -202,6 +203,22 @@ body {
 .redText {
   color: hsl(18, 100%, 50%);
   // text-shadow: 0px 1px 2px rgba(255,255,255,0.8);
+}
+
+.blackBackground {
+  background-color: black;
+}
+
+.weakWhiteBackground {
+  background-image: radial-gradient(circle closest-corner, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.10) 90%);
+}
+
+.whiteBackground {
+  background-image: radial-gradient(circle closest-corner, rgba(255,255,255,0.60) 0%, rgba(255,255,255,0.30) 90%);
+}
+
+.transparentBackground {
+  background-color: rgba(0,0,0,0);
 }
 
 .noSelect {
@@ -222,4 +239,31 @@ body {
   touch-action: manipulation;
   /*touch-action: none;*/
   /*touch-action: pan-x pinch-zoom;*/
+}
+
+.block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20px;
+  height: 20px;
+
+  margin-left: 10px;
+  box-sizing: border-box;
+
+  font-size: 75%;
+}
+
+.emptyBlock {
+  border: 2px solid #888;
+  color: #444;
+}
+
+.blueBlock {
+  background-color: hsl(195,100%,47%);
+}
+
+.greenBlock {
+  background-color: hsl(150,100%,45%);
 }

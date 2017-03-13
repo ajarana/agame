@@ -1,14 +1,37 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 
+var aParent = document.getElementById("aParent");
+
 var blockFeedbackContainer = document.getElementsByClassName("blockFeedbackContainer");
 
-var reactionTimeFeedback = document.getElementById("reactionTimeFeedback");
+var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
 
+var blockFeedbackText = document.getElementById("blockFeedbackText");
 
-//Variable number of rows and columns. Change to whatever.
-var numberOfColumns;
-var numberOfRows;
+var chosen = document.getElementById("blockStatus"),
+    chosenClassList = chosen.classList;
+
+var score = document.getElementById("score");
+
+// var newChild = document.createElement("div");
+
+var numberOfColumns = 4;
+var numberOfRows = 4;
+var blockLength;
+
+function initializeGame() {
+aParent.removeEventListener("click", initializeGame, false);
+
+blockFeedbackContainerWrapper.classList.remove("blackBackground");
+blockFeedbackContainerWrapper.classList.add("transparentBackground");
+blockFeedbackContainerWrapper.classList.remove("whiteText");
+blockFeedbackContainerWrapper.classList.add("transparentText");
+
+chosenClassList.remove("greenBlock");
+chosenClassList.remove("blueBlock");
+chosenClassList.add("emptyBlock");
+chosen.innerHTML = "?";
 
 var xArray = [];
 var yArray = [];
@@ -16,17 +39,13 @@ var blockColorArray = [];
 var isInfected = [];
 var individualAlphaValues = [];
 
-var blockLength;
-
 var infectedInitialIndex;
-
+// var blockLength;
 var blueColorArray = [];
 var greenColorArray = [];
 
 var normalGreen = "hsl(150,100%,45%)";
 var normalBlue = "hsl(195,100%,47%)";
-
-var numberOfDrawBlocks = 0;
 
 function drawBlocks() {
   //Just stores the center x and y coordinates on the canvas.
@@ -65,48 +84,12 @@ function drawBlocks() {
     localArrayBothColors.push(normalGreen);
     localArrayBothColors.push(normalBlue);
   }
-  console.log("localarraybothcolors");
-  console.log(localArrayBothColors);
+  // console.log("localarraybothcolors");
+  // console.log(localArrayBothColors);
 
   //Two for loops that build the big block row by row. xCoefficient is reset after each row's completion while yCoefficient is increased.
   for (var i=0; i < numberOfRows; i++) {
     for (var j=0; j < numberOfColumns; j++) {
-      // console.log(localArrayBothColors);
-      // var blockColorArrayIndex = listOfColors[Math.floor(Math.random()*(listOfColors.length))];
-      var actualRandomIndex = Math.floor(Math.random()*(localArrayBothColors.length));
-
-      preventEasyShapes.push(localArrayBothColors[actualRandomIndex]);
-      
-      console.log(preventEasyShapes);
-      console.log("preventEasyShapes length: "+preventEasyShapes.length);
-      console.log((preventEasyShapes.length-1) % numberOfColumns == 0);
-
-      console.log(preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1)-numberOfColumns]);
-
-      if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
-        console.log("third condition activated");
-        actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
-
-        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
-      }
-      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
-        console.log("fourth condition activated");
-        actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
-
-        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
-      }
-
-      var blockColorArrayIndex = localArrayBothColors[actualRandomIndex];
-      // console.log(actualRandomIndex);
-
-      localArrayBothColors.splice(actualRandomIndex, 1);
-      // console.log(localArrayBothColors);
-      // return;
-
-      ctx.fillStyle = blockColorArrayIndex;
-
-      blockColorArray.push(blockColorArrayIndex);
-
       if (window.screen.width >= 992) {
         var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
         var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
@@ -118,17 +101,129 @@ function drawBlocks() {
       //   var x = j * blockLength + j;
       //   var y = i * blockLength + i;
       // }
+      xArray.push(x);
+      yArray.push(y);
+
+      // console.log(localArrayBothColors);
+      // var blockColorArrayIndex = listOfColors[Math.floor(Math.random()*(listOfColors.length))];
+      var actualRandomIndex = Math.floor(Math.random()*(localArrayBothColors.length));
+
+      preventEasyShapes.push(localArrayBothColors[actualRandomIndex]);
+      //
+      // console.log("Here is preventEasyShapes at length = " + preventEasyShapes.length);
+      // console.log(preventEasyShapes);
+
+      // // console.log((preventEasyShapes.length-1) % numberOfColumns == 0);
+      //
+      // console.log(yArray[preventEasyShapes.length-1]-yArray[preventEasyShapes.length-4] == 0);
+
+      // if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
+      //   console.log("third condition activated");
+      //   actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
+      //
+      //   preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
+      // }
+      // else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
+      //   console.log("fourth condition activated");
+      //   actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
+      //
+      //   preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
+      // }
+
+      //Prevents 3 adjacent blocks of the same color in either the horizontal or vertical direction.
+      if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-3] && yArray[preventEasyShapes.length-1] - yArray[preventEasyShapes.length-3] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
+        // console.log("first condition activated");
+        if (localArrayBothColors.indexOf(normalBlue) !== -1) {
+          actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
+        }
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
+      }
+      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1) - numberOfColumns] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1) - numberOfColumns*2] && xArray[(preventEasyShapes.length-1)] - xArray[(preventEasyShapes.length-1)-numberOfRows*2] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
+        // console.log("second condition activated");
+        if (localArrayBothColors.indexOf(normalBlue) !== -1) {
+          actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
+        }
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
+      }
+      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-3] && yArray[preventEasyShapes.length-1] - yArray[preventEasyShapes.length-3] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
+        // console.log("third condition activated");
+        if (localArrayBothColors.indexOf(normalGreen) !== -1) {
+          actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
+        }
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
+      }
+      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1) - numberOfColumns] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1) - numberOfColumns*2] && xArray[(preventEasyShapes.length-1)] - xArray[(preventEasyShapes.length-1)-numberOfRows*2] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
+        // console.log("fourth condition activated");
+        if (localArrayBothColors.indexOf(normalGreen) !== -1) {
+          actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
+        }
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
+      }
+      //Prevents squares of 4 adjacent blocks of the same color from forming.
+      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1)-numberOfRows] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-2)-numberOfRows] && yArray[preventEasyShapes.length-1] - yArray[preventEasyShapes.length-2] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
+        // console.log("fifth condition activated");
+        if (localArrayBothColors.indexOf(normalGreen) !== -1) {
+          actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
+        }
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
+      }
+      else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-1)-numberOfRows] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[(preventEasyShapes.length-2)-numberOfRows] && yArray[preventEasyShapes.length-1] - yArray[preventEasyShapes.length-2] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
+        // console.log("sixth condition activated");
+        if (localArrayBothColors.indexOf(normalBlue) !== -1) {
+          actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
+        }
+
+        preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
+      }
+
+      // console.log("actualRandomIndex");
+      // console.log(actualRandomIndex);
+
+      var blockColorArrayIndex = localArrayBothColors[actualRandomIndex];
+      // console.log(actualRandomIndex);
+      // console.log("blockColorArrayIndex: ");
+      // console.log(blockColorArrayIndex);
+      // console.log("localArrayBothColors[actualRandomIndex]: ");
+      // console.log(localArrayBothColors[actualRandomIndex]);
+      //
+      // console.log("localArrayBothColors before splice: ")
+      // console.log(localArrayBothColors);
+      localArrayBothColors.splice(actualRandomIndex, 1);
+      // console.log("localArrayBothColors after splice: ")
+      // console.log(localArrayBothColors);
+
+      ctx.fillStyle = blockColorArrayIndex;
+
+      // console.log("The fillStyle for this block is: ");
+      // console.log(ctx.fillStyle);
+
+      blockColorArray.push(blockColorArrayIndex);
+
+      // if (window.screen.width >= 992) {
+      //   var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
+      //   var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
+      // } else {
+      //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+      //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+      // }
+      // // if (window.screen.width >= 992) {
+      // //   var x = j * blockLength + j;
+      // //   var y = i * blockLength + i;
+      // // }
 
       //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
       ctx.fillRect(x, y, blockLength, blockLength);
 
-      xArray.push(x);
-      yArray.push(y);
+      // xArray.push(x);
+      // yArray.push(y);
 
-      if (numberOfDrawBlocks == 0) {
-        isInfected.push(false);
-        individualAlphaValues.push(0);
-      }
+      isInfected.push(false);
+      individualAlphaValues.push(0);
 
       xCoefficient++;
 
@@ -153,7 +248,6 @@ function drawBlocks() {
   // console.log(greenColorArray);
   // console.log("initial blueColorArray from drawBlocks():");
   // console.log(blueColorArray);
-  numberOfDrawBlocks++;
 }
 
 function createBlockFeedbackContainers() {
@@ -162,9 +256,11 @@ function createBlockFeedbackContainers() {
   for (var i=0; i<xArray.length; i++) {
     var newChild = document.createElement("div");
 
-    newChild.className = "blockFeedbackContainer";
+    newChild.classList.add("blockFeedbackContainer");
+    // newChild.classList.add("transparentBackground");
+    newChild.classList.add("weakWhiteBackground");
 
-    document.getElementById("blockFeedbackContainerWrapper").appendChild(newChild);
+    blockFeedbackContainerWrapper.appendChild(newChild);
 
 
     blockFeedbackContainer[i].style.left = xArray[i]/setCanvasScalingFactor() + "px";
@@ -175,11 +271,18 @@ function createBlockFeedbackContainers() {
   }
 }
 
+var animateBlackSquareCounter = 0;
+
 function animateBlackSquares(j) {
   var blackIndividualAlphaValues = individualAlphaValues.slice(0);
-
+  console.log("animateblacksquares INITIATED");
+  console.log(blackIndividualAlphaValues);
+  console.log("individualAlphaValues here:");
+  console.log(individualAlphaValues);
   for (var k=0; k < blackIndividualAlphaValues.length; k++) {
+    // if (individualAlphaValues[k] < 1) {
     blackIndividualAlphaValues[k] = 0;
+    // }
   }
 
   // console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares()")
@@ -264,6 +367,24 @@ function animateBlackSquares(j) {
       }
     }
 
+    animateBlackSquareCounter++;
+
+    if (animateBlackSquareCounter == 2) {
+      // window.setTimeout(function() {
+        blockFeedbackContainerWrapper.classList.remove("transparentBackground");
+        blockFeedbackContainerWrapper.classList.add("blackBackground");
+
+        blockFeedbackContainerWrapper.classList.remove("transparentText");
+        blockFeedbackContainerWrapper.classList.add("whiteText");
+
+        blockFeedbackText.innerHTML = "Restart";
+
+        aParent.removeEventListener("touchstart", cure, false);
+        aParent.removeEventListener("mousedown", cure, false);
+        aParent.addEventListener("click", initializeGame, false);
+      // }, 1000);
+    }
+    // console.log(blackIndividualAlphaValues);
     // console.log("greenColorArray at the end of animateBlackSquaresCycle()");
     // console.log(greenColorArray);
     // console.log("blueColorArray at the end of animateBlackSquaresCycle()");
@@ -328,7 +449,6 @@ function animateIndividualInfection(j) {
     animateIndividualInfection(j);
   }
   else if (individualAlphaValues[j] >= 0.088 && individualAlphaValues[j] < 1)   {
-  // else if (individualAlphaValues[j] >= 0.18)   {
     // console.log("current animateTimer: "+animateTimer);
     // console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j: "+j+" is about to get turned to 1");
     individualAlphaValues[j] = 1;
@@ -524,7 +644,7 @@ function infectionOrigins() {
         numberOfTimerResets++;
       }
 
-      console.log("The current timer: "+timer);
+      // console.log("The current timer: "+timer);
       for (var i=0; i < isInfected.length; i++) {
         if (isInfected[i] == false) {
           falseIndexArray.push(i);
@@ -587,6 +707,8 @@ function cooldown() {
 
 var totalScore = 0;
 
+score.innerHTML = 0;
+
 var totalScoreGreen = 1;
 var totalScoreBlue = 1;
 
@@ -609,7 +731,6 @@ function cure(event) {
     selectX = Math.round(event.changedTouches[0].clientX - test.left);
     selectY = Math.round(event.changedTouches[0].clientY - test.top);
   }
-  // reactionTimeFeedback.innerHTML = "testLeft: " + touch.clientX + " and clientY: "+touch.clientY;
 
   var greenPointsScored = 2;
   var bluePointsScored = 2;
@@ -676,101 +797,115 @@ function cure(event) {
 
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
-    if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i]) {
-      //First filter to see if any black blocks exist.
-      if (blockColorArray[i] == normalGreen && greenColorArray.indexOf(true) !== -1) {
-        return;
-      }
-      else if (blockColorArray[i] == normalBlue && blueColorArray.indexOf(true) !== -1) {
-        return;
-      }
+    if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] && individualAlphaValues[i] < 1) {
+      var passedTheCheck = false;
 
-      lastBlockColorComparison.push(blockColorArray[i]);
-      console.log("This is lastBlockColorComparison before its modified by the i = " + i + " instance of cure(i)");
-      console.log(lastBlockColorComparison);
-      lastBlockIndexComparison.push(i);
+      function blockColorAndIndexCheck(i) {
+        //First filter to see if any black blocks exist.
+        // if (blockColorArray[i] == normalGreen && greenColorArray.indexOf(true) !== -1) {
+        //   // return;
+        // }
+        // else if (blockColorArray[i] == normalBlue && blueColorArray.indexOf(true) !== -1) {
+        //   // return;
+        // }
 
-      if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] == lastBlockIndexComparison[0]) {
-        console.log("Selected block as same index as previous block, cure() stops here. lastBlockIndexComparison NOT cleared, but pop() used.");
-        //Gets rid of the last value for the two comparison arrays, otherwise lastBlockColorComparison continues to get infinitely larger.
-        lastBlockIndexComparison.pop();
-        lastBlockColorComparison.pop();
+        lastBlockColorComparison.push(blockColorArray[i]);
+        console.log("This is lastBlockColorComparison before its modified by the i = " + i + " instance of cure(i)");
+        console.log(lastBlockColorComparison);
+        lastBlockIndexComparison.push(i);
 
-        return;
-      }
-      else if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] !== lastBlockIndexComparison[0]) {
-        console.log("Selected block is NOT same index as previous block, cure() continues. lastBlockIndexComparison cleared.")
-        lastBlockIndexComparison = [];
-      }
+        if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] == lastBlockIndexComparison[0]) {
+          console.log("Selected block as same index as previous block, cure() stops here. lastBlockIndexComparison NOT cleared, but pop() used.");
+          //Gets rid of the last value for the two comparison arrays, otherwise lastBlockColorComparison continues to get infinitely larger.
+          lastBlockIndexComparison.pop();
+          lastBlockColorComparison.pop();
 
-      // console.log("This is lastBlockColorComparison after selecting an infected block.");
-      // console.log(lastBlockColorComparison);
-      //Compare the last two blocks selected to see if they're the same color.
-      if (lastBlockColorComparison.length == 1 && individualAlphaValues[i] == 1) {
-        console.log("lastBlockColorComparison only had 1 value, was cleared. The selected block was already FULLY infected.");
+          return;
+        }
+        else if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] !== lastBlockIndexComparison[0]) {
+          console.log("Selected block is NOT same index as previous block, cure() continues. lastBlockIndexComparison cleared.")
+          lastBlockIndexComparison = [];
+        }
+
+        // console.log("This is lastBlockColorComparison after selecting an infected block.");
         // console.log(lastBlockColorComparison);
-        lastBlockColorComparison = [];
-        return;
-      }
-      else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] == lastBlockColorComparison[0]) {
-        lastBlockColorComparison = [];
-        console.log("Previous block's color matched and lastBlockColorComparison cleared.");
-        // console.log(lastBlockColorComparison);
-
-        if (blockColorArray[i] == normalGreen && individualAlphaValues[i] == 1) {
-          greenColorArray.push(false);
-          console.log("false pushed onto greenColorArray from cure()");
-          console.log(greenColorArray);
+        //Compare the last two blocks selected to see if they're the same color.
+        if (lastBlockColorComparison.length == 1 && individualAlphaValues[i] < 1) {
+          console.log("lastBlockColorComparison only had 1 value, was cleared. The selected block was already FULLY infected.");
+          // console.log(lastBlockColorComparison);
+          // lastBlockColorComparison = [];
+          // return;
+          passedTheCheck = true;
         }
-        else if (blockColorArray[i] == normalBlue && individualAlphaValues[i] == 1) {
-          blueColorArray.push(false);
-          console.log("false pushed onto blueColorArray from cure()");
-          console.log(blueColorArray);
+        else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] == lastBlockColorComparison[0] && individualAlphaValues[i] < 1) {
+          lastBlockColorComparison = [];
+          console.log("Previous block's color matched and lastBlockColorComparison cleared.");
+          // console.log(lastBlockColorComparison);
+
+          // if (blockColorArray[i] == normalGreen && individualAlphaValues[i] == 1) {
+          //   greenColorArray.push(false);
+          //   console.log("false pushed onto greenColorArray from cure()");
+          //   console.log(greenColorArray);
+          // }
+          // else if (blockColorArray[i] == normalBlue && individualAlphaValues[i] == 1) {
+          //   blueColorArray.push(false);
+          //   console.log("false pushed onto blueColorArray from cure()");
+          //   console.log(blueColorArray);
+          // }
+
+          passedTheCheck = true;
+          secondBlockCured = true;
         }
+        else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] !== lastBlockColorComparison[0] && individualAlphaValues[i] == 1) {
+          console.log("Blocks didn't match, selected block was fully infected, and the last value has been removed from lastBlockColorComparison");
+          lastBlockColorComparison.pop();
+          // return;
+        }
+        else if (lastBlockColorComparison.length == 2 && individualAlphaValues[i] !== 1) {
+          console.log("The selected block does NOT match the previous color and has now been fully infected. lastBlockColorComparison has been cleared as well.");
 
-        secondBlockCured = true;
-      }
-      else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] !== lastBlockColorComparison[0] && individualAlphaValues[i] == 1) {
-        // console.log("Blocks didn't match, selected block was fully infected, and the last value has been removed from lastBlockColorComparison");
-        lastBlockColorComparison.pop();
-        return;
-      }
-      else if (lastBlockColorComparison.length == 2 && individualAlphaValues[i] !== 1) {
-        // console.log("else condition activated in cure");
-        // console.log("The selected block doesn't match the previous color and has now been fully infected");
-        individualAlphaValues[i] = 1;
-        ctx.fillStyle = "rgba(255,0,0," + individualAlphaValues[i] + ")";
-        //make sure to change individual alpha values and isinfected to true
-        ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
-        ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
+          individualAlphaValues[i] = 1;
+          ctx.fillStyle = "rgba(255,0,0," + individualAlphaValues[i] + ")";
+          //make sure to change individual alpha values and isinfected to true
+          ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
+          ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
 
-        lastBlockColorComparison = [];
+          lastBlockColorComparison = [];
+          // console.log(lastBlockColorComparison.length);
+          infect(i);
 
-        infect(i);
-
-        if (blockColorArray[i] == normalGreen) {
-          var greenIndexToBeReplaced = greenColorArray.indexOf(false);
-          if (greenIndexToBeReplaced !== -1) {
-            greenColorArray.splice(greenIndexToBeReplaced, 1);
-            console.log("one false value has been removed from greenColorArray");
-            console.log(greenColorArray);
+          if (blockColorArray[i] == normalGreen) {
+            var greenIndexToBeReplaced = greenColorArray.indexOf(false);
+            if (greenIndexToBeReplaced !== -1) {
+              greenColorArray.splice(greenIndexToBeReplaced, 1);
+              console.log("one false value has been removed from greenColorArray");
+              console.log(greenColorArray);
+            }
           }
-        }
-        else if (blockColorArray[i] == normalBlue) {
-          var blueIndexToBeReplaced = blueColorArray.indexOf(false);
-          if (blueIndexToBeReplaced !== -1) {
-            blueColorArray.splice(blueIndexToBeReplaced, 1);
-            console.log("one false value has been removed from blueColorArray");
-            console.log(blueColorArray);
+          else if (blockColorArray[i] == normalBlue) {
+            var blueIndexToBeReplaced = blueColorArray.indexOf(false);
+            if (blueIndexToBeReplaced !== -1) {
+              blueColorArray.splice(blueIndexToBeReplaced, 1);
+              console.log("one false value has been removed from blueColorArray");
+              console.log(blueColorArray);
+            }
           }
-        }
 
-        if (greenColorArray.indexOf(false) == -1) {
-          animateBlackSquares(i);
+          if (greenColorArray.indexOf(false) == -1) {
+            animateBlackSquares(i);
+          }
+          else if (blueColorArray.indexOf(false) == -1) {
+            animateBlackSquares(i);
+          }
+          // return;
         }
-        else if (blueColorArray.indexOf(false) == -1) {
-          animateBlackSquares(i);
-        }
+      }
+
+      blockColorAndIndexCheck(i);
+
+      if (passedTheCheck == false) {
+        updateChosen(i);
+
         return;
       }
 
@@ -793,22 +928,86 @@ function cure(event) {
 
       wasPreviouslyInfected = true;
 
-      if (blockColorArray[i] == normalGreen && totalScoreGreen < 128 && secondBlockCured) {
-        totalScoreGreen *= greenPointsScored;
+      function updateChosen(i) {
+        if (blockColorArray[i] == normalGreen && lastBlockColorComparison.length == 0) {
+          console.log("negative condition chosen");
+          chosenClassList.remove("greenBlock");
+          chosenClassList.remove("blueBlock");
+          chosenClassList.add("emptyBlock");
 
-        totalScore += totalScoreGreen;
+          chosen.innerHTML = "?";
+        }
+        else if (blockColorArray[i] == normalBlue && lastBlockColorComparison.length == 0) {
+          console.log("0th condition chosen");
+          chosenClassList.remove("greenBlock");
+          chosenClassList.remove("blueBlock");
+          chosenClassList.add("emptyBlock");
 
-        totalScoreBlue = 1;
+          chosen.innerHTML = "?";
+        }
+        else if (blockColorArray[i] == normalGreen && secondBlockCured == false) {
+          console.log("first updateChosen condition chosen");
+          chosenClassList.remove("emptyBlock");
+          chosenClassList.add("greenBlock");
+
+          chosen.innerHTML = "";
+        }
+        else if (blockColorArray[i] == normalBlue && secondBlockCured == false) {
+          console.log("second updateChosen condition chosen");
+          chosenClassList.remove("emptyBlock");
+          chosenClassList.add("blueBlock");
+
+          chosen.innerHTML = "";
+        }
+        else if (blockColorArray[i] == normalGreen && secondBlockCured) {
+          console.log("third updateChosen condition chosen");
+          chosenClassList.remove("greenBlock");
+          chosenClassList.add("emptyBlock");
+
+          chosen.innerHTML = "?";
+        }
+        else {
+          console.log("fourth updateChosen condition chosen");
+          chosenClassList.remove("blueBlock");
+          chosenClassList.add("emptyBlock");
+
+          chosen.innerHTML = "?";
+        }
       }
-      else if (blockColorArray[i] == normalBlue && totalScoreBlue < 500 && secondBlockCured) {
-        totalScoreBlue *= bluePointsScored;
 
-        totalScore += totalScoreBlue;
+      function checkBlockCureOrder(i) {
+        updateChosen(i);
 
-        totalScoreGreen = 1;
+        if (blockColorArray[i] == normalGreen && totalScoreGreen < 128 && secondBlockCured) {
+          totalScoreGreen *= greenPointsScored;
+
+          totalScore += totalScoreGreen;
+
+          totalScoreBlue = 1;
+        }
+        else if (blockColorArray[i] == normalBlue && totalScoreBlue < 128 && secondBlockCured) {
+          totalScoreBlue *= bluePointsScored;
+
+          totalScore += totalScoreBlue;
+
+          totalScoreGreen = 1;
+        }
+
+        if (secondBlockCured) {
+          scoreFade(i);
+          return;
+        }
+
+        blockFeedbackContainer[i].classList.remove("weakWhiteBackground");
+        blockFeedbackContainer[i].classList.add("whiteBackground");
+        blockFeedbackContainer[i].style.opacity = 1;
+
+        window.setTimeout(function() {
+          blockFeedbackContainer[i].style.opacity = 0;
+        }, 450);
       }
 
-      scoreFade(i);
+      checkBlockCureOrder(i);
     }
     else if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] == false) {
       // lastBlockColorComparison = [];
@@ -823,76 +1022,116 @@ function cure(event) {
   } //End of for loop.
 
   function scoreFade(i) {
-    // var div = document.getElementById("blockFeedbackContainerWrapper");
+    blockFeedbackContainer[i].classList.remove("whiteBackground");
+    blockFeedbackContainer[i].classList.add("weakWhiteBackground");
 
     blockFeedbackContainer[i].style.opacity = 1;
 
     window.setTimeout(function() {
       blockFeedbackContainer[i].style.opacity = 0;
-    }, 350);
-
-    // blockFeedbackContainer[i].innerHTML = "+" + score;
-    // blockFeedbackContainer[i].innerHTML = ".";
+    }, 450);
 
     function updateColorScore() {
-      var notAlreadyFullOpacity = false;
-
-      if (reactionTimeFeedback.style.opacity == 0) {
-        reactionTimeFeedback.style.opacity = 1;
-
-        notAlreadyFullOpacity = true;
-      }
-
       if (blockColorArray[i] == normalGreen) {
-        reactionTimeFeedback.innerHTML = totalScoreGreen;
-
-        reactionTimeFeedback.classList.remove("blueText");
-        reactionTimeFeedback.classList.add("greenText");
+        blockFeedbackContainer[i].innerHTML = "+" + totalScoreGreen;
       } else {
-        reactionTimeFeedback.innerHTML = totalScoreBlue;
-
-        reactionTimeFeedback.classList.remove("greenText");
-        reactionTimeFeedback.classList.add("blueText");
-      }
-
-      if (notAlreadyFullOpacity) {
-        scoreTimeout = window.setTimeout(function() {
-          reactionTimeFeedback.style.opacity = 0;
-        }, 500);
-      } else {
-        window.clearTimeout(scoreTimeout);
-        scoreTimeout = window.setTimeout(function() {
-          reactionTimeFeedback.style.opacity = 0;
-        }, 500);
+        blockFeedbackContainer[i].innerHTML = "+" + totalScoreBlue;
       }
     }
 
     function updateTotalScore() {
-      // if (document.getElementById("score").innerHTML !== "I HAVE RETURNED") {
-      //   document.getElementById("score").innerHTML = "Score: " + totalScore;
-      // }
       document.getElementById("score").innerHTML = totalScore;
     }
 
     if (wasPreviouslyInfected && secondBlockCured) {
       updateColorScore();
       updateTotalScore();
-
     }
+
+    secondBlockCured = false;
   } //End of scoreFade()
 
 
 
 
 }
-
-var aParent = document.getElementById("aParent");
 // aParent.ontouchmove = function(event) {
 //   event.preventDefault();
 // }
 
 aParent.addEventListener("touchstart", cure, false);
 aParent.addEventListener("mousedown", cure, false);
+
+// function setCanvasScalingFactor() {
+//   var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+//                           ctx.mozBackingStorePixelRatio ||
+//                           ctx.msBackingStorePixelRatio ||
+//                           ctx.oBackingStorePixelRatio ||
+//                           ctx.backingStorePixelRatio ||
+//                           1;
+//
+//   var pixelRatio = window.devicePixelRatio || 1;
+//
+//   var ratio = pixelRatio / backingStoreRatio;
+//
+//   return ratio;
+// }
+//
+// function setDimensions() {
+//   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
+//
+//   var width, height, pixelRatio, switchCase;
+//
+//   if (window.screen.width >= 992) {
+//     width = Math.round(window.screen.availWidth * 0.25);
+//     height = Math.round(width / 1.6);
+//
+//     pixelRatio = setCanvasScalingFactor();
+//
+//     switchCase = 992;
+//   }
+//   else {
+//     width = Math.round(window.screen.availWidth * 0.80);
+//     height = width;
+//
+//     pixelRatio = setCanvasScalingFactor();
+//   }
+//
+//   canvas.style.width = width + "px";
+//   canvas.style.height = height + "px";
+//   canvas.width = width * pixelRatio;
+//   canvas.height = height * pixelRatio;
+//
+//   ctx = canvas.getContext("2d");
+//
+//   switch (switchCase) {
+//     case 992:
+//       blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
+//       break;
+//     default:
+//       blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
+//       break;
+//   }
+//
+//   blockFeedbackContainerWrapper.style.width = width + "px";
+//   blockFeedbackContainerWrapper.style.height = height + "px";
+//
+//   aParent.style.width = width + "px";
+//
+//   drawBlocks();
+//   createBlockFeedbackContainers();
+//   infectionOrigins();
+// }
+//
+// setDimensions();
+
+var test = canvas.getBoundingClientRect();
+
+drawBlocks();
+createBlockFeedbackContainers();
+infectionOrigins();
+
+}
 
 function setCanvasScalingFactor() {
   var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
@@ -910,202 +1149,49 @@ function setCanvasScalingFactor() {
 }
 
 function setDimensions() {
-  var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
+  var width, height, pixelRatio, switchCase;
 
   if (window.screen.width >= 992) {
-    numberOfColumns = 4;
-    numberOfRows = 4;
+    width = Math.round(window.screen.availWidth * 0.25);
+    height = Math.round(width / 1.6);
 
-    var width = Math.round(window.screen.availWidth * 0.25);
-    // var width = Math.round(window.screen.availWidth * 0.22);
-    var height = Math.round(width / 1.6);
+    pixelRatio = setCanvasScalingFactor();
 
-    // blockLength = Math.round(0.9 * (height/numberOfRows));
-
-    // canvas.width = width;
-    // canvas.height = height;
-    var pixelRatio = setCanvasScalingFactor();
-    console.log(pixelRatio);
-    // blockLength = Math.round(0.85 * (width/numberOfColumns));
-    //
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-    canvas.width = width * pixelRatio;
-    canvas.height = height * pixelRatio;
-    ctx = canvas.getContext("2d");
-
-    blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-    // blockLength = Math.round(0.98 * (canvas.height/numberOfRows));
-
-    blockFeedbackContainerWrapper.style.width = width + "px";
-
-    blockFeedbackContainerWrapper.style.height = height + "px";
-
-    aParent.style.width = width + "px";
-
-    drawBlocks();
-    createBlockFeedbackContainers();
-
-    var bigTime = 3;
-    // reactionTimeFeedback.style.opacity = 1;
-    function bigScreenCountdown() {
-      // reactionTimeFeedback.style.opacity = 0;
-      window.setTimeout(function() {
-        reactionTimeFeedback.style.opacity = 0;
-      }, 600);
-
-      window.setTimeout(function() {
-        // reactionTimeFeedback.style.opacity = 0;
-
-        bigTime -= 1;
-
-        reactionTimeFeedback.style.opacity = 0;
-
-        reactionTimeFeedback.innerHTML = bigTime;
-        reactionTimeFeedback.style.opacity = 1;
-
-        if (bigTime == 0) {
-          reactionTimeFeedback.innerHTML = "";
-
-          infectionOrigins();
-        } else {
-          bigScreenCountdown();
-        }
-      }, 1000);
-    }
-
-    bigScreenCountdown();
+    switchCase = 992;
   }
-  else if (window.screen.width >= 320) {
-    numberOfColumns = 4;
-    numberOfRows = 4;
+  else {
+    width = Math.round(window.screen.availWidth * 0.80);
+    height = width;
 
-    // canvas.style.width = canvas.width +'px';
-    // canvas.style.height = canvas.height +'px';
-
-    // var width = Math.round(window.screen.availWidth * 0.80);
-    var width = Math.round(window.screen.availWidth * 0.80);
-    // // var height = Math.round(width / 1.2);
-    var height = width;
-
-    var pixelRatio = setCanvasScalingFactor();
-    // blockLength = Math.round(0.85 * (width/numberOfColumns));
-    //
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-    canvas.width = width * pixelRatio;
-    canvas.height = height * pixelRatio;
-    // canvas.width = width;
-    // canvas.height = height;
-    ctx = canvas.getContext("2d");
-    // canvas.width = width;
-    // canvas.height = height;
-
-    blockLength = Math.round(0.85 * (canvas.width/numberOfColumns));
-    // ctx.setTransform(pixelRatio,0,0,pixelRatio,0,0);
-
-    blockFeedbackContainerWrapper.style.width = width + "px";
-
-    blockFeedbackContainerWrapper.style.height = height + "px";
-
-    aParent.style.width = width + "px";
-
-    // window.setInterval(function() {
-      drawBlocks();
-      createBlockFeedbackContainers();
-    // }, 6000);
-
-    var smallTime = 3;
-    // reactionTimeFeedback.style.opacity = 1;
-    function smallScreenCountdown() {
-      // reactionTimeFeedback.style.opacity = 0;
-      window.setTimeout(function() {
-        reactionTimeFeedback.style.opacity = 0;
-      }, 600);
-
-      window.setTimeout(function() {
-        // reactionTimeFeedback.style.opacity = 0;
-
-        smallTime -= 1;
-
-        reactionTimeFeedback.style.opacity = 0;
-
-        reactionTimeFeedback.innerHTML = smallTime;
-        reactionTimeFeedback.style.opacity = 1;
-
-        if (smallTime == 0) {
-          reactionTimeFeedback.innerHTML = "";
-
-          infectionOrigins();
-        } else {
-          smallScreenCountdown();
-        }
-      }, 1000);
-    }
-
-    smallScreenCountdown();
+    pixelRatio = setCanvasScalingFactor();
   }
 
-  // if (window.matchMedia("(min-width: 1200px)").matches) {
-    // var mq = window.matchMedia("(min-width: 1200px)");
-    // mq.addListener(widthChange);
-    // widthChange(mq);
-  // }
-  // if (window.screen.width >= 1200) {
-  //   var mq = window.matchMedia("(min-width: 1200px)");
-  //
-  //   mq.addListener(widthChange);
-  //   widthChange(mq);
-  // }
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+  canvas.width = width * pixelRatio;
+  canvas.height = height * pixelRatio;
 
-  // media query change
-  // function widthChange(x) {
-  //   if (x.matches) {
-  //     console.log("MATCHED");
-  //     width = Math.round(window.screen.availWidth * 0.3);
-  //     height = Math.round(width / 2);
-  //
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //
-  //     canvas.width = width;
-  //     div.style.width = width + "px";
-  //     // blockPositions();
-  //     // canvas.width = blockWidth * rows;
-  //     canvas.height = height;
-  //
-  //     div.style.height = height + "px";
-  //     aParent.style.width = width + "px";
-  //
-  //     drawBlocks();
-  //     // console.log("SUP?");
-  //     // createBlockFeedbackContainers();
-  //     // infectionOrigins();
-  //   } else {
-  //     width = window.screen.availWidth * 0.4;
-  //     height = Math.round(width / 2);
-  //
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //
-  //     canvas.width = width;
-  //     div.style.width = width + "px";
-  //     // blockPositions();
-  //     // canvas.width = blockWidth * rows;
-  //     canvas.height = height;
-  //
-  //     div.style.height = height + "px";
-  //     aParent.style.width = width + "px";
-  //
-  //     drawBlocks();
-  //     // console.log("HELLO?");
-  //     // createBlockFeedbackContainers();
-  //     // infectionOrigins();
-  //   }
-  // }
+  ctx = canvas.getContext("2d");
+
+  switch (switchCase) {
+    case 992:
+      blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
+      break;
+    default:
+      blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
+      break;
+  }
+
+  blockFeedbackContainerWrapper.style.width = width + "px";
+  blockFeedbackContainerWrapper.style.height = height + "px";
+
+  aParent.style.width = width + "px";
 
   // drawBlocks();
-
+  // createBlockFeedbackContainers();
+  // infectionOrigins();
 }
 
 setDimensions();
 
-var test = canvas.getBoundingClientRect();
+aParent.addEventListener("click", initializeGame, false);
