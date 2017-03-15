@@ -1,6 +1,8 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 
+var feedbackPanelWrapper = document.getElementById("feedbackPanelWrapper");
+
 var aParent = document.getElementById("aParent");
 
 var blockFeedbackContainer = document.getElementsByClassName("blockFeedbackContainer");
@@ -90,14 +92,14 @@ function drawBlocks() {
   //Two for loops that build the big block row by row. xCoefficient is reset after each row's completion while yCoefficient is increased.
   for (var i=0; i < numberOfRows; i++) {
     for (var j=0; j < numberOfColumns; j++) {
-      if (window.screen.width >= 992) {
+      if (window.screen.width >= 1200) {
         var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
         var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
       } else {
         var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
         var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
       }
-      // if (window.screen.width >= 992) {
+      // if (window.screen.width >= 1200) {
       //   var x = j * blockLength + j;
       //   var y = i * blockLength + i;
       // }
@@ -204,14 +206,14 @@ function drawBlocks() {
 
       blockColorArray.push(blockColorArrayIndex);
 
-      // if (window.screen.width >= 992) {
+      // if (window.screen.width >= 1200) {
       //   var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
       //   var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
       // } else {
       //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
       //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
       // }
-      // // if (window.screen.width >= 992) {
+      // // if (window.screen.width >= 1200) {
       // //   var x = j * blockLength + j;
       // //   var y = i * blockLength + i;
       // // }
@@ -721,15 +723,15 @@ function cure(event) {
   var selectX, selectY;
 
   if (event.type == "mousedown") {
-    selectX = Math.round(event.clientX-test.left);
-    selectY = Math.round(event.clientY-test.top);
+    selectX = Math.round(event.clientX-canvasBoundingClientRect.left);
+    selectY = Math.round(event.clientY-canvasBoundingClientRect.top);
   }
   else if (event.type == "touchstart") {
     //Prevents mousedown event from firing in some browsers.
     event.preventDefault();
 
-    selectX = Math.round(event.changedTouches[0].clientX - test.left);
-    selectY = Math.round(event.changedTouches[0].clientY - test.top);
+    selectX = Math.round(event.changedTouches[0].clientX - canvasBoundingClientRect.left);
+    selectY = Math.round(event.changedTouches[0].clientY - canvasBoundingClientRect.top);
   }
 
   var greenPointsScored = 2;
@@ -1082,13 +1084,13 @@ aParent.addEventListener("mousedown", cure, false);
 //
 //   var width, height, pixelRatio, switchCase;
 //
-//   if (window.screen.width >= 992) {
+//   if (window.screen.width >= 1200) {
 //     width = Math.round(window.screen.availWidth * 0.25);
 //     height = Math.round(width / 1.6);
 //
 //     pixelRatio = setCanvasScalingFactor();
 //
-//     switchCase = 992;
+//     switchCase = 1200;
 //   }
 //   else {
 //     width = Math.round(window.screen.availWidth * 0.80);
@@ -1105,7 +1107,7 @@ aParent.addEventListener("mousedown", cure, false);
 //   ctx = canvas.getContext("2d");
 //
 //   switch (switchCase) {
-//     case 992:
+//     case 1200:
 //       blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
 //       break;
 //     default:
@@ -1125,7 +1127,7 @@ aParent.addEventListener("mousedown", cure, false);
 //
 // setDimensions();
 
-var test = canvas.getBoundingClientRect();
+// var canvasBoundingClientRect = canvas.getBoundingClientRect();
 
 drawBlocks();
 createBlockFeedbackContainers();
@@ -1150,17 +1152,54 @@ function setCanvasScalingFactor() {
 
 function setDimensions() {
   var width, height, pixelRatio, switchCase;
+  var screenRatio = window.screen.width / window.screen.height;
 
-  if (window.screen.width >= 992) {
-    width = Math.round(window.screen.availWidth * 0.25);
-    height = Math.round(width / 1.6);
+  if (window.screen.width >= 1200) {
+    width = Math.round(window.screen.availWidth * 0.2);
+    // height = Math.round(width / 1.4);
+    height = width;
 
     pixelRatio = setCanvasScalingFactor();
 
-    switchCase = 992;
+    switchCase = 1200;
   }
+  else if (window.screen.width >= 768) {
+    if (screenRatio > 1) {
+      width = Math.round(window.screen.availHeight * 0.5);
+    } else {
+      width = Math.round(window.screen.availWidth * 0.5);
+    }
+
+    height = width;
+
+    pixelRatio = setCanvasScalingFactor();
+
+    // switchCase = 768;
+  }
+  // else if (window.screen.width >= 576 && orientation: portrait) {
+  //   if (screenRatio > 1) {
+  //     width = Math.round(window.screen.availHeight * 0.60);
+  //     console.log("576 condition");
+  //   } else {
+  //     width = Math.round(window.screen.availWidth * 0.60);
+  //   }
+  //
+  //   height = width;
+  //
+  //   pixelRatio = setCanvasScalingFactor();
+  //
+  //   // switchCase = 576;
+  // }
   else {
-    width = Math.round(window.screen.availWidth * 0.80);
+    if (screenRatio > 1) {
+      width = Math.round(window.screen.availHeight * 0.80);
+      console.log("width is based off screen height");
+    } else {
+      width = Math.round(window.screen.availWidth * 0.80);
+      console.log("width is based off screen width");
+    }
+
+    // width = Math.round(window.screen.availWidth * 0.80);
     height = width;
 
     pixelRatio = setCanvasScalingFactor();
@@ -1174,9 +1213,12 @@ function setDimensions() {
   ctx = canvas.getContext("2d");
 
   switch (switchCase) {
-    case 992:
+    case 1200:
       blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
       break;
+    // case 576:
+    //   blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
+    //   break;
     default:
       blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
       break;
@@ -1187,11 +1229,20 @@ function setDimensions() {
 
   aParent.style.width = width + "px";
 
+  feedbackPanelWrapper.style.width = width + "px";
   // drawBlocks();
   // createBlockFeedbackContainers();
   // infectionOrigins();
 }
 
+var canvasBoundingClientRect;
+function setBoundingClient() {
+  canvasBoundingClientRect = canvas.getBoundingClientRect();
+}
+
+window.addEventListener("resize", setBoundingClient, false);
+
 setDimensions();
+setBoundingClient();
 
 aParent.addEventListener("click", initializeGame, false);
