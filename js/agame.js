@@ -1151,6 +1151,8 @@ function setCanvasScalingFactor() {
 }
 
 function setDimensions() {
+  var orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
+
   var width, height, pixelRatio, switchCase;
   var screenRatio = window.screen.width / window.screen.height;
 
@@ -1176,20 +1178,20 @@ function setDimensions() {
 
     // switchCase = 768;
   }
-  // else if (window.screen.width >= 576 && orientation: portrait) {
-  //   if (screenRatio > 1) {
-  //     width = Math.round(window.screen.availHeight * 0.60);
-  //     console.log("576 condition");
-  //   } else {
-  //     width = Math.round(window.screen.availWidth * 0.60);
-  //   }
-  //
-  //   height = width;
-  //
-  //   pixelRatio = setCanvasScalingFactor();
-  //
-  //   // switchCase = 576;
-  // }
+  else if (window.screen.width >= 576 && orientation == "portrait-primary" || orientation == "portrait-secondary") {
+    if (screenRatio > 1) {
+      width = Math.round(window.screen.availHeight * 0.60);
+      console.log("576 condition");
+    } else {
+      width = Math.round(window.screen.availWidth * 0.60);
+    }
+
+    height = width;
+
+    pixelRatio = setCanvasScalingFactor();
+
+    // switchCase = 576;
+  }
   else {
     if (screenRatio > 1) {
       width = Math.round(window.screen.availHeight * 0.80);
