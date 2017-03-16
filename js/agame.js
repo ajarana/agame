@@ -1178,7 +1178,7 @@ function setDimensions() {
 
     // switchCase = 768;
   }
-  else if (window.screen.width >= 576 && orientation.type == "portrait-primary" || orientation.type == "portrait-secondary") {
+  else if (window.screen.width >= 576 && orientation == "portrait-primary" || orientation == "portrait-secondary") {
     if (screenRatio > 1) {
       width = Math.round(window.screen.availHeight * 0.60);
       console.log("576 condition");
