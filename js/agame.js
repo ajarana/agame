@@ -1194,11 +1194,13 @@ function setDimensions() {
   }
   else {
     if (screenRatio > 1) {
-      width = Math.round(window.screen.availWidth * 0.40);
+      width = Math.round(window.screen.availHeight * 0.80);
       console.log("width is based off screen height");
+      feedbackPanelWrapper.innerHTML = "width is based off screen height";
     } else {
       width = Math.round(window.screen.availWidth * 0.80);
       console.log("width is based off screen width");
+      feedbackPanelWrapper.innerHTML = "width is based off screen width";
     }
 
     // width = Math.round(window.screen.availWidth * 0.80);
