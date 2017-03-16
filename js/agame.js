@@ -1151,7 +1151,7 @@ function setCanvasScalingFactor() {
 }
 
 function setDimensions() {
-  var orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
+  var orientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
 
   var width, height, pixelRatio, switchCase;
   var screenRatio = window.screen.width / window.screen.height;
@@ -1178,7 +1178,7 @@ function setDimensions() {
 
     // switchCase = 768;
   }
-  else if (window.screen.width >= 576 && orientation == "portrait-primary" || orientation == "portrait-secondary") {
+  else if (window.screen.width >= 576 && orientation.type == "portrait-primary" || orientation.type == "portrait-secondary") {
     if (screenRatio > 1) {
       width = Math.round(window.screen.availHeight * 0.60);
       console.log("576 condition");
