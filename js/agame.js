@@ -1200,7 +1200,7 @@ function setDimensions() {
     } else {
       width = Math.round(window.screen.availWidth * 0.80);
       console.log("width is based off screen width");
-      feedbackPanelWrapper.innerHTML = screenRatio;
+      // feedbackPanelWrapper.innerHTML = screenRatio;
     }
 
     // width = Math.round(window.screen.availWidth * 0.80);
