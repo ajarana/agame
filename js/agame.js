@@ -1196,7 +1196,7 @@ function setDimensions() {
     if (screenRatio > 1) {
       width = Math.round(window.screen.availHeight * 0.80);
       console.log("width is based off screen height");
-      feedbackPanelWrapper.innerHTML = screenRatio;
+      // feedbackPanelWrapper.innerHTML = screenRatio;
     } else {
       width = Math.round(window.screen.availWidth * 0.80);
       console.log("width is based off screen width");
