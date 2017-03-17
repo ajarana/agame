@@ -1330,6 +1330,13 @@ function setBoundingClient() {
   canvasBoundingClientRect = canvas.getBoundingClientRect();
 }
 
+function testlol() {
+  var screenRatio = window.screen.width/window.screen.height;
+
+  feedbackPanelWrapper.innerHTML = "Orientation changed. Screen ratio is: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
+}
+window.addEventListener("orientationchange", testlol, false);
+
 window.addEventListener("resize", setBoundingClient, false);
 
 setDimensions();
