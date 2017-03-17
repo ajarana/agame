@@ -1282,11 +1282,11 @@ function setDimensions() {
     if (screenRatio > 1) {
       width = Math.round(window.screen.availHeight * 0.80);
       // console.log("width is based off screen height");
-      feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio;
+      feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height;
     } else {
       width = Math.round(window.screen.availWidth * 0.80);
       // console.log("width is based off screen width");
-      feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio;
+      feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height;
     }
 
     // width = Math.round(window.screen.availWidth * 0.80);
