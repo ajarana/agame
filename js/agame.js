@@ -1333,17 +1333,14 @@ function setBoundingClient() {
 function testlol() {
   var screenRatio = window.screen.width/window.screen.height;
 
-  window.setTimeout(function() {
+  // window.setTimeout(function() {
     feedbackPanelWrapper.innerHTML = "Orientation changed. Screen ratio is: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+".";
-  }, 1000);
+  // }, 1000);
 }
-// window.addEventListener("orientationchange", testlol, false);
+window.addEventListener("orientationchange", testlol, false);
 
 // window.addEventListener("resize", setBoundingClient, false);
-window.addEventListener("resize", function() {
-  setBoundingClient();
-  testlol();
-}, false);
+window.addEventListener("resize", setBoundingClient, false);
 
 setDimensions();
 setBoundingClient();
