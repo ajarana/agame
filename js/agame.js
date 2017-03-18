@@ -1349,16 +1349,25 @@ function getStyleValue(elem, prop) {
 function testlol() {
   // var screenRatio = window.screen.width/window.screen.height;
 
-  if (window.innerWidth > window.innerHeight) {
+  if (window.outerWidth > window.outerHeight) {
     feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's outer width is: "+window.outerWidth+" while its outer height is: "+window.outerHeight+".";
 
-    // canvas.style.width = width + "px";
-    // canvas.style.height = height + "px";
+    width = 0.8 * window.outerHeight;
+    height = width;
+
+    blockFeedbackContainerWrapper.style.width = width + "px";
+    blockFeedbackContainerWrapper.style.height = height + "px";
     // canvas.width = width * pixelRatio;
     // canvas.height = height * pixelRatio;
     // width = Math.round(window.screen.availWidth * 0.80);
   } else {
     feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's outer width is: "+window.outerWidth+" while its outer height is: "+window.outerHeight+".";
+
+    width = 0.8 * window.outerWidth;
+    height = width;
+
+    blockFeedbackContainerWrapper.style.width = width + "px";
+    blockFeedbackContainerWrapper.style.height = height + "px";
   }
   // console.log(event.type);
 
