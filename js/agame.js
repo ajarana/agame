@@ -1282,11 +1282,11 @@ function setDimensions() {
     if (screenRatio > 1) {
       width = Math.round(window.screen.availHeight * 0.80);
       // console.log("width is based off screen height");
-      feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
+      // feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
     } else {
       width = Math.round(window.screen.availWidth * 0.80);
       // console.log("width is based off screen width");
-      feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
+      // feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
     }
 
     // width = Math.round(window.screen.availWidth * 0.80);
@@ -1320,9 +1320,22 @@ function setDimensions() {
   aParent.style.width = width + "px";
 
   feedbackPanelWrapper.style.width = width + "px";
-  // drawBlocks();
-  // createBlockFeedbackContainers();
-  // infectionOrigins();
+
+  //NEW code
+  // pixelRatio = setCanvasScalingFactor();
+  //
+  // var width = getStyleValue(aParent, "width");
+  // var height = width;
+  //
+  // aParent.style.height = height;
+  //
+  // blockFeedbackContainerWrapper.style.width = width;
+  // blockFeedbackContainerWrapper.style.height = height;
+  // // console.log(blockFeedbackContainerWrapper.style.width);
+  // canvas.width = parseInt(width, 10) * pixelRatio;
+  // canvas.height = parseInt(height, 10) * pixelRatio;
+  //
+  // blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
 }
 
 var canvasBoundingClientRect;
@@ -1330,12 +1343,19 @@ function setBoundingClient() {
   canvasBoundingClientRect = canvas.getBoundingClientRect();
 }
 
+function getStyleValue(elem, prop) {
+  return window.getComputedStyle(elem).getPropertyValue(prop);
+}
 function testlol() {
-  var screenRatio = window.screen.width/window.screen.height;
+  // var screenRatio = window.screen.width/window.screen.height;
 
-  // window.setTimeout(function() {
-    feedbackPanelWrapper.innerHTML = "Orientation changed. Screen ratio is: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+".";
-  // }, 1000);
+  if (window.innerWidth > window.innerHeight) {
+    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+".";
+  } else {
+    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+".";
+  }
+  // console.log(event.type);
+
 }
 window.addEventListener("orientationchange", testlol, false);
 
