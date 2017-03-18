@@ -1350,7 +1350,7 @@ function testlol() {
   // var screenRatio = window.screen.width/window.screen.height;
 
   if (window.innerWidth > window.innerHeight) {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+".";
+    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's outer width is: "+window.outerWidth+" while its outer height is: "+window.outerHeight+".";
 
     // canvas.style.width = width + "px";
     // canvas.style.height = height + "px";
@@ -1358,7 +1358,7 @@ function testlol() {
     // canvas.height = height * pixelRatio;
     // width = Math.round(window.screen.availWidth * 0.80);
   } else {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+".";
+    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's outer width is: "+window.outerWidth+" while its outer height is: "+window.outerHeight+".";
   }
   // console.log(event.type);
 
