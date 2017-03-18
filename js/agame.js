@@ -1378,13 +1378,13 @@ function testlol() {
   // console.log(event.type);
 
 }
-// window.addEventListener("orientationchange", testlol, false);
+window.addEventListener("orientationchange", testlol, false);
 
-// window.addEventListener("resize", setBoundingClient, false);
-window.addEventListener("resize", function() {
-  setBoundingClient();
-  testlol();
-}, false);
+window.addEventListener("resize", setBoundingClient, false);
+// window.addEventListener("resize", function() {
+//   setBoundingClient();
+//   testlol();
+// }, false);
 
 setDimensions();
 setBoundingClient();
