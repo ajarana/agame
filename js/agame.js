@@ -1347,13 +1347,16 @@ function getStyleValue(elem, prop) {
   return window.getComputedStyle(elem).getPropertyValue(prop);
 }
 function testlol() {
-  // var screenRatio = window.screen.width/window.screen.height;
+  var screenRatio = window.screen.width/window.screen.height;
 
-  if (window.outerWidth > window.outerHeight) {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's outer width is: "+window.outerWidth+" while its outer height is: "+window.outerHeight+".";
+  if (window.innerWidth > window.innerHeight) {
+    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
 
-    width = 0.8 * window.outerHeight;
+    width = 0.8 * window.innerHeight;
     height = width;
+
+    aParent.style.height = height + "px";
+    aParent.style.width = width + "px";
 
     blockFeedbackContainerWrapper.style.width = width + "px";
     blockFeedbackContainerWrapper.style.height = height + "px";
@@ -1361,10 +1364,13 @@ function testlol() {
     // canvas.height = height * pixelRatio;
     // width = Math.round(window.screen.availWidth * 0.80);
   } else {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's outer width is: "+window.outerWidth+" while its outer height is: "+window.outerHeight+".";
+    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
 
-    width = 0.8 * window.outerWidth;
+    width = 0.8 * window.innerWidth;
     height = width;
+
+    aParent.style.height = height + "px";
+    aParent.style.width = width + "px";
 
     blockFeedbackContainerWrapper.style.width = width + "px";
     blockFeedbackContainerWrapper.style.height = height + "px";
