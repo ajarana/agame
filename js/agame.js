@@ -1341,13 +1341,16 @@ function setDimensions() {
 var canvasBoundingClientRect;
 function setBoundingClient() {
   canvasBoundingClientRect = canvas.getBoundingClientRect();
+  // var bodyBoundingClientRect = document.getBoundingClientRect();
+  //
+  // feedbackPanelWrapper.innerHTML = "body width: "+bodyBoundingClientRect.width+" and body height: "+bodyBoundingClientRect.height;
 }
 
 function getStyleValue(elem, prop) {
   return window.getComputedStyle(elem).getPropertyValue(prop);
 }
 function testlol() {
-  var screenRatio = window.screen.width/window.screen.height;
+  var screenRatio = window.innerWidth/window.innerHeight;
 
   if (window.innerWidth > window.innerHeight) {
     feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" while its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
@@ -1375,16 +1378,16 @@ function testlol() {
     blockFeedbackContainerWrapper.style.width = width + "px";
     blockFeedbackContainerWrapper.style.height = height + "px";
   }
-  // console.log(event.type);
+  // console.log(document.body.getBoundingClientRect());
 
 }
-window.addEventListener("orientationchange", testlol, false);
+// window.addEventListener("orientationchange", testlol, false);
 
-window.addEventListener("resize", setBoundingClient, false);
-// window.addEventListener("resize", function() {
-//   setBoundingClient();
-//   testlol();
-// }, false);
+// window.addEventListener("resize", setBoundingClient, false);
+window.addEventListener("resize", function() {
+  setBoundingClient();
+  testlol();
+}, false);
 
 setDimensions();
 setBoundingClient();
