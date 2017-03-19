@@ -1353,7 +1353,7 @@ function testlol() {
   var screenRatio = window.innerWidth/window.innerHeight;
 
   if (window.innerWidth > window.innerHeight) {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" and its available height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
+    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" and its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
 
     // feedbackPanelWrapper.innerHTML = getStyleValue(aParent, "width");
 
@@ -1369,7 +1369,7 @@ function testlol() {
     // canvas.height = height * pixelRatio;
     // width = Math.round(window.screen.availWidth * 0.80);
   } else {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's available width is: "+window.screen.availWidth+" and its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
+    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's inner width is: "+window.innerWidth+" and its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
 
     // feedbackPanelWrapper.innerHTML = getStyleValue(aParent, "width");
 
@@ -1386,7 +1386,6 @@ function testlol() {
   // console.log(document.body.getBoundingClientRect());
 
 }
-window.addEventListener("orientationchange", testlol, false);
 
 // window.addEventListener("resize", setBoundingClient, false);
 // window.addEventListener("resize", function() {
@@ -1398,6 +1397,7 @@ function test2lol() {
   // testlol();
 }
 window.addEventListener("resize", test2lol, false);
+window.addEventListener("orientationchange", testlol, false);
 
 setDimensions();
 setBoundingClient();
