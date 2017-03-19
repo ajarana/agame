@@ -1396,7 +1396,7 @@ function test2lol() {
   setBoundingClient();
   // testlol();
 }
-window.addEventListener("resize", test2lol, false);
+window.addEventListener("deviceorientation", test2lol, false);
 window.addEventListener("orientationchange", testlol, false);
 
 setDimensions();
