@@ -1383,11 +1383,28 @@ function testlol() {
 }
 // window.addEventListener("orientationchange", testlol, false);
 
+var counter1 = 0;
+function test2() {
+  // var counter1 = 0;
+  counter1++;
+  console.log("counter1: "+counter1);
+  aParent.innerHTML = "counter1: "+counter1;
+}
+var counter2 = 0;
+function test3() {
+  // var counter2 = 0;
+  counter2++;
+  console.log("counter2: "+counter2);
+  feedbackPanelWrapper.innerHTML = "counter2: "+counter2;
+}
+window.addEventListener("resize", test2, false);
+window.addEventListener("resize", test3, false);
+
 // window.addEventListener("resize", setBoundingClient, false);
-window.addEventListener("resize", function() {
-  setBoundingClient();
-  testlol();
-}, false);
+// window.addEventListener("resize", function() {
+//   setBoundingClient();
+//   testlol();
+// }, false);
 
 setDimensions();
 setBoundingClient();
