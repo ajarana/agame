@@ -1239,103 +1239,103 @@ function setCanvasScalingFactor() {
 //   // infectionOrigins();
 // }
 function setDimensions() {
-  var width, height, pixelRatio, switchCase;
-  var screenRatio = window.screen.width / window.screen.height;
-
-  if (window.screen.width >= 1200) {
-    width = Math.round(window.screen.availWidth * 0.2);
-    // height = Math.round(width / 1.4);
-    height = width;
-
-    pixelRatio = setCanvasScalingFactor();
-
-    switchCase = 1200;
-  }
-  else if (window.screen.width >= 768) {
-    if (screenRatio > 1) {
-      width = Math.round(window.screen.availHeight * 0.5);
-    } else {
-      width = Math.round(window.screen.availWidth * 0.5);
-    }
-
-    height = width;
-
-    pixelRatio = setCanvasScalingFactor();
-
-    // switchCase = 768;
-  }
-  // else if (window.screen.width >= 576) {
+  // var width, height, pixelRatio, switchCase;
+  // var screenRatio = window.screen.width / window.screen.height;
+  //
+  // if (window.screen.width >= 1200) {
+  //   width = Math.round(window.screen.availWidth * 0.2);
+  //   // height = Math.round(width / 1.4);
+  //   height = width;
+  //
+  //   pixelRatio = setCanvasScalingFactor();
+  //
+  //   switchCase = 1200;
+  // }
+  // else if (window.screen.width >= 768) {
   //   if (screenRatio > 1) {
-  //     width = Math.round(window.screen.availHeight * 0.60);
-  //     console.log("576 condition");
+  //     width = Math.round(window.screen.availHeight * 0.5);
   //   } else {
-  //     width = Math.round(window.screen.availWidth * 0.60);
+  //     width = Math.round(window.screen.availWidth * 0.5);
   //   }
   //
   //   height = width;
   //
   //   pixelRatio = setCanvasScalingFactor();
   //
-  //   // switchCase = 576;
+  //   // switchCase = 768;
   // }
-  else {
-    if (screenRatio > 1) {
-      width = Math.round(window.screen.availHeight * 0.80);
-      // console.log("width is based off screen height");
-      // feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
-    } else {
-      width = Math.round(window.screen.availWidth * 0.80);
-      // console.log("width is based off screen width");
-      // feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
-    }
-
-    // width = Math.round(window.screen.availWidth * 0.80);
-    height = width;
-
-    pixelRatio = setCanvasScalingFactor();
-  }
-
-  canvas.style.width = width + "px";
-  canvas.style.height = height + "px";
-  canvas.width = width * pixelRatio;
-  canvas.height = height * pixelRatio;
-
-  ctx = canvas.getContext("2d");
-
-  switch (switchCase) {
-    case 1200:
-      blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-      break;
-    // case 576:
-    //   blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-    //   break;
-    default:
-      blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
-      break;
-  }
-
-  blockFeedbackContainerWrapper.style.width = width + "px";
-  blockFeedbackContainerWrapper.style.height = height + "px";
-
-  aParent.style.width = width + "px";
-
-  feedbackPanelWrapper.style.width = width + "px";
+  // // else if (window.screen.width >= 576) {
+  // //   if (screenRatio > 1) {
+  // //     width = Math.round(window.screen.availHeight * 0.60);
+  // //     console.log("576 condition");
+  // //   } else {
+  // //     width = Math.round(window.screen.availWidth * 0.60);
+  // //   }
+  // //
+  // //   height = width;
+  // //
+  // //   pixelRatio = setCanvasScalingFactor();
+  // //
+  // //   // switchCase = 576;
+  // // }
+  // else {
+  //   if (screenRatio > 1) {
+  //     width = Math.round(window.screen.availHeight * 0.80);
+  //     // console.log("width is based off screen height");
+  //     // feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
+  //   } else {
+  //     width = Math.round(window.screen.availWidth * 0.80);
+  //     // console.log("width is based off screen width");
+  //     // feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
+  //   }
+  //
+  //   // width = Math.round(window.screen.availWidth * 0.80);
+  //   height = width;
+  //
+  //   pixelRatio = setCanvasScalingFactor();
+  // }
+  //
+  // canvas.style.width = width + "px";
+  // canvas.style.height = height + "px";
+  // canvas.width = width * pixelRatio;
+  // canvas.height = height * pixelRatio;
+  //
+  // ctx = canvas.getContext("2d");
+  //
+  // switch (switchCase) {
+  //   case 1200:
+  //     blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
+  //     break;
+  //   // case 576:
+  //   //   blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
+  //   //   break;
+  //   default:
+  //     blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
+  //     break;
+  // }
+  //
+  // blockFeedbackContainerWrapper.style.width = width + "px";
+  // blockFeedbackContainerWrapper.style.height = height + "px";
+  //
+  // aParent.style.width = width + "px";
+  //
+  // feedbackPanelWrapper.style.width = width + "px";
 
   //NEW code
-  // pixelRatio = setCanvasScalingFactor();
-  //
-  // var width = getStyleValue(aParent, "width");
-  // var height = width;
-  //
-  // aParent.style.height = height;
-  //
-  // blockFeedbackContainerWrapper.style.width = width;
-  // blockFeedbackContainerWrapper.style.height = height;
-  // // console.log(blockFeedbackContainerWrapper.style.width);
-  // canvas.width = parseInt(width, 10) * pixelRatio;
-  // canvas.height = parseInt(height, 10) * pixelRatio;
-  //
-  // blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
+  pixelRatio = setCanvasScalingFactor();
+
+  var width = getStyleValue(aParent, "width");
+  var height = width;
+
+  aParent.style.height = height;
+
+  blockFeedbackContainerWrapper.style.width = width;
+  blockFeedbackContainerWrapper.style.height = height;
+  // console.log(blockFeedbackContainerWrapper.style.width);
+  canvas.width = parseInt(width, 10) * pixelRatio;
+  canvas.height = parseInt(height, 10) * pixelRatio;
+
+  blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
 }
 
 var canvasBoundingClientRect;
@@ -1350,61 +1350,50 @@ function getStyleValue(elem, prop) {
   return window.getComputedStyle(elem).getPropertyValue(prop);
 }
 function testlol() {
-  var screenRatio = window.screen.width/window.screen.height;
+  var screenRatio = window.innerWidth/window.innerHeight;
 
   if (window.innerWidth > window.innerHeight) {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's width is: "+window.screen.width+" while its height is: "+window.screen.height+"."+" screenRatio is "+screenRatio;
+    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
 
-    width = 0.8 * window.screen.height;
-    height = width;
-
-    aParent.style.height = height + "px";
-    aParent.style.width = width + "px";
-
-    blockFeedbackContainerWrapper.style.width = width + "px";
-    blockFeedbackContainerWrapper.style.height = height + "px";
+    // width = 0.8 * window.screen.height;
+    // height = width;
+    //
+    // aParent.style.height = height + "px";
+    // aParent.style.width = width + "px";
+    //
+    // blockFeedbackContainerWrapper.style.width = width + "px";
+    // blockFeedbackContainerWrapper.style.height = height + "px";
     // canvas.width = width * pixelRatio;
     // canvas.height = height * pixelRatio;
     // width = Math.round(window.screen.availWidth * 0.80);
   } else {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's width is: "+window.screen.width+" while its height is: "+window.screen.height+"."+" screenRatio is "+screenRatio;
+    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
 
-    width = 0.8 * window.screen.width;
-    height = width;
-
-    aParent.style.height = height + "px";
-    aParent.style.width = width + "px";
-
-    blockFeedbackContainerWrapper.style.width = width + "px";
-    blockFeedbackContainerWrapper.style.height = height + "px";
+    setDimensions();
+    // width = 0.8 * window.screen.width;
+    // height = width;
+    //
+    // aParent.style.height = height + "px";
+    // aParent.style.width = width + "px";
+    //
+    // blockFeedbackContainerWrapper.style.width = width + "px";
+    // blockFeedbackContainerWrapper.style.height = height + "px";
   }
   // console.log(document.body.getBoundingClientRect());
 
 }
 // window.addEventListener("orientationchange", testlol, false);
 
-var counter1 = 0;
-function test2() {
-  // var counter1 = 0;
-  counter1++;
-  console.log("counter1: "+counter1);
-  aParent.innerHTML = "counter1: "+counter1;
-}
-var counter2 = 0;
-function test3() {
-  // var counter2 = 0;
-  counter2++;
-  console.log("counter2: "+counter2);
-  feedbackPanelWrapper.innerHTML = "counter2: "+counter2;
-}
-window.addEventListener("resize", test2, false);
-window.addEventListener("resize", test3, false);
-
 // window.addEventListener("resize", setBoundingClient, false);
 // window.addEventListener("resize", function() {
 //   setBoundingClient();
 //   testlol();
 // }, false);
+function test2lol() {
+  setBoundingClient();
+  testlol();
+}
+window.addEventListener("resize", test2lol, false);
 
 setDimensions();
 setBoundingClient();
