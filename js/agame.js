@@ -1353,8 +1353,9 @@ function testlol() {
   var screenRatio = window.innerWidth/window.innerHeight;
 
   if (window.innerWidth > window.innerHeight) {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
+    // feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
 
+    feedbackPanelWrapper.innerHTML = getStyleValue(aParent, "width");
     // width = 0.8 * window.screen.height;
     // height = width;
     //
@@ -1367,9 +1368,11 @@ function testlol() {
     // canvas.height = height * pixelRatio;
     // width = Math.round(window.screen.availWidth * 0.80);
   } else {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
+    // feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+"."+" screenRatio is "+screenRatio;
 
-    setDimensions();
+    feedbackPanelWrapper.innerHTML = getStyleValue(aParent, "width");
+
+    // setDimensions();
     // width = 0.8 * window.screen.width;
     // height = width;
     //
