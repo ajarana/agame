@@ -1,19 +1,15 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 
+var mainWrapper = document.getElementById("mainWrapper");
 var feedbackPanelWrapper = document.getElementById("feedbackPanelWrapper");
-
 var aParent = document.getElementById("aParent");
-
-var blockFeedbackContainer = document.getElementsByClassName("blockFeedbackContainer");
-
 var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
 
+var blockFeedbackContainer = document.getElementsByClassName("blockFeedbackContainer");
 var blockFeedbackText = document.getElementById("blockFeedbackText");
-
 var chosen = document.getElementById("blockStatus"),
     chosenClassList = chosen.classList;
-
 var score = document.getElementById("score");
 
 // var newChild = document.createElement("div");
@@ -21,6 +17,12 @@ var score = document.getElementById("score");
 var numberOfColumns = 4;
 var numberOfRows = 4;
 var blockLength;
+
+var xArray;
+var yArray;
+
+var gameInitialized = false;
+
 
 function initializeGame() {
 aParent.removeEventListener("click", initializeGame, false);
@@ -35,48 +37,62 @@ chosenClassList.remove("blueBlock");
 chosenClassList.add("emptyBlock");
 chosen.innerHTML = "?";
 
-var xArray = [];
-var yArray = [];
-var blockColorArray = [];
-var isInfected = [];
+// var xArray = [];
+// var yArray = [];
+// var isInfected = [];
+// var individualAlphaValues = [];
+gameInitialized = true;
+
 var individualAlphaValues = [];
+var isInfected = [];
 
 var infectedInitialIndex;
 // var blockLength;
+// var blockColorArray = [];
+var blockColorArray = [];
+
+var blackIndividualAlphaValues = [];
+var blackIsInfected = [];
+
 var blueColorArray = [];
 var greenColorArray = [];
 
 var normalGreen = "hsl(150,100%,45%)";
 var normalBlue = "hsl(195,100%,47%)";
 
-function drawBlocks() {
-  //Just stores the center x and y coordinates on the canvas.
-  blockColorArray = [];
+function generateEasyColors() {
+  var listOfColors = [normalGreen, normalBlue];
 
-  greenColorArray = [];
-  blueColorArray = [];
+  for (var b=0, v=1; b < 0.5*(numberOfRows * numberOfColumns); b++, v+=2) {
+    blockColorArray.push(normalGreen);
+    blockColorArray.push(normalBlue);
+  }
 
-  xArray = [];
-  yArray = [];
+  for (var z=0; z < blockColorArray.length/2; z++) {
+    greenColorArray.push(z);
+    greenColorArray.push(false);
+  }
+  for (var x=0; x < blockColorArray.length/2; x++) {
+    blueColorArray.push(x+blockColorArray.length);
+    greenColorArray.push(false);
+  }
 
-  // isInfected = [];
-  // individualAlphaValues = [];
+  for (var i=0; i < numberOfRows; i++) {
+    for (var j=0; j < numberOfColumns; j++) {
+      isInfected.push(false);
+      blackIsInfected.push(false);
+      individualAlphaValues.push(0);
+      blackIndividualAlphaValues.push(0);
+    }
+  }
+}
+function generateBlockColors() {
+  // greenColorArray = [];
+  // blueColorArray = [];
 
-  var xCenterOfCanvas = Math.round(canvas.width/2);
-  var yCenterOfCanvas = Math.round(canvas.height/2);
-  // var yCenterOfCanvas = 146;
-  // console.log("xCenterOfCanvas: "+xCenterOfCanvas);
-  // console.log("yCenterOfCanvas: "+yCenterOfCanvas);
   //The coefficients that help center each individual block. This value is multiplied by the length of a small block and either added or subtracted from the x center of the canvas. Small blocks are drawn starting from the top left corners.
-  var xCoefficient = -(numberOfColumns/2);
-  var yCoefficient = -(numberOfRows/2);
-  // console.log("xCoefficient is: "+xCoefficient);
-  // console.log("yCoefficient is: "+yCoefficient);
 
   var listOfColors = [normalGreen, normalBlue];
-  // var listOfColors = [normalGreen];
-
-  var pixelRatio = setCanvasScalingFactor();
 
   var localArrayBothColors = [];
 
@@ -92,22 +108,6 @@ function drawBlocks() {
   //Two for loops that build the big block row by row. xCoefficient is reset after each row's completion while yCoefficient is increased.
   for (var i=0; i < numberOfRows; i++) {
     for (var j=0; j < numberOfColumns; j++) {
-      if (window.screen.width >= 1200) {
-        var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-        var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      } else {
-        var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
-        var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
-      }
-      // if (window.screen.width >= 1200) {
-      //   var x = j * blockLength + j;
-      //   var y = i * blockLength + i;
-      // }
-      xArray.push(x);
-      yArray.push(y);
-
-      // console.log(localArrayBothColors);
-      // var blockColorArrayIndex = listOfColors[Math.floor(Math.random()*(listOfColors.length))];
       var actualRandomIndex = Math.floor(Math.random()*(localArrayBothColors.length));
 
       preventEasyShapes.push(localArrayBothColors[actualRandomIndex]);
@@ -116,21 +116,7 @@ function drawBlocks() {
       // console.log(preventEasyShapes);
 
       // // console.log((preventEasyShapes.length-1) % numberOfColumns == 0);
-      //
       // console.log(yArray[preventEasyShapes.length-1]-yArray[preventEasyShapes.length-4] == 0);
-
-      // if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
-      //   console.log("third condition activated");
-      //   actualRandomIndex = localArrayBothColors.indexOf(normalBlue);
-      //
-      //   preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalBlue);
-      // }
-      // else if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-3] == preventEasyShapes[preventEasyShapes.length-4] && preventEasyShapes[preventEasyShapes.length-1] == normalBlue) {
-      //   console.log("fourth condition activated");
-      //   actualRandomIndex = localArrayBothColors.indexOf(normalGreen);
-      //
-      //   preventEasyShapes.splice(preventEasyShapes.length-1, 1, normalGreen);
-      // }
 
       //Prevents 3 adjacent blocks of the same color in either the horizontal or vertical direction.
       if (preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-2] && preventEasyShapes[preventEasyShapes.length-1] == preventEasyShapes[preventEasyShapes.length-3] && yArray[preventEasyShapes.length-1] - yArray[preventEasyShapes.length-3] == 0 &&  preventEasyShapes[preventEasyShapes.length-1] == normalGreen) {
@@ -199,35 +185,15 @@ function drawBlocks() {
       // console.log("localArrayBothColors after splice: ")
       // console.log(localArrayBothColors);
 
-      ctx.fillStyle = blockColorArrayIndex;
-
       // console.log("The fillStyle for this block is: ");
       // console.log(ctx.fillStyle);
 
       blockColorArray.push(blockColorArrayIndex);
 
-      // if (window.screen.width >= 1200) {
-      //   var x = xCenterOfCanvas + j + (xCoefficient*blockLength);
-      //   var y = yCenterOfCanvas + i + (yCoefficient*blockLength);
-      // } else {
-      //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
-      //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
-      // }
-      // // if (window.screen.width >= 1200) {
-      // //   var x = j * blockLength + j;
-      // //   var y = i * blockLength + i;
-      // // }
-
-      //The point of reference NEVER changes (xCenterOfCanvas or yCenterOfCanvas). Blocks are drawn accordingly, with x and y added to make small gaps in between the blocks.
-      ctx.fillRect(x, y, blockLength, blockLength);
-
-      // xArray.push(x);
-      // yArray.push(y);
-
       isInfected.push(false);
+      blackIsInfected.push(false);
       individualAlphaValues.push(0);
-
-      xCoefficient++;
+      blackIndividualAlphaValues.push(0);
 
       //To help determine when 100% of green or blue blocks have become infectious.
       function oneColorArrays() {
@@ -242,51 +208,91 @@ function drawBlocks() {
       }
       oneColorArrays();
     }
-    xCoefficient = -(numberOfColumns/2);
-    yCoefficient++;
   }
 
-  // console.log("initial greenColorArray from drawBlocks():");
+  // console.log("initial greenColorArray from generateBlockColors():");
   // console.log(greenColorArray);
-  // console.log("initial blueColorArray from drawBlocks():");
+  // console.log("initial blueColorArray from generateBlockColors():");
   // console.log(blueColorArray);
+  // console.log("this is blackIsInfected: ");
+  // console.log(blackIsInfected);
+  // console.log("this is blackIndividualAlphaValues: ");
+  // console.log(blackIndividualAlphaValues);
+}
+
+function drawBlocks() {
+  // positionBlocks();
+
+  var animationRequest;
+
+  var numberOfFullyInfectedBlackBlocks = blackIndividualAlphaValues.filter(function(para) {
+    return para == 1;
+  });
+  // console.log("this is numberoffullyinfectedblackblocks");
+  // console.log(numberOfFullyInfectedBlackBlocks);
+
+  ctx.clearRect(0,0, canvas.width, canvas.height);
+
+  for (var i=0; i < xArray.length; i++) {
+    if (blackIsInfected[i]) {
+      ctx.fillStyle = "rgba(0,0,0,"+blackIndividualAlphaValues[i]+")";
+      // console.log("drawing black block based off alpha value: "+blackIndividualAlphaValues[i]);
+    }
+    else if (isInfected[i]) {
+      ctx.fillStyle = "rgba(255,0,0,"+individualAlphaValues[i]+")";
+    } else {
+      ctx.fillStyle = blockColorArray[i];
+    }
+
+    ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
+  }
+
+  if (numberOfFullyInfectedBlackBlocks.length == blackIndividualAlphaValues.length) {
+    window.cancelAnimationFrame(animationRequest);
+    console.log("animation frame cancelled!");
+  } else {
+    animationRequest = window.requestAnimationFrame(drawBlocks);
+    // console.log("requestAnimationFrame running");
+  }
 }
 
 function createBlockFeedbackContainers() {
-  var scoreBlockLength = blockLength / setCanvasScalingFactor();
-
-  for (var i=0; i<xArray.length; i++) {
+  for (var i=0; i < xArray.length; i++) {
     var newChild = document.createElement("div");
 
     newChild.classList.add("blockFeedbackContainer");
     // newChild.classList.add("transparentBackground");
     newChild.classList.add("weakWhiteBackground");
+    newChild.classList.add("whiteText");
 
     blockFeedbackContainerWrapper.appendChild(newChild);
-
-
-    blockFeedbackContainer[i].style.left = xArray[i]/setCanvasScalingFactor() + "px";
-    blockFeedbackContainer[i].style.top = yArray[i]/setCanvasScalingFactor() + "px";
-
-    blockFeedbackContainer[i].style.width = scoreBlockLength + "px";
-    blockFeedbackContainer[i].style.height = scoreBlockLength + "px";
   }
 }
 
 var animateBlackSquareCounter = 0;
 
 function animateBlackSquares(j) {
-  var blackIndividualAlphaValues = individualAlphaValues.slice(0);
-  console.log("animateblacksquares INITIATED");
-  console.log(blackIndividualAlphaValues);
-  console.log("individualAlphaValues here:");
-  console.log(individualAlphaValues);
-  for (var k=0; k < blackIndividualAlphaValues.length; k++) {
-    // if (individualAlphaValues[k] < 1) {
-    blackIndividualAlphaValues[k] = 0;
-    // }
+  // var blackIndividualAlphaValues = individualAlphaValues.slice(0);
+  // blackIndividualAlphaValues = individualAlphaValues.slice(0);
+  // console.log("animateblacksquares INITIATED");
+  // console.log(blackIndividualAlphaValues);
+  // console.log("individualAlphaValues here:");
+  // console.log(individualAlphaValues);
+  // for (var k=0; k < blackIndividualAlphaValues.length; k++) {
+  //   // if (individualAlphaValues[k] < 1) {
+  //   blackIndividualAlphaValues[k] = 0;
+  //   // }
+  // }
+  if (blockColorArray[j] == normalGreen) {
+    for (var i=0; i < greenColorArray.length; i++) {
+      blackIsInfected[greenColorArray[i]] = true;
+    }
   }
-
+  else if (blockColorArray[j] == normalBlue) {
+    for (var i=0; i < blueColorArray.length; i++) {
+      blackIsInfected[blueColorArray[i]] = true;
+    }
+  }
   // console.log("blackIndividualAlphaValues at the beginning of animateBlackSquares()")
   // console.log(blackIndividualAlphaValues);
   // return;
@@ -301,13 +307,14 @@ function animateBlackSquares(j) {
     // console.log(greenColorArray);
     // return;
     for (var i=0; i < greenColorArray.length; i++) {
-      ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
-      blackIndividualAlphaValues[greenColorArray[i]] += 0.005;
+      // ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
+      blackIndividualAlphaValues[greenColorArray[i]] += 0.04;
       // console.log("fuck");
       // console.log("blackIndividualAlphaValues are: ");
       // console.log(blackIndividualAlphaValues);
       // return;
-      ctx.fillRect(xArray[greenColorArray[i]], yArray[greenColorArray[i]], blockLength, blockLength);
+
+      // ctx.fillRect(xArray[greenColorArray[i]], yArray[greenColorArray[i]], blockLength, blockLength);
     }
   }
   else if (blockColorArray[j] == normalBlue) {
@@ -322,13 +329,14 @@ function animateBlackSquares(j) {
     // return;
     // console.log(isInfected);
     for (var i=0; i < blueColorArray.length; i++) {
-      ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
-      blackIndividualAlphaValues[blueColorArray[i]] += 0.004;
+      // ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
+      blackIndividualAlphaValues[blueColorArray[i]] += 0.04;
       // console.log("fuck");
       // console.log("blackIndividualAlphaValues are: ");
       // console.log(blackIndividualAlphaValues);
       // return;
-      ctx.fillRect(xArray[blueColorArray[i]], yArray[blueColorArray[i]], blockLength, blockLength);
+
+      // ctx.fillRect(xArray[blueColorArray[i]], yArray[blueColorArray[i]], blockLength, blockLength);
     }
   }
   // console.log("Individual alpha values at the end: ");
@@ -338,11 +346,11 @@ function animateBlackSquares(j) {
 
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
-  if (blackIndividualAlphaValues[j] < 0.19) {
+  if (blackIndividualAlphaValues[j] < 0.95) {
     animateBlackSquaresCycle(j);
   }
-  else if (blackIndividualAlphaValues[j] >= 0.19)   {
-    ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
+  else if (blackIndividualAlphaValues[j] >= 0.95)   {
+    // ctx.fillStyle = "rgba(0, 0, 0," + blackIndividualAlphaValues[j] + ")";
 
     if (blockColorArray[j] == normalGreen) {
       greenColorArray.push(true);
@@ -350,10 +358,6 @@ function animateBlackSquares(j) {
 
       for (var i=0; i < greenColorArray.length-1; i++) {
         blackIndividualAlphaValues[greenColorArray[i]] = 1;
-
-        ctx.fillRect(xArray[greenColorArray[i]],  yArray[greenColorArray[i]], blockLength, blockLength);
-
-        // infect(greenColorArray[i]);
       }
     }
     else if (blockColorArray[j] == normalBlue) {
@@ -362,10 +366,6 @@ function animateBlackSquares(j) {
 
       for (var i=0; i < blueColorArray.length-1; i++) {
         blackIndividualAlphaValues[blueColorArray[i]] = 1;
-
-        ctx.fillRect(xArray[blueColorArray[i]],  yArray[blueColorArray[i]], blockLength, blockLength);
-
-        // infect(blueColorArray[i]);
       }
     }
 
@@ -373,6 +373,8 @@ function animateBlackSquares(j) {
 
     if (animateBlackSquareCounter == 2) {
       // window.setTimeout(function() {
+        gameInitialized = false;
+
         blockFeedbackContainerWrapper.classList.remove("transparentBackground");
         blockFeedbackContainerWrapper.classList.add("blackBackground");
 
@@ -391,8 +393,8 @@ function animateBlackSquares(j) {
     // console.log(greenColorArray);
     // console.log("blueColorArray at the end of animateBlackSquaresCycle()");
     // console.log(blueColorArray);
-    // console.log("blackIndividualAlphaValues at the end of animateBlackSquaresCycle()");
-    // console.log(blackIndividualAlphaValues);
+    console.log("blackIndividualAlphaValues at the end of animateBlackSquaresCycle() setTimeout for: "+blockColorArray[j]);
+    console.log(blackIndividualAlphaValues);
 
   }
   }, 120);
@@ -416,16 +418,16 @@ function animateIndividualInfection(j) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
       // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
-      // console.log("Slightly fast rate running for j: "+j);
-      individualAlphaValues[j] += 0.004;
+      console.log("Super fast rate running for j: "+j);
+      individualAlphaValues[j] += 0.14;
     }
     else if (internalIndividualAlphaValues.length > individualAlphaValues.length/3) {
-      // console.log("Super fast rate running for j: "+j);
-      individualAlphaValues[j] += 0.002;
+      console.log("Slightly fast rate running for j: "+j);
+      individualAlphaValues[j] += 0.02;
     }
     else {
-      // console.log("Slow rate running for j: "+j);
-      individualAlphaValues[j] += 0.001;
+      console.log("Slow rate running for j: "+j);
+      individualAlphaValues[j] += 0.01;
     }
     // individualAlphaValues[j] += 0.001;
   }
@@ -435,31 +437,32 @@ function animateIndividualInfection(j) {
     individualAlphaValues[j] += 0.19;
   }
 
-  ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
+  // ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
 
   //FOR TESTING.
   // ctx.fillStyle = "pink";
 
-  ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
+  // ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
   // console.log("With j = "+j+" fillRect only called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
 
   // console.log("animateIndividualInfection() is right before setTimeout for j: "+j+" with individualAlphaValues[j]: "+individualAlphaValues[j]+" and isInfected[j]: "+isInfected[j]);
   window.setTimeout(function() {
   //Makes sure it isn't 0, because if it is, this function should be called by ANOTHER function to make sure infections spread correctly.
-  if (individualAlphaValues[j] < 0.088 && individualAlphaValues[j] !== 0) {
+  if (individualAlphaValues[j] < 0.95 && individualAlphaValues[j] !== 0) {
     // console.log("current animateTimer: "+animateTimer);
     animateIndividualInfection(j);
   }
-  else if (individualAlphaValues[j] >= 0.088 && individualAlphaValues[j] < 1)   {
+  else if (individualAlphaValues[j] >= 0.95) {
+  // else if (individualAlphaValues[j] >= 0.95 && individualAlphaValues[j] < 1)   {
     // console.log("current animateTimer: "+animateTimer);
     // console.log("individualAlphaValue[j]: "+individualAlphaValues[j]+" for j: "+j+" is about to get turned to 1");
     individualAlphaValues[j] = 1;
     // console.log("individualAlphaValues[j] for j: "+j+" is now: "+individualAlphaValues[j]);
 
-    ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
+    // ctx.fillStyle = "rgba(255, 0, 0," + individualAlphaValues[j] + ")";
 
-    ctx.clearRect(xArray[j], yArray[j], blockLength, blockLength);
-    ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
+    // ctx.clearRect(xArray[j], yArray[j], blockLength, blockLength);
+    // ctx.fillRect(xArray[j], yArray[j], blockLength, blockLength);
     // console.log("With j = "+j+" fillRect AND clearRect called with xArray[j]: "+xArray[j]+" and yArray[j]: "+yArray[j]);
 
     if (blockColorArray[j] == normalGreen) {
@@ -521,7 +524,7 @@ function infect(i) {
 
     //Checks ALL adjacent blocks around the infected block (8 total). Starts with the block to the left of the target block, and then checks below it, and then above it. This process repeats at the next two columns.
     for (var k = -1; k < 2; k++) {
-      //The coefficient that determines whether the algorithm searches for an uninfected block in the upward or downward direction.
+      //The coefficient that determines whether the script searches for an uninfected block in the upward or downward direction.
       var a = 1;
 
       //First determines whether the block to the left is adjacent to the infected block. If so, it infects that block.
@@ -538,7 +541,7 @@ function infect(i) {
             // isInfected[i + (a*numberOfColumns) + k] = true;
           }
 
-          //Coefficient sign change that allows the algorithm to look for an adjacent block above the infected block in the second itiration of this for loop.
+          //Coefficient sign change that allows the script to look for an adjacent block above the infected block in the second itiration of this for loop.
           a = -a;
         }
       }
@@ -584,7 +587,7 @@ function infect(i) {
   //           // isInfected[i + (a*numberOfColumns) + k] = true;
   //         }
   //
-  //         //Coefficient sign change that allows the algorithm to look for an adjacent block above the infected block in the second itiration of this for loop.
+  //         //Coefficient sign change that allows the script to look for an adjacent block above the infected block in the second itiration of this for loop.
   //         a = -a;
   //       }
   //     }
@@ -628,6 +631,14 @@ function infectionOrigins() {
         // document.getElementById("score").innerHTML = "I HAVE RETURNED";
         return;
       }
+      // else if (timer > 2000) {
+      //   timer -= 250;
+      // }
+      else if (numberOfFullyInfectedBlocks.length >= 3 && numberOfTimerResets == 0) {
+        timer = 1500;
+        console.log("TIMER RESET");
+        numberOfTimerResets++;
+      }
       else if (timer > 2000) {
         timer -= 550;
       }
@@ -637,16 +648,8 @@ function infectionOrigins() {
       else if (timer > 500) {
         timer -= 50;
       }
-      else if (timer > 350) {
-        timer -= 2;
-      }
-      else if (numberOfFullyInfectedBlocks.length == 3 && numberOfTimerResets == 0) {
-        timer = 1500;
-        console.log("TIMER RESET");
-        numberOfTimerResets++;
-      }
 
-      // console.log("The current timer: "+timer);
+      console.log("The current timer: "+timer);
       for (var i=0; i < isInfected.length; i++) {
         if (isInfected[i] == false) {
           falseIndexArray.push(i);
@@ -714,7 +717,8 @@ score.innerHTML = 0;
 var totalScoreGreen = 1;
 var totalScoreBlue = 1;
 
-var scoreTimeout;
+var errorOpacity;
+var errorInnerHTML;
 
 var lastBlockColorComparison = [];
 var lastBlockIndexComparison = [];
@@ -739,6 +743,7 @@ function cure(event) {
 
   var wasPreviouslyInfected = false;
   var curedBlockLength = blockLength / setCanvasScalingFactor();
+  // console.log("curedBlockLength: "+curedBlockLength);
 
   var scaledxArray = xArray.slice();
   var scaledyArray = yArray.slice();
@@ -752,7 +757,7 @@ function cure(event) {
     scaledyArray[g] = scaledyArray[g] / setCanvasScalingFactor();
   }
 
-  //Now that the clicked block and its adjacent blocks have been disinfected and have had their globalAlphaValue set to 0, we need to check surrounding blocks to see if they're infectious (globalAlpha value == 1) and touching any of the cured blocks.
+  //Clicked block cured, now this checks surrounding blocks to see if they're infectious (globalAlpha value == 1) and adjacent.
   function mouseTimeout(i) {
     var reInfectedArray = [];
 
@@ -768,10 +773,9 @@ function cure(event) {
         return;
       }
 
-      //Checks the blocks AROUND the newly cured blocks. Calls the infection function if it finds any infectious blocks.
       //Starts at the leftmost column and finishes at the rightmost.
       for (var k = -1; k < 2; k++) {
-        //Coefficient variable that changes which way (downward/upward) the algorithm searches for infectious blocks.
+        //Coefficient variable that changes which way (downward/upward) the script searches for infectious blocks.
         var c = 1;
 
           //First checks to see if the block two spaces to the left of the newly cured block is on the same row and whether its infectious.
@@ -812,20 +816,25 @@ function cure(event) {
         // }
 
         lastBlockColorComparison.push(blockColorArray[i]);
-        console.log("This is lastBlockColorComparison before its modified by the i = " + i + " instance of cure(i)");
-        console.log(lastBlockColorComparison);
+        // console.log("This is LASTBLOCKCOLORCOMPARISON after its modified by the i = " + i + " instance of cure(i) ");
+        // console.log(lastBlockColorComparison);
+        // console.log(JSON.stringify(lastBlockColorComparison));
+
         lastBlockIndexComparison.push(i);
 
         if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] == lastBlockIndexComparison[0]) {
-          console.log("Selected block as same index as previous block, cure() stops here. lastBlockIndexComparison NOT cleared, but pop() used.");
+          // console.log("Selected block as same index as previous block, cure() stops here. lastBlockIndexComparison NOT cleared, but pop() used.");
           //Gets rid of the last value for the two comparison arrays, otherwise lastBlockColorComparison continues to get infinitely larger.
           lastBlockIndexComparison.pop();
           lastBlockColorComparison.pop();
 
+          // console.log("errorBlock() called");
+          showErrorBlock(i);
+
           return;
         }
         else if (lastBlockIndexComparison.length == 2 && lastBlockIndexComparison[1] !== lastBlockIndexComparison[0]) {
-          console.log("Selected block is NOT same index as previous block, cure() continues. lastBlockIndexComparison cleared.")
+          // console.log("Selected block is NOT same index as previous block, cure() continues. lastBlockIndexComparison cleared for i: "+i)
           lastBlockIndexComparison = [];
         }
 
@@ -833,7 +842,7 @@ function cure(event) {
         // console.log(lastBlockColorComparison);
         //Compare the last two blocks selected to see if they're the same color.
         if (lastBlockColorComparison.length == 1 && individualAlphaValues[i] < 1) {
-          console.log("lastBlockColorComparison only had 1 value, was cleared. The selected block was already FULLY infected.");
+          // console.log("lastBlockColorComparison had 1 value. ");
           // console.log(lastBlockColorComparison);
           // lastBlockColorComparison = [];
           // return;
@@ -841,7 +850,7 @@ function cure(event) {
         }
         else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] == lastBlockColorComparison[0] && individualAlphaValues[i] < 1) {
           lastBlockColorComparison = [];
-          console.log("Previous block's color matched and lastBlockColorComparison cleared.");
+          // console.log("Previous block's color matched and lastBlockColorComparison cleared. "+lastBlockColorComparison);
           // console.log(lastBlockColorComparison);
 
           // if (blockColorArray[i] == normalGreen && individualAlphaValues[i] == 1) {
@@ -857,20 +866,21 @@ function cure(event) {
 
           passedTheCheck = true;
           secondBlockCured = true;
+          // console.log("secondBlockCured is: "+secondBlockCured);
         }
         else if (lastBlockColorComparison.length == 2 && lastBlockColorComparison[1] !== lastBlockColorComparison[0] && individualAlphaValues[i] == 1) {
-          console.log("Blocks didn't match, selected block was fully infected, and the last value has been removed from lastBlockColorComparison");
+          // console.log("Blocks didn't match, selected block was fully infected, and the last value has been removed from lastBlockColorComparison");
           lastBlockColorComparison.pop();
           // return;
         }
         else if (lastBlockColorComparison.length == 2 && individualAlphaValues[i] !== 1) {
-          console.log("The selected block does NOT match the previous color and has now been fully infected. lastBlockColorComparison has been cleared as well.");
+          // console.log("The selected block does NOT match the previous color and has now been fully infected. lastBlockColorComparison has been cleared as well.");
 
           individualAlphaValues[i] = 1;
-          ctx.fillStyle = "rgba(255,0,0," + individualAlphaValues[i] + ")";
+          // ctx.fillStyle = "rgba(255,0,0," + individualAlphaValues[i] + ")";
           //make sure to change individual alpha values and isinfected to true
-          ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
-          ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
+          // ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
+          // ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
 
           lastBlockColorComparison = [];
           // console.log(lastBlockColorComparison.length);
@@ -880,16 +890,16 @@ function cure(event) {
             var greenIndexToBeReplaced = greenColorArray.indexOf(false);
             if (greenIndexToBeReplaced !== -1) {
               greenColorArray.splice(greenIndexToBeReplaced, 1);
-              console.log("one false value has been removed from greenColorArray");
-              console.log(greenColorArray);
+              // console.log("one false value has been removed from greenColorArray");
+              // console.log(greenColorArray);
             }
           }
           else if (blockColorArray[i] == normalBlue) {
             var blueIndexToBeReplaced = blueColorArray.indexOf(false);
             if (blueIndexToBeReplaced !== -1) {
               blueColorArray.splice(blueIndexToBeReplaced, 1);
-              console.log("one false value has been removed from blueColorArray");
-              console.log(blueColorArray);
+              // console.log("one false value has been removed from blueColorArray");
+              // console.log(blueColorArray);
             }
           }
 
@@ -903,7 +913,9 @@ function cure(event) {
         }
       }
 
+      // console.log("blockColorAndIndexCheck called for i: "+i);
       blockColorAndIndexCheck(i);
+      // console.log("blockColorAndIndexCheck called for i: "+i);
 
       if (passedTheCheck == false) {
         updateChosen(i);
@@ -912,10 +924,10 @@ function cure(event) {
       }
 
       //Restores uninfected status to cured blocks and clears the area to restore the block as its original color.
-      console.log("The selected block has just been cured through the regular cure.")
-      ctx.fillStyle = blockColorArray[i];
-      ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
-      ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
+      // console.log("The selected block has just been cured through the regular cure for i: "+i)
+      // ctx.fillStyle = blockColorArray[i];
+      // ctx.clearRect(xArray[i], yArray[i], blockLength, blockLength);
+      // ctx.fillRect(xArray[i], yArray[i], blockLength, blockLength);
 
       individualAlphaValues[i] = 0;
 
@@ -932,7 +944,7 @@ function cure(event) {
 
       function updateChosen(i) {
         if (blockColorArray[i] == normalGreen && lastBlockColorComparison.length == 0) {
-          console.log("negative condition chosen");
+          // console.log("negative condition chosen");
           chosenClassList.remove("greenBlock");
           chosenClassList.remove("blueBlock");
           chosenClassList.add("emptyBlock");
@@ -940,7 +952,7 @@ function cure(event) {
           chosen.innerHTML = "?";
         }
         else if (blockColorArray[i] == normalBlue && lastBlockColorComparison.length == 0) {
-          console.log("0th condition chosen");
+          // console.log("0th condition chosen");
           chosenClassList.remove("greenBlock");
           chosenClassList.remove("blueBlock");
           chosenClassList.add("emptyBlock");
@@ -948,28 +960,28 @@ function cure(event) {
           chosen.innerHTML = "?";
         }
         else if (blockColorArray[i] == normalGreen && secondBlockCured == false) {
-          console.log("first updateChosen condition chosen");
+          // console.log("first updateChosen condition chosen");
           chosenClassList.remove("emptyBlock");
           chosenClassList.add("greenBlock");
 
           chosen.innerHTML = "";
         }
         else if (blockColorArray[i] == normalBlue && secondBlockCured == false) {
-          console.log("second updateChosen condition chosen");
+          // console.log("second updateChosen condition chosen");
           chosenClassList.remove("emptyBlock");
           chosenClassList.add("blueBlock");
 
           chosen.innerHTML = "";
         }
         else if (blockColorArray[i] == normalGreen && secondBlockCured) {
-          console.log("third updateChosen condition chosen");
+          // console.log("third updateChosen condition chosen");
           chosenClassList.remove("greenBlock");
           chosenClassList.add("emptyBlock");
 
           chosen.innerHTML = "?";
         }
         else {
-          console.log("fourth updateChosen condition chosen");
+          // console.log("fourth updateChosen condition chosen");
           chosenClassList.remove("blueBlock");
           chosenClassList.add("emptyBlock");
 
@@ -980,14 +992,14 @@ function cure(event) {
       function checkBlockCureOrder(i) {
         updateChosen(i);
 
-        if (blockColorArray[i] == normalGreen && totalScoreGreen < 128 && secondBlockCured) {
+        if (blockColorArray[i] == normalGreen && totalScoreGreen < 32 && secondBlockCured) {
           totalScoreGreen *= greenPointsScored;
 
           totalScore += totalScoreGreen;
 
           totalScoreBlue = 1;
         }
-        else if (blockColorArray[i] == normalBlue && totalScoreBlue < 128 && secondBlockCured) {
+        else if (blockColorArray[i] == normalBlue && totalScoreBlue < 32 && secondBlockCured) {
           totalScoreBlue *= bluePointsScored;
 
           totalScore += totalScoreBlue;
@@ -997,10 +1009,13 @@ function cure(event) {
 
         if (secondBlockCured) {
           scoreFade(i);
+          // console.log("scorefade called for i: "+i);
           return;
         }
 
         blockFeedbackContainer[i].classList.remove("weakWhiteBackground");
+        blockFeedbackContainer[i].classList.remove("strongWhiteBackground");
+
         blockFeedbackContainer[i].classList.add("whiteBackground");
         blockFeedbackContainer[i].style.opacity = 1;
 
@@ -1010,12 +1025,15 @@ function cure(event) {
       }
 
       checkBlockCureOrder(i);
+
+      // console.log("This is lastBlockColorComparison at the very end of cure for i: "+i);
+      // console.log(lastBlockColorComparison);
     }
     else if (selectX >= scaledxArray[i] && selectX <= scaledxArray[i]+curedBlockLength && selectY >= scaledyArray[i] && selectY <= scaledyArray[i]+curedBlockLength && isInfected[i] == false) {
       // lastBlockColorComparison = [];
       // lastBlockColorComparison.push(blockColorArray[i]);
-      console.log("This is lastBlockColorComparison after selecting a non-infected block")
-      console.log(lastBlockColorComparison);
+      // console.log("This is lastBlockColorComparison after selecting a non-infected block")
+      // console.log(lastBlockColorComparison);
       totalScoreGreen = 1;
       totalScoreBlue = 1;
 
@@ -1023,15 +1041,63 @@ function cure(event) {
     }
   } //End of for loop.
 
+  function showErrorBlock(i) {
+    var isFullOpacity = false;
+
+    if (blockFeedbackContainer[i].style.opacity == 0) {
+      blockFeedbackContainer[i].classList.remove("weakWhiteBackground");
+      blockFeedbackContainer[i].classList.remove("whiteBackground");
+      blockFeedbackContainer[i].classList.remove("whiteText");
+
+      blockFeedbackContainer[i].classList.add("strongWhiteBackground");
+      blockFeedbackContainer[i].classList.add("redText");
+
+      blockFeedbackContainer[i].innerHTML = "X";
+
+      blockFeedbackContainer[i].style.opacity = 1;
+      isFullOpacity = true;
+    }
+
+    if (isFullOpacity) {
+      errorOpacity = window.setTimeout(function() {
+        blockFeedbackContainer[i].style.opacity = 0;
+      }, 450);
+
+      errorInnerHTML = window.setTimeout(function() {
+        blockFeedbackContainer[i].innerHTML = "";
+      }, 700);
+    } else {
+      window.clearTimeout(errorOpacity);
+      window.clearTimeout(errorInnerHTML);
+
+      errorOpacity = window.setTimeout(function() {
+        blockFeedbackContainer[i].style.opacity = 0;
+      }, 450);
+
+      errorInnerHTML = window.setTimeout(function() {
+        blockFeedbackContainer[i].innerHTML = "";
+      }, 700);
+    }
+  }
+
   function scoreFade(i) {
+    // console.log("scorefade active for i: "+i);
     blockFeedbackContainer[i].classList.remove("whiteBackground");
+    blockFeedbackContainer[i].classList.remove("strongWhiteBackground");
+    blockFeedbackContainer[i].classList.remove("redText");
+
     blockFeedbackContainer[i].classList.add("weakWhiteBackground");
+    blockFeedbackContainer[i].classList.add("whiteText");
 
     blockFeedbackContainer[i].style.opacity = 1;
 
     window.setTimeout(function() {
       blockFeedbackContainer[i].style.opacity = 0;
     }, 450);
+
+    window.setTimeout(function() {
+      blockFeedbackContainer[i].innerHTML = "";
+    }, 700)
 
     function updateColorScore() {
       if (blockColorArray[i] == normalGreen) {
@@ -1050,16 +1116,12 @@ function cure(event) {
       updateTotalScore();
     }
 
-    secondBlockCured = false;
+    // secondBlockCured = false;
   } //End of scoreFade()
-
-
-
-
 }
-// aParent.ontouchmove = function(event) {
-//   event.preventDefault();
-// }
+aParent.ontouchmove = function(event) {
+  event.preventDefault();
+}
 
 aParent.addEventListener("touchstart", cure, false);
 aParent.addEventListener("mousedown", cure, false);
@@ -1078,62 +1140,20 @@ aParent.addEventListener("mousedown", cure, false);
 //
 //   return ratio;
 // }
-//
-// function setDimensions() {
-//   var blockFeedbackContainerWrapper = document.getElementById("blockFeedbackContainerWrapper");
-//
-//   var width, height, pixelRatio, switchCase;
-//
-//   if (window.screen.width >= 1200) {
-//     width = Math.round(window.screen.availWidth * 0.25);
-//     height = Math.round(width / 1.6);
-//
-//     pixelRatio = setCanvasScalingFactor();
-//
-//     switchCase = 1200;
-//   }
-//   else {
-//     width = Math.round(window.screen.availWidth * 0.80);
-//     height = width;
-//
-//     pixelRatio = setCanvasScalingFactor();
-//   }
-//
-//   canvas.style.width = width + "px";
-//   canvas.style.height = height + "px";
-//   canvas.width = width * pixelRatio;
-//   canvas.height = height * pixelRatio;
-//
-//   ctx = canvas.getContext("2d");
-//
-//   switch (switchCase) {
-//     case 1200:
-//       blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-//       break;
-//     default:
-//       blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
-//       break;
-//   }
-//
-//   blockFeedbackContainerWrapper.style.width = width + "px";
-//   blockFeedbackContainerWrapper.style.height = height + "px";
-//
-//   aParent.style.width = width + "px";
-//
-//   drawBlocks();
-//   createBlockFeedbackContainers();
-//   infectionOrigins();
-// }
-//
-// setDimensions();
 
 // var canvasBoundingClientRect = canvas.getBoundingClientRect();
 
+positionBlocks();
+generateBlockColors();
+// generateEasyColors();
 drawBlocks();
 createBlockFeedbackContainers();
-infectionOrigins();
+positionBlockFeedbackContainers();
+window.setTimeout(function() {
+  infectionOrigins();
+}, 2500);
 
-}
+} //END OF INITIALIZEGAME
 
 function setCanvasScalingFactor() {
   var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
@@ -1150,256 +1170,136 @@ function setCanvasScalingFactor() {
   return ratio;
 }
 
-// function setDimensions() {
-//   // var orientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
-//
-//   var width, height, pixelRatio, switchCase;
-//   var screenRatio = window.screen.width / window.screen.height;
-//
-//   if (window.screen.width >= 1200) {
-//     width = Math.round(window.screen.availWidth * 0.2);
-//     // height = Math.round(width / 1.4);
-//     height = width;
-//
-//     pixelRatio = setCanvasScalingFactor();
-//
-//     switchCase = 1200;
-//   }
-//   else if (window.screen.width >= 768) {
-//     if (screenRatio > 1) {
-//       width = Math.round(window.screen.availHeight * 0.5);
-//     } else {
-//       width = Math.round(window.screen.availWidth * 0.5);
-//     }
-//
-//     height = width;
-//
-//     pixelRatio = setCanvasScalingFactor();
-//
-//     // switchCase = 768;
-//   }
-//   else if (window.screen.width >= 576) {
-//     if (screenRatio > 1) {
-//       width = Math.round(window.screen.availHeight * 0.60);
-//       console.log("576 condition");
-//     } else {
-//       width = Math.round(window.screen.availWidth * 0.60);
-//     }
-//
-//     height = width;
-//
-//     pixelRatio = setCanvasScalingFactor();
-//
-//     // switchCase = 576;
-//   }
-//   else {
-//     if (screenRatio > 1) {
-//       width = Math.round(window.screen.availHeight * 0.80);
-//       // console.log("width is based off screen height");
-//       feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio;
-//     } else {
-//       width = Math.round(window.screen.availWidth * 0.80);
-//       // console.log("width is based off screen width");
-//       feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio;
-//     }
-//
-//     // width = Math.round(window.screen.availWidth * 0.80);
-//     height = width;
-//
-//     pixelRatio = setCanvasScalingFactor();
-//   }
-//
-//   canvas.style.width = width + "px";
-//   canvas.style.height = height + "px";
-//   canvas.width = width * pixelRatio;
-//   canvas.height = height * pixelRatio;
-//
-//   ctx = canvas.getContext("2d");
-//
-//   switch (switchCase) {
-//     case 1200:
-//       blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-//       break;
-//     // case 576:
-//     //   blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-//     //   break;
-//     default:
-//       blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
-//       break;
-//   }
-//
-//   blockFeedbackContainerWrapper.style.width = width + "px";
-//   blockFeedbackContainerWrapper.style.height = height + "px";
-//
-//   aParent.style.width = width + "px";
-//
-//   feedbackPanelWrapper.style.width = width + "px";
-//   // drawBlocks();
-//   // createBlockFeedbackContainers();
-//   // infectionOrigins();
-// }
-function setDimensions() {
-  // var width, height, pixelRatio, switchCase;
-  // var screenRatio = window.screen.width / window.screen.height;
-  //
-  // if (window.screen.width >= 1200) {
-  //   width = Math.round(window.screen.availWidth * 0.2);
-  //   // height = Math.round(width / 1.4);
-  //   height = width;
-  //
-  //   pixelRatio = setCanvasScalingFactor();
-  //
-  //   switchCase = 1200;
-  // }
-  // else if (window.screen.width >= 768) {
-  //   if (screenRatio > 1) {
-  //     width = Math.round(window.screen.availHeight * 0.5);
-  //   } else {
-  //     width = Math.round(window.screen.availWidth * 0.5);
-  //   }
-  //
-  //   height = width;
-  //
-  //   pixelRatio = setCanvasScalingFactor();
-  //
-  //   // switchCase = 768;
-  // }
-  // // else if (window.screen.width >= 576) {
-  // //   if (screenRatio > 1) {
-  // //     width = Math.round(window.screen.availHeight * 0.60);
-  // //     console.log("576 condition");
-  // //   } else {
-  // //     width = Math.round(window.screen.availWidth * 0.60);
-  // //   }
-  // //
-  // //   height = width;
-  // //
-  // //   pixelRatio = setCanvasScalingFactor();
-  // //
-  // //   // switchCase = 576;
-  // // }
-  // else {
-  //   if (screenRatio > 1) {
-  //     width = Math.round(window.screen.availHeight * 0.80);
-  //     // console.log("width is based off screen height");
-  //     // feedbackPanelWrapper.innerHTML = "width is based off screen height"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
-  //   } else {
-  //     width = Math.round(window.screen.availWidth * 0.80);
-  //     // console.log("width is based off screen width");
-  //     // feedbackPanelWrapper.innerHTML = "width is based off screen width"+" with screenRatio: "+screenRatio+" and screen width: "+window.screen.width+" and screen height: "+window.screen.height+"."+" Screen's available width is: "+window.screen.availWidth+" while its available height is: "+window.screen.availHeight+".";
-  //   }
-  //
-  //   // width = Math.round(window.screen.availWidth * 0.80);
-  //   height = width;
-  //
-  //   pixelRatio = setCanvasScalingFactor();
-  // }
-  //
-  // canvas.style.width = width + "px";
-  // canvas.style.height = height + "px";
-  // canvas.width = width * pixelRatio;
-  // canvas.height = height * pixelRatio;
-  //
-  // ctx = canvas.getContext("2d");
-  //
-  // switch (switchCase) {
-  //   case 1200:
-  //     blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-  //     break;
-  //   // case 576:
-  //   //   blockLength = Math.round(0.9 * (canvas.height/numberOfRows));
-  //   //   break;
-  //   default:
-  //     blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
-  //     break;
-  // }
-  //
-  // blockFeedbackContainerWrapper.style.width = width + "px";
-  // blockFeedbackContainerWrapper.style.height = height + "px";
-  //
-  // aParent.style.width = width + "px";
-  //
-  // feedbackPanelWrapper.style.width = width + "px";
+function positionBlocks() {
+  xArray = [];
+  yArray = [];
 
-  //NEW code
+  var xCenterOfCanvas = Math.round(canvas.width/2);
+  var yCenterOfCanvas = Math.round(canvas.height/2);
+
+  var xCoefficient = -(numberOfColumns/2);
+  var yCoefficient = -(numberOfRows/2);
+
+  for (var i=0; i < numberOfRows; i++) {
+    for (var j=0; j < numberOfColumns; j++) {
+      // if (window.screen.width >= 1200) {
+      //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+      //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+      // } else {
+      //   var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+      //   var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+      // }
+      var x = xCenterOfCanvas + 2*j + (xCoefficient*blockLength);
+      var y = yCenterOfCanvas + 2*i + (yCoefficient*blockLength);
+
+      xArray.push(x);
+      yArray.push(y);
+
+      xCoefficient++;
+    }
+    xCoefficient = -(numberOfColumns/2);
+    yCoefficient++;
+  }
+}
+
+function positionBlockFeedbackContainers() {
+  var scoreBlockLength = blockLength / setCanvasScalingFactor();
+
+  for (var i=0; i < xArray.length; i++) {
+    blockFeedbackContainer[i].style.left = xArray[i]/setCanvasScalingFactor() + "px";
+    blockFeedbackContainer[i].style.top = yArray[i]/setCanvasScalingFactor() + "px";
+
+    blockFeedbackContainer[i].style.width = scoreBlockLength + "px";
+    blockFeedbackContainer[i].style.height = scoreBlockLength + "px";
+  }
+}
+
+function setDimensions(event) {
   pixelRatio = setCanvasScalingFactor();
 
-  var width = getStyleValue(aParent, "width");
+  if (event) {
+    // console.log("this is the event type: "+event.type);
+  }
+
+  if (window.innerHeight > window.innerWidth) {
+    if (window.innerWidth > 768) {
+      var width = Math.round(0.45 * window.innerWidth);
+      blockFeedbackText.style.fontSize = "125%";
+      // console.log("width is 55% innerWidth");
+    }
+    else if (window.innerWidth > 576) {
+      var width = Math.round(0.65 * window.innerWidth);
+      blockFeedbackText.style.fontSize = "130%";
+      // console.log("width is 65% innerWidth");
+    } else {
+      var width = Math.round(0.8 * window.innerWidth);
+      blockFeedbackText.style.fontSize = "140%";
+      // console.log("width is 80% innerWidth");
+    }
+  }
+  else {
+    if (window.innerHeight > 768) {
+      var width = Math.round(0.45 * window.innerHeight);
+      blockFeedbackText.style.fontSize = "125%";
+      // console.log("width is 55% innerHeight");
+    }
+    else if (window.innerHeight > 576) {
+      var width = Math.round(0.65 * window.innerHeight);
+      blockFeedbackText.style.fontSize = "130%";
+      // console.log("width is 65% innerHeight");
+    }
+    else {
+      var width = Math.round(0.8 * window.innerHeight);
+      blockFeedbackText.style.fontSize = "140%";
+      // console.log("width is 80% innerHeight");
+    }
+  }
+
   var height = width;
+  // console.log("width: "+width);
+  // console.log("height: "+height);
 
-  aParent.style.height = height;
+  mainWrapper.style.width = width + "px";
 
-  blockFeedbackContainerWrapper.style.width = width;
-  blockFeedbackContainerWrapper.style.height = height;
-  // console.log(blockFeedbackContainerWrapper.style.width);
-  canvas.width = parseInt(width, 10) * pixelRatio;
-  canvas.height = parseInt(height, 10) * pixelRatio;
+  // aParent.style.width = width + "px";
+  // aParent.style.height = height + "px";
+
+  blockFeedbackContainerWrapper.style.width = width + "px";
+  blockFeedbackContainerWrapper.style.height = height + "px";
+
+  // console.log(blockFeedbackContainerWrapper.style.marginTop);
+  blockFeedbackContainerWrapper.style.fontSize = 0.05 * width + "px";
+
+  canvas.width = width * pixelRatio;
+  canvas.height = height * pixelRatio;
 
   blockLength = Math.round(0.85 * (canvas.width/numberOfRows));
+  // console.log("this is blockLength: "+blockLength);
 }
 
 var canvasBoundingClientRect;
 function setBoundingClient() {
   canvasBoundingClientRect = canvas.getBoundingClientRect();
-  // var bodyBoundingClientRect = document.getBoundingClientRect();
-  //
-  // feedbackPanelWrapper.innerHTML = "body width: "+bodyBoundingClientRect.width+" and body height: "+bodyBoundingClientRect.height;
 }
 
 function getStyleValue(elem, prop) {
   return window.getComputedStyle(elem).getPropertyValue(prop);
 }
-function testlol() {
-  var screenRatio = window.innerWidth/window.innerHeight;
-
-  if (window.innerWidth > window.innerHeight) {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to landscape"+"."+" Screen's inner width is: "+window.innerWidth+" and its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
-
-    // feedbackPanelWrapper.innerHTML = getStyleValue(aParent, "width");
-
-    // width = 0.8 * window.screen.height;
-    // height = width;
-    //
-    // aParent.style.height = height + "px";
-    // aParent.style.width = width + "px";
-    //
-    // blockFeedbackContainerWrapper.style.width = width + "px";
-    // blockFeedbackContainerWrapper.style.height = height + "px";
-    // canvas.width = width * pixelRatio;
-    // canvas.height = height * pixelRatio;
-    // width = Math.round(window.screen.availWidth * 0.80);
-  } else {
-    feedbackPanelWrapper.innerHTML = "Orientation changed to portrait"+"."+" Screen's inner width is: "+window.innerWidth+" and its inner height is: "+window.innerHeight+"."+" screenRatio is "+screenRatio;
-
-    // feedbackPanelWrapper.innerHTML = getStyleValue(aParent, "width");
-
-    // setDimensions();
-    // width = 0.8 * window.screen.width;
-    // height = width;
-    //
-    // aParent.style.height = height + "px";
-    // aParent.style.width = width + "px";
-    //
-    // blockFeedbackContainerWrapper.style.width = width + "px";
-    // blockFeedbackContainerWrapper.style.height = height + "px";
-  }
-  // console.log(document.body.getBoundingClientRect());
-
-}
-
-// window.addEventListener("resize", setBoundingClient, false);
-// window.addEventListener("resize", function() {
-//   setBoundingClient();
-//   testlol();
-// }, false);
-function test2lol() {
-  setBoundingClient();
-  // testlol();
-}
-window.addEventListener("resize", test2lol, false);
-window.addEventListener("deviceorientation", testlol, false);
 
 setDimensions();
 setBoundingClient();
 
+// window.addEventListener("deviceorientation", setDimensions, false);
+window.addEventListener("resize", function() {
+  setBoundingClient();
+  setDimensions(event);
+
+  if (gameInitialized) {
+    positionBlocks();
+    positionBlockFeedbackContainers();
+  }
+}, false);
+window.addEventListener("scroll", function() {
+  setBoundingClient();
+}, false)
 aParent.addEventListener("click", initializeGame, false);
