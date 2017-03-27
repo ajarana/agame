@@ -372,7 +372,7 @@ function animateBlackSquares(j) {
     animateBlackSquareCounter++;
 
     if (animateBlackSquareCounter == 2) {
-      // window.setTimeout(function() {
+      window.setTimeout(function() {
         gameInitialized = false;
 
         blockFeedbackContainerWrapper.classList.remove("transparentBackground");
@@ -386,7 +386,7 @@ function animateBlackSquares(j) {
         aParent.removeEventListener("touchstart", cure, false);
         aParent.removeEventListener("mousedown", cure, false);
         aParent.addEventListener("click", initializeGame, false);
-      // }, 1000);
+      }, 1500);
     }
     // console.log(blackIndividualAlphaValues);
     // console.log("greenColorArray at the end of animateBlackSquaresCycle()");
@@ -645,7 +645,7 @@ function infectionOrigins() {
       else if (timer > 1600) {
         timer -= 250;
       }
-      else if (timer > 500) {
+      else if (timer > 450) {
         timer -= 50;
       }
 
@@ -758,48 +758,48 @@ function cure(event) {
   }
 
   //Clicked block cured, now this checks surrounding blocks to see if they're infectious (globalAlpha value == 1) and adjacent.
-  function mouseTimeout(i) {
-    var reInfectedArray = [];
-
-    window.setTimeout(function() {
-      //if there is NO infected squares, start over with one random infected square.
-      if (isInfected.indexOf(true) == -1) {
-        infectedInitialIndex = Math.floor(Math.random()*xArray.length);
-        isInfected[infectedInitialIndex] = true;
-
-        infect(infectedInitialIndex);
-
-        //No need to look for surrounding infectious blocks if there aren't any.
-        return;
-      }
-
-      //Starts at the leftmost column and finishes at the rightmost.
-      for (var k = -1; k < 2; k++) {
-        //Coefficient variable that changes which way (downward/upward) the script searches for infectious blocks.
-        var c = 1;
-
-          //First checks to see if the block two spaces to the left of the newly cured block is on the same row and whether its infectious.
-          if (yArray[i+k] - yArray[i] == 0 && individualAlphaValues[i+k] == 1) {
-            //Adds the index value of the infectious block to an array.
-            reInfectedArray.push(i+k);
-          }
-            //First checks the block two spaces left, one space down followed by the block two spaces left, two spaces down. Followed by upward direction.
-            for (var z = 0; z < 2; z++) {
-              if (xArray[i + (c*numberOfColumns) + k] - xArray[i + k] == 0 && individualAlphaValues[i + (c*numberOfColumns) + k] == 1) {
-                reInfectedArray.push(i + (c*numberOfColumns) + k);
-              }
-
-              c = -c;
-            } //End of inner for loop.
-      } //End of outer for loop.
-
-      for (var k = 0; k < reInfectedArray.length; k++) {
-        // isInfected[reInfectedArray[k]] = true;
-
-        infect(reInfectedArray[k]);
-      }
-    }, 1800);
-  } //End of mouseTimeout
+  // function mouseTimeout(i) {
+  //   var reInfectedArray = [];
+  //
+  //   window.setTimeout(function() {
+  //     //if there is NO infected squares, start over with one random infected square.
+  //     if (isInfected.indexOf(true) == -1) {
+  //       infectedInitialIndex = Math.floor(Math.random()*xArray.length);
+  //       isInfected[infectedInitialIndex] = true;
+  //
+  //       infect(infectedInitialIndex);
+  //
+  //       //No need to look for surrounding infectious blocks if there aren't any.
+  //       return;
+  //     }
+  //
+  //     //Starts at the leftmost column and finishes at the rightmost.
+  //     for (var k = -1; k < 2; k++) {
+  //       //Coefficient variable that changes which way (downward/upward) the script searches for infectious blocks.
+  //       var c = 1;
+  //
+  //         //First checks to see if the block two spaces to the left of the newly cured block is on the same row and whether its infectious.
+  //         if (yArray[i+k] - yArray[i] == 0 && individualAlphaValues[i+k] == 1) {
+  //           //Adds the index value of the infectious block to an array.
+  //           reInfectedArray.push(i+k);
+  //         }
+  //           //First checks the block two spaces left, one space down followed by the block two spaces left, two spaces down. Followed by upward direction.
+  //           for (var z = 0; z < 2; z++) {
+  //             if (xArray[i + (c*numberOfColumns) + k] - xArray[i + k] == 0 && individualAlphaValues[i + (c*numberOfColumns) + k] == 1) {
+  //               reInfectedArray.push(i + (c*numberOfColumns) + k);
+  //             }
+  //
+  //             c = -c;
+  //           } //End of inner for loop.
+  //     } //End of outer for loop.
+  //
+  //     for (var k = 0; k < reInfectedArray.length; k++) {
+  //       // isInfected[reInfectedArray[k]] = true;
+  //
+  //       // infect(reInfectedArray[k]);
+  //     }
+  //   }, 1800);
+  // } //End of mouseTimeout
 
   //Determines which infected square's been clicked on.
   for (var i = 0; i < isInfected.length; i++) {
@@ -934,7 +934,7 @@ function cure(event) {
       isInfected[i] = false;
 
       //Calls the function that will check for infectious blocks surrounding the newly cured blocks.
-      mouseTimeout(i);
+      // mouseTimeout(i);
 
       //Cooldown that prevents cure spam.
       // cooldownReady = false;
