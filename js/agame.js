@@ -29,8 +29,8 @@ aParent.removeEventListener("click", initializeGame, false);
 
 blockFeedbackContainerWrapper.classList.remove("blackBackground");
 blockFeedbackContainerWrapper.classList.add("transparentBackground");
-blockFeedbackContainerWrapper.classList.remove("whiteText");
-blockFeedbackContainerWrapper.classList.add("transparentText");
+// blockFeedbackContainerWrapper.classList.remove("whiteText");
+// blockFeedbackContainerWrapper.classList.add("transparentText");
 
 chosenClassList.remove("greenBlock");
 chosenClassList.remove("blueBlock");
@@ -381,6 +381,8 @@ function animateBlackSquares(j) {
         blockFeedbackContainerWrapper.classList.remove("transparentText");
         blockFeedbackContainerWrapper.classList.add("whiteText");
 
+        blockFeedbackText.classList.remove("noDisplay");
+        blockFeedbackText.classList.add("regularDisplay");
         blockFeedbackText.innerHTML = "Restart";
 
         aParent.removeEventListener("touchstart", cure, false);
@@ -418,21 +420,21 @@ function animateIndividualInfection(j) {
     if (internalIndividualAlphaValues.length > individualAlphaValues.length/2) {
       // console.log("Is internalIndividual length less than individualAlpha length/2?")
       // console.log(internalIndividualAlphaValues.length > individualAlphaValues.length/2);
-      console.log("Super fast rate running for j: "+j);
+      // console.log("Super fast rate running for j: "+j);
       individualAlphaValues[j] += 0.14;
     }
     else if (internalIndividualAlphaValues.length > individualAlphaValues.length/3) {
-      console.log("Slightly fast rate running for j: "+j);
+      // console.log("Slightly fast rate running for j: "+j);
       individualAlphaValues[j] += 0.02;
     }
     else {
-      console.log("Slow rate running for j: "+j);
+      // console.log("Slow rate running for j: "+j);
       individualAlphaValues[j] += 0.01;
     }
     // individualAlphaValues[j] += 0.001;
   }
   else if (greenColorArray.indexOf(true) !== -1 || blueColorArray.indexOf(true) !== -1 && isInfected[j]) {
-    console.log("the black block super fast rate is running");
+    // console.log("the black block super fast rate is running");
     animateTimer = 4;
     individualAlphaValues[j] += 0.19;
   }
@@ -636,7 +638,7 @@ function infectionOrigins() {
       // }
       else if (numberOfFullyInfectedBlocks.length >= 3 && numberOfTimerResets == 0) {
         timer = 1500;
-        console.log("TIMER RESET");
+        // console.log("TIMER RESET");
         numberOfTimerResets++;
       }
       else if (timer > 2000) {
@@ -649,7 +651,7 @@ function infectionOrigins() {
         timer -= 50;
       }
 
-      console.log("The current timer: "+timer);
+      // console.log("The current timer: "+timer);
       for (var i=0; i < isInfected.length; i++) {
         if (isInfected[i] == false) {
           falseIndexArray.push(i);
@@ -1149,9 +1151,46 @@ generateBlockColors();
 drawBlocks();
 createBlockFeedbackContainers();
 positionBlockFeedbackContainers();
-window.setTimeout(function() {
-  infectionOrigins();
-}, 2500);
+
+(function countDown() {
+  var countDownElement = document.getElementById("countDown");
+  var counter = 6;
+
+  blockFeedbackText.classList.add("noDisplay");
+  blockFeedbackText.classList.remove("regularDisplay");
+
+  blockFeedbackContainerWrapper.classList.remove("whiteText");
+  blockFeedbackContainerWrapper.classList.add("transparentText");
+
+  var countDownInterval = setInterval(function() {
+    if (counter > 1) {
+      counter--;
+      blockFeedbackContainerWrapper.classList.add("whiteText");
+      blockFeedbackContainerWrapper.classList.remove("transparentText");
+
+      countDownElement.classList.remove("noDisplay");
+      countDownElement.classList.add("regularDisplay");
+      countDownElement.innerHTML = counter;
+
+      fadeAway();
+    } else {
+      countDownElement.classList.add("noDisplay");
+      countDownElement.classList.remove("regularDisplay");
+      clearInterval(countDownInterval);
+    }
+  }, 1000);
+
+  function fadeAway() {
+    setTimeout(function() {
+      blockFeedbackContainerWrapper.classList.remove("whiteText");
+      blockFeedbackContainerWrapper.classList.add("transparentText");
+    }, 625);
+  }
+
+  setTimeout(function() {
+    infectionOrigins();
+  }, 6000);
+})();
 
 } //END OF INITIALIZEGAME
 
