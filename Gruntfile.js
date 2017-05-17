@@ -10,8 +10,9 @@ module.exports = function(grunt) {
           optimization: 2
         },
         files: {
-          "css/agame.css": "less/agame.less", // destination file and source file
-          "css/normalize.css": "less/normalize.less"
+          "css/agame.css": "less/agame.less" // destination file and source file
+          // "css/normalize.css": "less/normalize.less",
+          // "css/header.css" : "less/header.less"
         }
       }
     },
