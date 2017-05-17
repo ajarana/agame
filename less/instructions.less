@@ -36,8 +36,8 @@
 
   .collapsibleContent {
     overflow: hidden;
-    // transition: height 0.33s ease-out 0s;
-    transition-property: height, opacity;
+
+    transition-property: max-height, opacity;
     transition-duration: 0.33s;
     transition-timing-function: ease-out;
     transition-delay: 0s, 0.33s;
@@ -48,13 +48,13 @@
   }
 
   .collapsedContent {
-    height: 0px;
+    max-height: 0;
     opacity: 0;
 
     transition-delay: 0s;
   }
   .expandedContent {
-    height: auto;
+    max-height: 800px;
     opacity: 1;
 
     padding-bottom: 30px;
