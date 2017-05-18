@@ -1121,9 +1121,9 @@ function cure(event) {
     // secondBlockCured = false;
   } //End of scoreFade()
 }
-aParent.ontouchmove = function(event) {
-  event.preventDefault();
-}
+// aParent.ontouchmove = function(event) {
+//   event.preventDefault();
+// }
 
 aParent.addEventListener("touchstart", cure, false);
 aParent.addEventListener("mousedown", cure, false);
