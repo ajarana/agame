@@ -1,7 +1,7 @@
 #header {
   width: 100%;
-  height: 85px;
-  padding: 4px 0 30px;
+  height: 76px;
+  padding-bottom: 30px;
 
   #titleContainer {
     flex: 0 1 85%;
@@ -17,13 +17,9 @@
         }
         p:first-child {
           margin-bottom: 2px;
-          display: inline-block;
-
         }
       }
-      #headerTitleText:hover p {
-        text-decoration: underline;
-      }
+
       #logo {
         height: 40px;
         width: 49px;
@@ -39,10 +35,6 @@
       #headerTitle {
         padding-top: 0px;
 
-        // #headerTitleText {
-        //   padding: 0px;
-        //   text-align: left;
-        // }
         #logo {
           margin: 0;
           margin-right: 18px;
@@ -66,7 +58,6 @@
       .hamburgerIcon {
         width: 26px;
         height: 3px;
-        // background-color: #555;
         background-color: #777;
 
         transition: background-color 0.4s ease-out 0s;
@@ -91,12 +82,20 @@
       position: absolute;
       width: 24px;
       height: 0px;
-      right: 16px;
-      top: 36px;
+      top: 29px;
+      right: 17px;
       margin: 0;
       padding: 0;
       background: transparent;
       z-index: 98;
+
+      .mobileListItems.menuItems {
+        display: flex;
+      }
+
+      .desktopListItems.menuItems {
+        display: none;
+      }
 
       .menuItems {
         visibility: hidden;
@@ -115,12 +114,8 @@
         }
       }
       .menuItems:first-child {
-        margin-top: 75px;
+        margin-top: 55px;
         border-top: none;
-      }
-
-      #desktopResume {
-        display: none;
       }
     }
 
@@ -145,12 +140,10 @@
     .inner-box {
       fill: white;
     }
-    #blogLink {
-    }
     .headerLink {
       font-size: 172%;
     }
-  }
+  } //End of mobileProfilesContainer
   @media (min-width: 768px) {
     #mobileProfilesContainer {
       #headerMenu {
@@ -162,6 +155,14 @@
         background: none!important;
         transition-property: width, height, top, right;
         transform: rotate(180deg);
+
+        .mobileListItems.menuItems {
+          display: none;
+        }
+
+        .desktopListItems.menuItems {
+          display: flex;
+        }
 
         .menuItems {
           visibility: visible;
@@ -184,13 +185,6 @@
         .menuItems:nth-child(2) {
           padding-right: 0;
         }
-
-        #mobileResume {
-          display: none;
-        }
-        #desktopResume {
-          display: flex;
-        }
       }
 
       #gitHubIcon, #codePenLogo {
@@ -200,6 +194,10 @@
 
       #gitHubIcon {
         background-image: url("assets/icons/GitHub-Mark-120px-plus.png");
+      }
+
+      #blogLink.menuItems {
+        padding-right: 0;
       }
 
       .outer-ring {
@@ -216,7 +214,7 @@
 } //end of Header
 
 html.expanded {
-  // overflow-y: scroll!important;
+  overflow-y: scroll!important;
 }
 
 .expanded, .expanded body {
@@ -241,14 +239,10 @@ html.expanded {
     }
   }
 
-  .staticHeight {
-    height: 500px;
-  }
-
   #header > .mainContainer > #buttonWrapper > #mobileButton > .hamburgerIcon {
     background-color: white;
   }
 }
 .expanded.staticHeight #header > .mainContainer > #mobileProfilesContainer > #headerMenu {
-  height: 500px;
+  height: 555px;
 }
