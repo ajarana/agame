@@ -1,45 +1,30 @@
 #header {
-  width: 100%;
-  height: 76px;
-  padding-bottom: 30px;
+  height: 48px;
+  padding: 0 20px;
+  background-color: #2b2b2b;
+  background-color: #333;
 
   #titleContainer {
     flex: 0 1 85%;
 
-    #headerTitle {
-      #headerTitleText {
-        font-size: 114%;
-        padding: 0px;
-        text-align: left;
+    #logo {
+      font-family: 'Inconsolata', monospace;
+      color: white;
+      font-size: 30px;
+      transition: color 0.2s linear 0s;
+      margin-right: 48px;
+      margin-right: 1.5em;
 
-        p {
-          margin: 0;
-        }
-        p:first-child {
-          margin-bottom: 2px;
-        }
+      &:hover {
+         color: rgba(255, 255, 255, 0.8);
       }
-
-      #logo {
-        height: 40px;
-        width: 49px;
-        background-image: url("assets/logo/Personal_logo4_for_web.svg");
-        background-size: cover;
-        margin: 0;
-        margin-right: 12px;
-      }
-    }  // End of headerTitle
+    }
   }
 
   @media (min-width: 768px) {
-      #headerTitle {
-        padding-top: 0px;
-
-        #logo {
-          margin: 0;
-          margin-right: 18px;
-        }
-      }
+    #titleContainer {
+      flex: 0;
+    }
   }
 
   #buttonWrapper {
@@ -55,12 +40,23 @@
       padding: 0;
       cursor: pointer;
 
-      .hamburgerIcon {
-        width: 26px;
-        height: 3px;
-        background-color: #777;
+      > div {
+         height: 18px;
+      }
 
-        transition: background-color 0.4s ease-out 0s;
+      #hamburgerWrapper {
+        position: relative;
+        bottom: 0%;
+
+        transition: bottom 0.33s ease-out 0s;
+      }
+
+      .hamburgerIcon {
+        width: 24px;
+        height: 2px;
+        background-color: white;
+
+        transition: background-color 0.33s ease-out 0s, transform 0.33s ease-out 0s, opacity 0s ease-out 0.33s, margin-bottom 0.33s ease-out 0.33s;
       }
       .hamburgerIcon:not(:last-child) {
         margin-bottom: 6px;
@@ -76,140 +72,114 @@
     }
   }
 
-  #mobileProfilesContainer {
     #headerMenu {
       list-style: none;
       position: absolute;
       width: 24px;
       height: 0px;
-      top: 29px;
-      right: 17px;
+      top: 48px;
+
+      left: 0;
       margin: 0;
       padding: 0;
-      background: transparent;
+
+      border-top: 1px solid;
+      border-color: transparent;
+
+      background-color: transparent;
       z-index: 98;
-
-      .mobileListItems.menuItems {
-        display: flex;
-      }
-
-      .desktopListItems.menuItems {
-        display: none;
-      }
 
       .menuItems {
         visibility: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 90px;
-        margin: 1px 30px;
-        border-top: 1px solid #aaa;
+
+        margin: 0 48px;
+
         opacity: 0;
         transition: opacity 0.2s ease-out 0s, visibility 0s linear 0.4s;
+        font-size: 1em;
 
         a {
           color: white;
-          display: none;
+          text-align: center;
+          padding: 1em 0;
+          width: 100%;
+          transition: color 0.22s ease-out;
+          text-decoration: none;
+
+          &:hover {
+             color: rgba(255, 255, 255, 0.82);
+          }
         }
       }
       .menuItems:first-child {
-        margin-top: 55px;
         border-top: none;
+        margin-top: 25px;
       }
     }
 
-    .transitionEverything {
-      transition-property: width, height, top, right, background;
-      transition-timing-function: ease-in;
-      transition-duration: 0.33s;
-      transition-delay: 0s;
+    .transitionExpand {
+      transition: height 0s ease-in 0s, width 0s ease-in 0s, background-color 0.33s ease-in 0s, border-color 0.33s ease-in 0s;
+    }
+    .transitionCollapse {
+      transition: height 0s ease-in 0.33s, width 0s ease-in 0.33s, background-color 0.33s ease-in 0s, border-color 0.33s ease-in 0s;
     }
 
-    #gitHubIcon, #codePenLogo {
-      width: 40px;
-      height: 40px;
-    }
-    #gitHubIcon {
-      background-image: url("assets/icons/GitHub-Mark-Light-120px-plus.png");
-      background-size: contain;
-    }
-    .outer-ring {
-      fill: white;
-    }
-    .inner-box {
-      fill: white;
-    }
     .headerLink {
-      font-size: 172%;
+      font-size: 1.4em;
     }
-  } //End of mobileProfilesContainer
   @media (min-width: 768px) {
-    #mobileProfilesContainer {
+    padding: 0 30px;
+
       #headerMenu {
         position: static;
         display: flex;
         align-items: center;
         height: auto;
+        height: 100%;
         width: auto;
-        background: none!important;
-        transition-property: width, height, top, right;
-        transform: rotate(180deg);
-
-        .mobileListItems.menuItems {
-          display: none;
-        }
-
-        .desktopListItems.menuItems {
-          display: flex;
-        }
+        border-top: none;
 
         .menuItems {
           visibility: visible;
           opacity: 1;
           border-top: none;
-          height: auto;
-
-          padding: 0 22px;
+          height: 100%;
           margin: 0;
-          transform: rotate(180deg);
+
+          transition: background-color 0.22s ease-out 0s;
+
+          &:hover {
+             background-color: #1f1f1f;
+          }
 
           a {
-            display: inline-block;
-            color: #333;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            color: white;
+            color: rgba(255, 255, 255, 0.82);
+            padding: 0 1.5em;
           }
         }
         .menuItems:first-child {
           margin-top: 0;
         }
-        .menuItems:nth-child(2) {
-          padding-right: 0;
+
+        .menuItems.selected {
+           background-color: black;
+
+           a {
+             color: white;
+          }
         }
       }
 
-      #gitHubIcon, #codePenLogo {
-        width: 32px;
-        height: 32px;
-      }
-
-      #gitHubIcon {
-        background-image: url("assets/icons/GitHub-Mark-120px-plus.png");
-      }
-
-      #blogLink.menuItems {
-        padding-right: 0;
-      }
-
-      .outer-ring {
-        fill: black;
-      }
-      .inner-box {
-        fill: black;
-      }
       .headerLink {
-        font-size: 114%;
+      font-size: 14px;
       }
-    }
   }
 } //end of Header
 
@@ -221,28 +191,48 @@ html.expanded {
   height: 100%;
   overflow: hidden;
 
-  #header > .mainContainer > #mobileProfilesContainer > #headerMenu {
-    height: 100%;
+  #header #headerMenu {
+    height: calc(~"100% - 49px");
+    min-height: 435px;
     width: 100%;
-    top: 0;
-    right: 0;
-    background: rgba(0,0,0,0.92);
+
+    background-color: #333;
+    border-top: 1px solid;
+    border-color: #aaa;
 
     .menuItems {
       visibility: visible;
       transition: opacity 0.4s ease-out 0.4s;
       opacity: 1;
-
-      a {
-        display: inline-block;
-      }
     }
   }
 
-  #header > .mainContainer > #buttonWrapper > #mobileButton > .hamburgerIcon {
-    background-color: white;
+  #header > #buttonWrapper > #mobileButton
+  {
+    padding: 10px 0;
+
+    #hamburgerWrapper {
+      transition: bottom 0.33s ease-out 0.33s;
+      bottom: calc(~'50% - 1px');
+    }
+
+    .hamburgerIcon {
+      background-color: white;
+
+      transition: background-color 0.33s ease-out 0s, transform 0.33s ease-out 0.33s, opacity 0s ease-out 0.33s, margin-bottom 0.33s ease-out 0s;
+    }
+    .hamburgerIcon:not(:last-child) {
+      margin-bottom: -2px;
+    }
+
+    .hamburgerIcon:first-child {
+      transform: rotate(45deg);
+    }
+    .hamburgerIcon:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburgerIcon:last-child {
+      transform: rotate(-45deg);
+    }
   }
-}
-.expanded.staticHeight #header > .mainContainer > #mobileProfilesContainer > #headerMenu {
-  height: 555px;
 }

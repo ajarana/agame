@@ -1,20 +1,9 @@
-@import 'normalize.less';
-@import 'header.less';
-@import 'responsive.less';
-@import 'footer.less';
-@import 'instructions.less';
-@import 'colors.less';
-
 body {
   font-family: sans-serif;
-  // font-size: 16px;
   font-size: 14px;
   margin: 0;
 
-  // min-height: 100%;
   color: #333;
-  /*touch-action: none;*/
-  // position: relative;
 }
 
 #gameWrapper {
@@ -23,13 +12,12 @@ body {
   border-bottom: 1px solid transparent;
   max-width: 940px;
   margin: 0 auto;
-  margin-top: -30px;
-  margin-bottom: 0px;
+  margin-bottom: -6em;
 }
 @media (min-width: 768px) {
   #gameWrapper {
-    margin-top: 0;
-    margin-bottom: 80px;
+    margin-top: 6em;
+    margin-bottom: 0;
     border-bottom: 1px solid #ececec;
   }
 }
