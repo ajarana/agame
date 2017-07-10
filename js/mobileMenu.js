@@ -3,29 +3,27 @@
   var html = document.getElementsByTagName("html");
   var headerMenu = document.getElementById("headerMenu");
 
-  var minMenuHeight = '470';
-
-
   mobileButton.onclick = function() {
-    headerMenu.classList.add("transitionEverything");
 
     if (html[0].classList.contains("expanded")) {
-      html[0].classList.remove("expanded", "staticHeight");
+      headerMenu.classList.add("transitionCollapse");
+      headerMenu.classList.remove("transitionExpand");
+      html[0].classList.remove("expanded");
     }
-    else if (window.innerHeight < minMenuHeight) {
-      html[0].classList.add("expanded", "staticHeight");
-    } else {
+    else {
+      headerMenu.classList.add("transitionExpand");
+      headerMenu.classList.remove("transitionCollapse");
       html[0].classList.add("expanded");
+      console.log("transitionExpand should be added.");
     }
   }
 
   window.addEventListener("resize", function() {
-    headerMenu.classList.remove("transitionEverything");
+    headerMenu.classList.remove("transitionExpand");
+    headerMenu.classList.remove("transitionCollapse");
 
-    if (window.innerHeight < minMenuHeight) {
-      html[0].classList.add("staticHeight");
-    } else {
-      html[0].classList.remove("staticHeight");
+    if (window.innerWidth >= 768) {
+      html[0].classList.remove("expanded");
     }
   }, false);
 })();

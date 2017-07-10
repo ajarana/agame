@@ -1,8 +1,12 @@
 #header {
   height: 48px;
-  padding: 0 20px;
+  // padding: 0 20px;
   background-color: #2b2b2b;
   background-color: #333;
+
+  > div {
+     height: 100%;
+ }
 
   #titleContainer {
     flex: 0 1 85%;
@@ -105,7 +109,7 @@
         a {
           color: white;
           text-align: center;
-          padding: 1em 0;
+          padding: 0.9em 0;
           width: 100%;
           transition: color 0.22s ease-out;
           text-decoration: none;
@@ -117,7 +121,10 @@
       }
       .menuItems:first-child {
         border-top: none;
-        margin-top: 25px;
+
+         a {
+            margin-top: 0.9em;
+         }
       }
     }
 
@@ -132,7 +139,7 @@
       font-size: 1.4em;
     }
   @media (min-width: 768px) {
-    padding: 0 30px;
+   //  padding: 0 30px;
 
       #headerMenu {
         position: static;
@@ -165,7 +172,7 @@
             padding: 0 1.5em;
           }
         }
-        .menuItems:first-child {
+        .menuItems:first-child a {
           margin-top: 0;
         }
 
