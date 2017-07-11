@@ -1,3 +1,5 @@
+@animation-duration: 0.33s;
+
 #header {
   height: 48px;
   // padding: 0 20px;
@@ -51,9 +53,9 @@
 
       #hamburgerWrapper {
         position: relative;
-        bottom: 0%;
+        bottom: 0;
 
-        transition: bottom 0.33s ease-out 0s;
+        transition: bottom @animation-duration ease-in-out 0s;
       }
 
       .hamburgerIcon {
@@ -61,7 +63,7 @@
         height: 2px;
         background-color: white;
 
-        transition: background-color 0.33s ease-out 0s, transform 0.33s ease-out 0s, opacity 0s ease-out 0.33s, margin-bottom 0.33s ease-out 0.33s;
+        transition: background-color @animation-duration ease-in-out 0s, transform @animation-duration ease-in-out 0s, opacity 0s ease-in-out @animation-duration, margin-bottom @animation-duration ease-in-out @animation-duration;
       }
       .hamburgerIcon:not(:last-child) {
         margin-bottom: 6px;
@@ -103,7 +105,7 @@
         margin: 0 48px;
 
         opacity: 0;
-        transition: opacity 0.2s ease-out 0s, visibility 0s linear 0.4s;
+        transition: none;
         font-size: 1em;
 
         a {
@@ -111,11 +113,10 @@
           text-align: center;
           padding: 0.9em 0;
           width: 100%;
-          transition: color 0.22s ease-out;
           text-decoration: none;
 
           &:hover {
-             color: rgba(255, 255, 255, 0.82);
+             color: rgba(255, 255, 255, 0.9);
           }
         }
       }
@@ -129,10 +130,10 @@
     }
 
     .transitionExpand {
-      transition: height 0s ease-in 0s, width 0s ease-in 0s, background-color 0.33s ease-in 0s, border-color 0.33s ease-in 0s;
+      transition: height 0s ease-in 0s, width 0s ease-in 0s, background-color @animation-duration ease-in 0s, border-color @animation-duration ease-in 0s;
     }
     .transitionCollapse {
-      transition: height 0s ease-in 0.33s, width 0s ease-in 0.33s, background-color 0.33s ease-in 0s, border-color 0.33s ease-in 0s;
+      transition: height 0s ease-in @animation-duration, width 0s ease-in @animation-duration, background-color @animation-duration ease-in 0s, border-color @animation-duration ease-in 0s;
     }
 
     .headerLink {
@@ -145,10 +146,16 @@
         position: static;
         display: flex;
         align-items: center;
-        height: auto;
         height: 100%;
         width: auto;
         border-top: none;
+
+        .menuItems.selected {
+           a {
+             background-color: #111;
+             color: white;
+          }
+        }
 
         .menuItems {
           visibility: visible;
@@ -157,7 +164,8 @@
           height: 100%;
           margin: 0;
 
-          transition: background-color 0.22s ease-out 0s;
+          transition: background-color @animation-duration ease-in-out 0s;
+         // transition: none;
 
           &:hover {
              background-color: #1f1f1f;
@@ -174,14 +182,6 @@
         }
         .menuItems:first-child a {
           margin-top: 0;
-        }
-
-        .menuItems.selected {
-           background-color: black;
-
-           a {
-             color: white;
-          }
         }
       }
 
@@ -210,24 +210,24 @@ html.expanded {
 
     .menuItems {
       visibility: visible;
-      transition: opacity 0.4s ease-out 0.4s;
+      transition: opacity @animation-duration ease-in-out 0.4s;
       opacity: 1;
     }
   }
 
-  #header > #buttonWrapper > #mobileButton
+  #header > div > #buttonWrapper > #mobileButton
   {
     padding: 10px 0;
 
     #hamburgerWrapper {
-      transition: bottom 0.33s ease-out 0.33s;
+      transition: bottom @animation-duration ease-in-out @animation-duration;
       bottom: calc(~'50% - 1px');
     }
 
     .hamburgerIcon {
       background-color: white;
 
-      transition: background-color 0.33s ease-out 0s, transform 0.33s ease-out 0.33s, opacity 0s ease-out 0.33s, margin-bottom 0.33s ease-out 0s;
+      transition: background-color @animation-duration ease-in-out 0s, transform @animation-duration ease-in-out @animation-duration, opacity 0s ease-in-out @animation-duration, margin-bottom @animation-duration ease-in-out 0s;
     }
     .hamburgerIcon:not(:last-child) {
       margin-bottom: -2px;
