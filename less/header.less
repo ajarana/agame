@@ -5,22 +5,29 @@
   // padding: 0 20px;
   background-color: #2b2b2b;
   background-color: #333;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 
   > div {
      height: 100%;
  }
 
   #titleContainer {
+     margin-right: 25.2px;
     flex: 0 1 85%;
 
     #logo {
       font-family: 'Source Code Pro', monospace;
       color: white;
       font-size: 30px;
+      font-size: 34px;
       transition: color 0.2s linear 0s;
-      margin-right: 48px;
-      margin-right: 1.5em;
-      margin-top: -2px;
+      // margin-right: 48px;
+      // margin-right: 0.8em;
+      // margin-top: -2px;
 
       &:hover {
          color: rgba(255, 255, 255, 0.8);
@@ -109,15 +116,15 @@
         font-size: 1em;
 
         a {
-          color: white;
-          text-align: center;
-          padding: 0.9em 0;
-          width: 100%;
-          text-decoration: none;
+         //  color: white;
+         //  text-align: center;
+         //  padding: 0.9em 0;
+         //  width: 100%;
+         //  text-decoration: none;
 
-          &:hover {
-             color: rgba(255, 255, 255, 0.75);
-          }
+         //  &:hover {
+         //     color: rgba(255, 255, 255, 0.75);
+         //  }
         }
       }
       .menuItems:first-child {
@@ -137,23 +144,53 @@
     }
 
     .headerLink {
+      // p, a {
       font-size: 1.4em;
+      color: white;
+      text-align: center;
+      padding: 0.9em 0;
+      width: 100%;
+      text-decoration: none;
+      // }
+
+      &:hover {
+         color: rgba(255, 255,255, 0.82);
+      }
+
+      p {
+         font-size: 1em;
+         margin: 0;
+         transition: color 0.22s linear;
+      }
     }
   @media (min-width: 768px) {
    //  padding: 0 30px;
 
       #headerMenu {
         position: static;
+        position: relative;
         display: flex;
         align-items: center;
         height: 100%;
         width: auto;
+        width: 100%;
         border-top: none;
+        top: 0;
+
+        p, li {
+           font-size: 14px;
+        }
 
         .menuItems.selected {
-           a {
-             background-color: #111;
+         //   a {
+         //    //  background-color: #111;
+         //     color: white;
+         //  }
+          p {
              color: white;
+             margin: 0 0 -2px;
+             border-bottom: 1px solid white;
+             padding-bottom: 1px;
           }
         }
 
@@ -164,7 +201,7 @@
           height: 100%;
           margin: 0;
 
-          transition: background-color @animation-duration ease-in-out 0s;
+          transition: background-color 0.22s linear 0s;
          // transition: none;
 
           &:hover {
@@ -175,22 +212,50 @@
             display: flex;
             align-items: center;
             height: 100%;
-            color: white;
-            color: rgba(255, 255, 255, 0.82);
-            padding: 0 1.5em;
+            // color: white;
+            // color: rgba(255, 255, 255, 0.82);
+            // padding: 0 1.5em;
+            padding: 0 1.8em;
+            transition: color 0.22s linear;
 
             &:hover {
-               color: rgba(255, 255, 255, 0.95);
+               p {
+                  color: white;
+               }
             }
           }
         }
         .menuItems:first-child a {
           margin-top: 0;
         }
+
+        .secondaryMenuItem {
+           position: absolute;
+           right: 0;
+           top: 0;
+
+           .secondaryLink {
+              border: 2px solid white;
+              background-color: transparent;
+              transition: background-color 0.22s linear;
+              color: white;
+              padding: 0 20px;
+              font-size: 14px;
+              height: 30px;
+
+              &:hover {
+                 background-color: #1f1f1f;
+              }
+           }
+        }
       }
 
       .headerLink {
-      font-size: 14px;
+         font-size: 14px;
+
+         p {
+            color: rgba(255, 255, 255, 0.82);
+         }
       }
   }
 } //end of Header
@@ -205,7 +270,7 @@ html.expanded {
 
   #header #headerMenu {
     height: calc(~"100% - 49px");
-    min-height: 435px;
+    min-height: 510px;
     width: 100%;
 
     background-color: #333;
